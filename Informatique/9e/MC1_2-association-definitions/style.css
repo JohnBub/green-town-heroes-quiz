@@ -1,0 +1,225 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Comic Sans MS', 'Comic Sans', cursive;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    letter-spacing: 0.05em;
+}
+
+.container {
+    background: white;
+    border-radius: 20px;
+    padding: 30px;
+    max-width: 900px;
+    width: 100%;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+}
+
+h1 {
+    text-align: center;
+    color: #667eea;
+    font-size: 2em;
+    margin-bottom: 10px;
+    line-height: 1.4;
+}
+
+.instructions {
+    text-align: center;
+    font-size: 1.2em;
+    color: #666;
+    margin-bottom: 30px;
+    line-height: 1.8;
+}
+
+.game-area {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+    margin-bottom: 30px;
+}
+
+.words-column,
+.definitions-column {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+h2 {
+    text-align: center;
+    color: #764ba2;
+    font-size: 1.4em;
+    margin-bottom: 10px;
+}
+
+/* Cartes de mots (gauche) - draggable */
+.word-card {
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    color: white;
+    padding: 20px;
+    border-radius: 15px;
+    text-align: center;
+    font-size: 1.3em;
+    font-weight: bold;
+    cursor: grab;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border: 3px solid transparent;
+}
+
+.word-card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+.word-card.dragging {
+    opacity: 0.5;
+    cursor: grabbing;
+}
+
+.word-card.matched {
+    opacity: 0.3;
+    cursor: not-allowed;
+    background: #ccc;
+}
+
+/* Zones de définitions (droite) */
+.definition-zone {
+    background: #f8f9fa;
+    border-radius: 15px;
+    padding: 15px;
+    border: 3px dashed #ddd;
+    transition: all 0.3s ease;
+}
+
+.definition-text {
+    font-size: 1.1em;
+    color: #333;
+    line-height: 1.6;
+    margin-bottom: 10px;
+    padding: 10px;
+    background: white;
+    border-radius: 10px;
+}
+
+.drop-zone {
+    min-height: 60px;
+    border: 2px dashed #aaa;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.3s ease;
+    background: white;
+}
+
+.drop-zone.drag-over {
+    background: #e3f2fd;
+    border-color: #2196f3;
+    border-style: solid;
+}
+
+.drop-zone.correct {
+    background: #c8e6c9;
+    border-color: #4caf50;
+    border-style: solid;
+}
+
+.drop-zone.incorrect {
+    background: #ffcdd2;
+    border-color: #f44336;
+    border-style: solid;
+    animation: shake 0.5s;
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-10px); }
+    75% { transform: translateX(10px); }
+}
+
+/* Mots déposés dans les zones */
+.drop-zone .word-card {
+    margin: 0;
+    width: 100%;
+}
+
+/* Feedback */
+.feedback {
+    text-align: center;
+    font-size: 1.5em;
+    font-weight: bold;
+    min-height: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    line-height: 1.6;
+}
+
+.feedback.success {
+    color: #4caf50;
+}
+
+.feedback.error {
+    color: #f44336;
+}
+
+.feedback.complete {
+    color: #667eea;
+    font-size: 1.8em;
+    animation: celebrate 0.6s ease;
+}
+
+@keyframes celebrate {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+}
+
+/* Bouton reset */
+.reset-btn {
+    display: block;
+    margin: 0 auto;
+    padding: 15px 40px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    border-radius: 25px;
+    font-size: 1.2em;
+    font-family: 'Comic Sans MS', 'Comic Sans', cursive;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: bold;
+}
+
+.reset-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+}
+
+.reset-btn:active {
+    transform: scale(0.95);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .game-area {
+        grid-template-columns: 1fr;
+    }
+
+    h1 {
+        font-size: 1.6em;
+    }
+
+    .instructions {
+        font-size: 1em;
+    }
+}

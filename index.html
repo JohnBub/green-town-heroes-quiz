@@ -1,0 +1,998 @@
+
+
+
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unit 3 - Green Town Heroes - Quiz (Slides)</title>
+    <style>
+        /* ============================================
+           ALL STYLES SCOPED TO #u3slide-container
+           ============================================ */
+
+        #u3-green-town-quiz-container {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            width: 100%;
+            max-width: 100%;
+            margin: 0;
+            padding: 10px;
+            background: linear-gradient(135deg, #e8f5e9 0%, #b2dfdb 100%);
+            border-radius: 0;
+            box-sizing: border-box;
+            min-height: 100vh;
+        }
+
+        #u3-green-town-quiz-container * {
+            box-sizing: border-box;
+        }
+
+        /* Header */
+        #u3-green-town-quiz-container .u3slide-header {
+            display: none;
+        }
+
+        #u3-green-town-quiz-container .u3slide-title {
+            font-size: 1.4em;
+            color: #1b5e20;
+            margin: 0 0 6px 0;
+            font-weight: 700;
+        }
+
+        #u3-green-town-quiz-container .u3slide-subtitle {
+            font-size: 0.9em;
+            color: #555;
+            margin: 0;
+        }
+
+        /* Progress Section */
+        #u3-green-town-quiz-container .u3slide-progress-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+            gap: 12px;
+        }
+
+        #u3-green-town-quiz-container .u3slide-counter {
+            font-weight: 600;
+            color: #2e7d32;
+            font-size: 0.95em;
+            white-space: nowrap;
+        }
+
+        #u3-green-town-quiz-container .u3slide-progress-bar {
+            flex: 1;
+            background: #ddd;
+            border-radius: 10px;
+            height: 10px;
+            overflow: hidden;
+        }
+
+        #u3-green-town-quiz-container .u3slide-progress-fill {
+            background: linear-gradient(90deg, #43a047, #81c784);
+            height: 100%;
+            width: 0%;
+            transition: width 0.4s ease;
+            border-radius: 10px;
+        }
+
+        /* Question Slide */
+        #u3-green-town-quiz-container .u3slide-question {
+            display: none;
+            background: #fff;
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+            animation: u3slide-fadeIn 0.4s ease;
+        }
+
+        #u3-green-town-quiz-container .u3slide-question.u3slide-active {
+            display: block;
+        }
+
+        @keyframes u3slide-fadeIn {
+            from {
+                opacity: 0;
+                transform: translateX(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        #u3-green-town-quiz-container .u3slide-question-header {
+            display: flex;
+            gap: 14px;
+            align-items: flex-start;
+            margin-bottom: 20px;
+        }
+
+        #u3-green-town-quiz-container .u3slide-num {
+            background: linear-gradient(135deg, #43a047, #2e7d32);
+            color: #fff;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1em;
+            flex-shrink: 0;
+        }
+
+        #u3-green-town-quiz-container .u3slide-text {
+            font-size: 1.1em;
+            color: #333;
+            line-height: 1.5;
+            padding-top: 6px;
+        }
+
+        /* Choices */
+        #u3-green-town-quiz-container .u3slide-choices {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        #u3-green-town-quiz-container .u3slide-choice {
+            padding: 14px 18px;
+            background: #fafafa;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1em;
+            text-align: left;
+            transition: all 0.2s ease;
+            color: #333;
+        }
+
+        #u3-green-town-quiz-container .u3slide-choice:hover:not(:disabled) {
+            border-color: #2e7d32;
+            background: #f1f8e9;
+            transform: translateX(4px);
+        }
+
+        #u3-green-town-quiz-container .u3slide-choice.u3slide-selected {
+            border-color: #1976d2;
+            background: #e3f2fd;
+        }
+
+        #u3-green-town-quiz-container .u3slide-choice.u3slide-correct-choice {
+            border-color: #43a047;
+            background: #c8e6c9;
+            color: #1b5e20;
+        }
+
+        #u3-green-town-quiz-container .u3slide-choice.u3slide-wrong-choice {
+            border-color: #e53935;
+            background: #ffcdd2;
+            color: #b71c1c;
+            text-decoration: line-through;
+        }
+
+        #u3-green-town-quiz-container .u3slide-choice:disabled {
+            cursor: not-allowed;
+        }
+
+        /* Feedback */
+        #u3-green-town-quiz-container .u3slide-feedback {
+            padding: 14px 16px;
+            border-radius: 10px;
+            font-size: 0.95em;
+            line-height: 1.5;
+            display: none;
+            margin-bottom: 16px;
+        }
+
+        #u3-green-town-quiz-container .u3slide-feedback.u3slide-show {
+            display: block;
+        }
+
+        #u3-green-town-quiz-container .u3slide-feedback.u3slide-success {
+            background: #c8e6c9;
+            color: #1b5e20;
+            border-left: 4px solid #43a047;
+        }
+
+        #u3-green-town-quiz-container .u3slide-feedback.u3slide-error {
+            background: #ffcdd2;
+            color: #b71c1c;
+            border-left: 4px solid #e53935;
+        }
+
+        /* Navigation */
+        #u3-green-town-quiz-container .u3slide-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+        }
+
+        #u3-green-town-quiz-container .u3slide-btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 0.95em;
+            font-weight: 600;
+            transition: all 0.2s ease;
+        }
+
+        #u3-green-town-quiz-container .u3slide-btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        #u3-green-town-quiz-container .u3slide-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        #u3-green-town-quiz-container .u3slide-btn-prev {
+            background: linear-gradient(135deg, #757575, #616161);
+            color: #fff;
+        }
+
+        #u3-green-town-quiz-container .u3slide-btn-check {
+            background: linear-gradient(135deg, #1976d2, #1565c0);
+            color: #fff;
+        }
+
+        #u3-green-town-quiz-container .u3slide-btn-next {
+            background: linear-gradient(135deg, #43a047, #2e7d32);
+            color: #fff;
+        }
+
+        #u3-green-town-quiz-container .u3slide-spacer {
+            flex: 1;
+        }
+
+        /* Results Slide */
+        #u3-green-town-quiz-container .u3slide-results {
+            display: none;
+            background: #fff;
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            animation: u3slide-fadeIn 0.4s ease;
+        }
+
+        #u3-green-town-quiz-container .u3slide-results.u3slide-active {
+            display: block;
+        }
+
+        #u3-green-town-quiz-container .u3slide-results-emoji {
+            font-size: 4em;
+            display: block;
+            margin-bottom: 16px;
+        }
+
+        #u3-green-town-quiz-container .u3slide-results-title {
+            font-size: 1.5em;
+            color: #1b5e20;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        #u3-green-town-quiz-container .u3slide-results-score {
+            font-size: 2em;
+            font-weight: 700;
+            color: #2e7d32;
+            margin-bottom: 12px;
+        }
+
+        #u3-green-town-quiz-container .u3slide-results-message {
+            font-size: 1em;
+            color: #555;
+            margin-bottom: 24px;
+            line-height: 1.5;
+        }
+
+        #u3-green-town-quiz-container .u3slide-results-buttons {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        #u3-green-town-quiz-container .u3slide-btn-restart {
+            background: linear-gradient(135deg, #43a047, #2e7d32);
+            color: #fff;
+        }
+
+        #u3-green-town-quiz-container .u3slide-btn-review {
+            background: linear-gradient(135deg, #1976d2, #1565c0);
+            color: #fff;
+        }
+
+        /* Review Mode */
+        #u3-green-town-quiz-container.u3slide-review-mode .u3slide-question {
+            display: none;
+        }
+
+        #u3-green-town-quiz-container.u3slide-review-mode .u3slide-question.u3slide-active {
+            display: block;
+        }
+    </style>
+
+
+
+
+    <div id="u3-green-town-quiz-container">
+        <!-- Header -->
+        <div class="u3slide-header">
+            <h1 class="u3slide-title">🌍 Green Town Heroes – Quiz</h1>
+            <p class="u3slide-subtitle">Unit 3: Our Planet / L'environnement</p>
+        </div>
+
+        <!-- Progress Section -->
+        <div class="u3slide-progress-section">
+            <span class="u3slide-counter" id="u3slide-counter">Question 1 / 15</span>
+            <div class="u3slide-progress-bar">
+                <div class="u3slide-progress-fill" id="u3slide-progress-fill"></div>
+            </div>
+        </div>
+
+        <!-- Question Slides -->
+        <div id="u3slide-questions">
+
+            <!-- Question 1 -->
+            <div class="u3slide-question u3slide-active" data-id="1" data-answer="B" data-feedback="Maya is planting a tree in the park. 'Plant' means 'planter' in French.">
+                <div class="u3slide-question-header">
+                    <span class="u3slide-num">1</span>
+                    <span class="u3slide-text">What is Maya doing in the park?</span>
+                </div>
+                <div class="u3slide-choices">
+                    <button type="button" class="u3slide-choice" data-option="A">A) Picking up litter</button>
+                    <button type="button" class="u3slide-choice" data-option="B">B) Planting a tree</button>
+                    <button type="button" class="u3slide-choice" data-option="C">C) Recycling bottles</button>
+                    <button type="button" class="u3slide-choice" data-option="D">D) Riding a bicycle</button>
+                </div>
+                <div class="u3slide-feedback" id="u3slide-feedback-1"></div>
+                <div class="u3slide-nav">
+                    <div class="u3slide-spacer"></div>
+                    <button type="button" class="u3slide-btn u3slide-btn-check" id="u3slide-check-1">Check
+                        Answer</button>
+                    <button type="button" class="u3slide-btn u3slide-btn-next" id="u3slide-next-1" disabled="">Next
+                        →</button>
+                </div>
+            </div>
+
+            <!-- Question 2 -->
+            <div class="u3slide-question" data-id="2" data-answer="C" data-feedback="Lucas says litter destroys nature and hurts animals. 'Destroy' = détruire.">
+                <div class="u3slide-question-header">
+                    <span class="u3slide-num">2</span>
+                    <span class="u3slide-text">Why does Lucas think litter is a problem?</span>
+                </div>
+                <div class="u3slide-choices">
+                    <button type="button" class="u3slide-choice" data-option="A">A) Because it smells bad</button>
+                    <button type="button" class="u3slide-choice" data-option="B">B) Because it makes the park
+                        ugly</button>
+                    <button type="button" class="u3slide-choice" data-option="C">C) Because it destroys nature and hurts
+                        animals</button>
+                    <button type="button" class="u3slide-choice" data-option="D">D) Because it costs money to
+                        clean</button>
+                </div>
+                <div class="u3slide-feedback" id="u3slide-feedback-2"></div>
+                <div class="u3slide-nav">
+                    <button type="button" class="u3slide-btn u3slide-btn-prev" id="u3slide-prev-2">← Back</button>
+                    <button type="button" class="u3slide-btn u3slide-btn-check" id="u3slide-check-2">Check
+                        Answer</button>
+                    <button type="button" class="u3slide-btn u3slide-btn-next" id="u3slide-next-2" disabled="">Next
+                        →</button>
+                </div>
+            </div>
+
+            <!-- Question 3 -->
+            <div class="u3slide-question" data-id="3" data-answer="C" data-feedback="Zoe explains: Yellow bins are for plastic and metal. Green = glass, Blue = paper.">
+                <div class="u3slide-question-header">
+                    <span class="u3slide-num">3</span>
+                    <span class="u3slide-text">According to Zoe, what goes in the yellow bin?</span>
+                </div>
+                <div class="u3slide-choices">
+                    <button type="button" class="u3slide-choice" data-option="A">A) Paper and cardboard</button>
+                    <button type="button" class="u3slide-choice" data-option="B">B) Glass bottles</button>
+                    <button type="button" class="u3slide-choice" data-option="C">C) Plastic and metal</button>
+                    <button type="button" class="u3slide-choice" data-option="D">D) Food waste</button>
+                </div>
+                <div class="u3slide-feedback" id="u3slide-feedback-3"></div>
+                <div class="u3slide-nav">
+                    <button type="button" class="u3slide-btn u3slide-btn-prev" id="u3slide-prev-3">← Back</button>
+                    <button type="button" class="u3slide-btn u3slide-btn-check" id="u3slide-check-3">Check
+                        Answer</button>
+                    <button type="button" class="u3slide-btn u3slide-btn-next" id="u3slide-next-3" disabled="">Next
+                        →</button>
+                </div>
+            </div>
+
+            <!-- Question 4 -->
+            <div class="u3slide-question" data-id="4" data-answer="C" data-feedback="Thomas rides his bike (cycle) to school every day. He also uses public transport.">
+                <div class="u3slide-question-header">
+                    <span class="u3slide-num">4</span>
+                    <span class="u3slide-text">How does Thomas travel to school?</span>
+                </div>
+                <div class="u3slide-choices">
+                    <button type="button" class="u3slide-choice" data-option="A">A) By car</button>
+                    <button type="button" class="u3slide-choice" data-option="B">B) By bus only</button>
+                    <button type="button" class="u3slide-choice" data-option="C">C) By bicycle</button>
+                    <button type="button" class="u3slide-choice" data-option="D">D) On foot</button>
+                </div>
+                <div class="u3slide-feedback" id="u3slide-feedback-4"></div>
+                <div class="u3slide-nav">
+                    <button type="button" class="u3slide-btn u3slide-btn-prev" id="u3slide-prev-4">← Back</button>
+                    <button type="button" class="u3slide-btn u3slide-btn-check" id="u3slide-check-4">Check
+                        Answer</button>
+                    <button type="button" class="u3slide-btn u3slide-btn-next" id="u3slide-next-4" disabled="">Next
+                        →</button>
+                </div>
+            </div>
+
+            <!-- Question 5 -->
+            <div class="u3slide-question" data-id="5" data-answer="D" data-feedback="Noah is the Water Saver. He says: 'Don't waste water!' Waste = gaspiller.">
+                <div class="u3slide-question-header">
+                    <span class="u3slide-num">5</span>
+                    <span class="u3slide-text">What does Noah say we shouldn't waste?</span>
+                </div>
+                <div class="u3slide-choices">
+                    <button type="button" class="u3slide-choice" data-option="A">A) Electricity</button>
+                    <button type="button" class="u3slide-choice" data-option="B">B) Food</button>
+                    <button type="button" class="u3slide-choice" data-option="C">C) Time</button>
+                    <button type="button" class="u3slide-choice" data-option="D">D) Water</button>
+                </div>
+                <div class="u3slide-feedback" id="u3slide-feedback-5"></div>
+                <div class="u3slide-nav">
+                    <button type="button" class="u3slide-btn u3slide-btn-prev" id="u3slide-prev-5">← Back</button>
+                    <button type="button" class="u3slide-btn u3slide-btn-check" id="u3slide-check-5">Check
+                        Answer</button>
+                    <button type="button" class="u3slide-btn u3slide-btn-next" id="u3slide-next-5" disabled="">Next
+                        →</button>
+                </div>
+            </div>
+
+            <!-- Question 6 -->
+            <div class="u3slide-question" data-id="6" data-answer="B" data-feedback="The story begins: 'It was a beautiful Saturday morning in Green Town.'">
+                <div class="u3slide-question-header">
+                    <span class="u3slide-num">6</span>
+                    <span class="u3slide-text">When does the story take place?</span>
+                </div>
+                <div class="u3slide-choices">
+                    <button type="button" class="u3slide-choice" data-option="A">A) On a Monday morning</button>
+                    <button type="button" class="u3slide-choice" data-option="B">B) On a Saturday morning</button>
+                    <button type="button" class="u3slide-choice" data-option="C">C) On a Sunday afternoon</button>
+                    <button type="button" class="u3slide-choice" data-option="D">D) On a Friday evening</button>
+                </div>
+                <div class="u3slide-feedback" id="u3slide-feedback-6"></div>
+                <div class="u3slide-nav">
+                    <button type="button" class="u3slide-btn u3slide-btn-prev" id="u3slide-prev-6">← Back</button>
+                    <button type="button" class="u3slide-btn u3slide-btn-check" id="u3slide-check-6">Check
+                        Answer</button>
+                    <button type="button" class="u3slide-btn u3slide-btn-next" id="u3slide-next-6" disabled="">Next
+                        →</button>
+                </div>
+            </div>
+
+            <!-- Question 7 -->
+            <div class="u3slide-question" data-id="7" data-answer="C" data-feedback="Thomas says: 'There's a big traffic jam on Main Street!' Traffic jam = embouteillage.">
+                <div class="u3slide-question-header">
+                    <span class="u3slide-num">7</span>
+                    <span class="u3slide-text">Why was Thomas late?</span>
+                </div>
+                <div class="u3slide-choices">
+                    <button type="button" class="u3slide-choice" data-option="A">A) He missed the bus</button>
+                    <button type="button" class="u3slide-choice" data-option="B">B) His bicycle was broken</button>
+                    <button type="button" class="u3slide-choice" data-option="C">C) There was a traffic jam</button>
+                    <button type="button" class="u3slide-choice" data-option="D">D) He forgot about the meeting</button>
+                </div>
+                <div class="u3slide-feedback" id="u3slide-feedback-7"></div>
+                <div class="u3slide-nav">
+                    <button type="button" class="u3slide-btn u3slide-btn-prev" id="u3slide-prev-7">← Back</button>
+                    <button type="button" class="u3slide-btn u3slide-btn-check" id="u3slide-check-7">Check
+                        Answer</button>
+                    <button type="button" class="u3slide-btn u3slide-btn-next" id="u3slide-next-7" disabled="">Next
+                        →</button>
+                </div>
+            </div>
+
+            <!-- Question 8 -->
+            <div class="u3slide-question" data-id="8" data-answer="C" data-feedback="Noah says: 'Someone left the tap running. What a waste of water!'">
+                <div class="u3slide-question-header">
+                    <span class="u3slide-num">8</span>
+                    <span class="u3slide-text">What problem did Noah find at the water fountain?</span>
+                </div>
+                <div class="u3slide-choices">
+                    <button type="button" class="u3slide-choice" data-option="A">A) The water was dirty</button>
+                    <button type="button" class="u3slide-choice" data-option="B">B) The fountain was broken</button>
+                    <button type="button" class="u3slide-choice" data-option="C">C) Someone left the tap
+                        running</button>
+                    <button type="button" class="u3slide-choice" data-option="D">D) There was no water</button>
+                </div>
+                <div class="u3slide-feedback" id="u3slide-feedback-8"></div>
+                <div class="u3slide-nav">
+                    <button type="button" class="u3slide-btn u3slide-btn-prev" id="u3slide-prev-8">← Back</button>
+                    <button type="button" class="u3slide-btn u3slide-btn-check" id="u3slide-check-8">Check
+                        Answer</button>
+                    <button type="button" class="u3slide-btn u3slide-btn-next" id="u3slide-next-8" disabled="">Next
+                        →</button>
+                </div>
+            </div>
+
+            <!-- Question 9 -->
+            <div class="u3slide-question" data-id="9" data-answer="A" data-feedback="Zoe says pollution will get worse. Thomas says air quality will be terrible and people will get sick.">
+                <div class="u3slide-question-header">
+                    <span class="u3slide-num">9</span>
+                    <span class="u3slide-text">What do the friends worry about for the future?</span>
+                </div>
+                <div class="u3slide-choices">
+                    <button type="button" class="u3slide-choice" data-option="A">A) More pollution and bad air
+                        quality</button>
+                    <button type="button" class="u3slide-choice" data-option="B">B) Less time to play</button>
+                    <button type="button" class="u3slide-choice" data-option="C">C) Higher prices in shops</button>
+                    <button type="button" class="u3slide-choice" data-option="D">D) Longer school days</button>
+                </div>
+                <div class="u3slide-feedback" id="u3slide-feedback-9"></div>
+                <div class="u3slide-nav">
+                    <button type="button" class="u3slide-btn u3slide-btn-prev" id="u3slide-prev-9">← Back</button>
+                    <button type="button" class="u3slide-btn u3slide-btn-check" id="u3slide-check-9">Check
+                        Answer</button>
+                    <button type="button" class="u3slide-btn u3slide-btn-next" id="u3slide-next-9" disabled="">Next
+                        →</button>
+                </div>
+            </div>
+
+            <!-- Question 10 -->
+            <div class="u3slide-question" data-id="10" data-answer="C" data-feedback="Maya says: 'Small actions today will create big changes tomorrow.' The friends work TOGETHER.">
+                <div class="u3slide-question-header">
+                    <span class="u3slide-num">10</span>
+                    <span class="u3slide-text">What is the main message of the story?</span>
+                </div>
+                <div class="u3slide-choices">
+                    <button type="button" class="u3slide-choice" data-option="A">A) Cycling is the best
+                        transport</button>
+                    <button type="button" class="u3slide-choice" data-option="B">B) Trees are more important than
+                        recycling</button>
+                    <button type="button" class="u3slide-choice" data-option="C">C) Small actions together can protect
+                        our
+                        planet</button>
+                    <button type="button" class="u3slide-choice" data-option="D">D) Only young people can help the
+                        environment</button>
+                </div>
+                <div class="u3slide-feedback" id="u3slide-feedback-10"></div>
+                <div class="u3slide-nav">
+                    <button type="button" class="u3slide-btn u3slide-btn-prev" id="u3slide-prev-10">← Back</button>
+                    <button type="button" class="u3slide-btn u3slide-btn-check" id="u3slide-check-10">Check
+                        Answer</button>
+                    <button type="button" class="u3slide-btn u3slide-btn-next" id="u3slide-next-10" disabled="">Next
+                        →</button>
+                </div>
+            </div>
+
+            <!-- Question 11 -->
+            <div class="u3slide-question" data-id="11" data-answer="B" data-feedback="First conditional: If + present simple, will + base verb. 'If we plant trees, there will be more oxygen.'">
+                <div class="u3slide-question-header">
+                    <span class="u3slide-num">11</span>
+                    <span class="u3slide-text">Complete: "If we _____ trees, there will be more oxygen."</span>
+                </div>
+                <div class="u3slide-choices">
+                    <button type="button" class="u3slide-choice" data-option="A">A) cut down</button>
+                    <button type="button" class="u3slide-choice" data-option="B">B) plant</button>
+                    <button type="button" class="u3slide-choice" data-option="C">C) destroy</button>
+                    <button type="button" class="u3slide-choice" data-option="D">D) waste</button>
+                </div>
+                <div class="u3slide-feedback" id="u3slide-feedback-11"></div>
+                <div class="u3slide-nav">
+                    <button type="button" class="u3slide-btn u3slide-btn-prev" id="u3slide-prev-11">← Back</button>
+                    <button type="button" class="u3slide-btn u3slide-btn-check" id="u3slide-check-11">Check
+                        Answer</button>
+                    <button type="button" class="u3slide-btn u3slide-btn-next" id="u3slide-next-11" disabled="">Next
+                        →</button>
+                </div>
+            </div>
+
+            <!-- Question 12 -->
+            <div class="u3slide-question" data-id="12" data-answer="B" data-feedback="Recycle = to use old materials (glass, plastic, paper) to make new things. Recycler en français.">
+                <div class="u3slide-question-header">
+                    <span class="u3slide-num">12</span>
+                    <span class="u3slide-text">What does "recycle" mean?</span>
+                </div>
+                <div class="u3slide-choices">
+                    <button type="button" class="u3slide-choice" data-option="A">A) To throw something away</button>
+                    <button type="button" class="u3slide-choice" data-option="B">B) To use old materials to make new
+                        things</button>
+                    <button type="button" class="u3slide-choice" data-option="C">C) To drop litter on the
+                        ground</button>
+                    <button type="button" class="u3slide-choice" data-option="D">D) To clean up a park</button>
+                </div>
+                <div class="u3slide-feedback" id="u3slide-feedback-12"></div>
+                <div class="u3slide-nav">
+                    <button type="button" class="u3slide-btn u3slide-btn-prev" id="u3slide-prev-12">← Back</button>
+                    <button type="button" class="u3slide-btn u3slide-btn-check" id="u3slide-check-12">Check
+                        Answer</button>
+                    <button type="button" class="u3slide-btn u3slide-btn-next" id="u3slide-next-12" disabled="">Next
+                        →</button>
+                </div>
+            </div>
+
+            <!-- Question 13 -->
+            <div class="u3slide-question" data-id="13" data-answer="C" data-feedback="Waste = gaspiller. Don't waste water = Ne gaspille pas l'eau. Noah's main message!">
+                <div class="u3slide-question-header">
+                    <span class="u3slide-num">13</span>
+                    <span class="u3slide-text">Complete: "Don't _____ water – turn off the tap!"</span>
+                </div>
+                <div class="u3slide-choices">
+                    <button type="button" class="u3slide-choice" data-option="A">A) protect</button>
+                    <button type="button" class="u3slide-choice" data-option="B">B) reuse</button>
+                    <button type="button" class="u3slide-choice" data-option="C">C) waste</button>
+                    <button type="button" class="u3slide-choice" data-option="D">D) recycle</button>
+                </div>
+                <div class="u3slide-feedback" id="u3slide-feedback-13"></div>
+                <div class="u3slide-nav">
+                    <button type="button" class="u3slide-btn u3slide-btn-prev" id="u3slide-prev-13">← Back</button>
+                    <button type="button" class="u3slide-btn u3slide-btn-check" id="u3slide-check-13">Check
+                        Answer</button>
+                    <button type="button" class="u3slide-btn u3slide-btn-next" id="u3slide-next-13" disabled="">Next
+                        →</button>
+                </div>
+            </div>
+
+            <!-- Question 14 -->
+            <div class="u3slide-question" data-id="14" data-answer="C" data-feedback="Exhaust fumes (gaz d'échappement) come from cars and trucks. They cause air pollution.">
+                <div class="u3slide-question-header">
+                    <span class="u3slide-num">14</span>
+                    <span class="u3slide-text">"Exhaust fumes" come from:</span>
+                </div>
+                <div class="u3slide-choices">
+                    <button type="button" class="u3slide-choice" data-option="A">A) Trees and plants</button>
+                    <button type="button" class="u3slide-choice" data-option="B">B) Rivers and lakes</button>
+                    <button type="button" class="u3slide-choice" data-option="C">C) Cars and trucks</button>
+                    <button type="button" class="u3slide-choice" data-option="D">D) Power stations only</button>
+                </div>
+                <div class="u3slide-feedback" id="u3slide-feedback-14"></div>
+                <div class="u3slide-nav">
+                    <button type="button" class="u3slide-btn u3slide-btn-prev" id="u3slide-prev-14">← Back</button>
+                    <button type="button" class="u3slide-btn u3slide-btn-check" id="u3slide-check-14">Check
+                        Answer</button>
+                    <button type="button" class="u3slide-btn u3slide-btn-next" id="u3slide-next-14" disabled="">Next
+                        →</button>
+                </div>
+            </div>
+
+            <!-- Question 15 -->
+            <div class="u3slide-question" data-id="15" data-answer="C" data-feedback="First conditional: If + present simple, WILL + base verb. 'If we don't recycle, we WILL HAVE more rubbish.'">
+                <div class="u3slide-question-header">
+                    <span class="u3slide-num">15</span>
+                    <span class="u3slide-text">Complete: "If we don't recycle, we _____ more rubbish."</span>
+                </div>
+                <div class="u3slide-choices">
+                    <button type="button" class="u3slide-choice" data-option="A">A) have</button>
+                    <button type="button" class="u3slide-choice" data-option="B">B) had</button>
+                    <button type="button" class="u3slide-choice" data-option="C">C) will have</button>
+                    <button type="button" class="u3slide-choice" data-option="D">D) are having</button>
+                </div>
+                <div class="u3slide-feedback" id="u3slide-feedback-15"></div>
+                <div class="u3slide-nav">
+                    <button type="button" class="u3slide-btn u3slide-btn-prev" id="u3slide-prev-15">← Back</button>
+                    <button type="button" class="u3slide-btn u3slide-btn-check" id="u3slide-check-15">Check
+                        Answer</button>
+                    <button type="button" class="u3slide-btn u3slide-btn-next" id="u3slide-next-15" disabled="">See Results
+                        →</button>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Results Slide -->
+        <div class="u3slide-results" id="u3slide-results">
+            <span class="u3slide-results-emoji" id="u3slide-results-emoji">🏆</span>
+            <div class="u3slide-results-title">Quiz Complete!</div>
+            <div class="u3slide-results-score" id="u3slide-results-score">0 / 15</div>
+            <div class="u3slide-results-message" id="u3slide-results-message">
+                Great job! You've completed the quiz.
+            </div>
+            <div class="u3slide-results-buttons">
+                <button type="button" class="u3slide-btn u3slide-btn-review" id="u3slide-review-btn">📋 Review
+                    Answers</button>
+                <button type="button" class="u3slide-btn u3slide-btn-restart" id="u3slide-restart-btn">↺ Try
+                    Again</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== JAVASCRIPT (Scoped IIFE) ==================== -->
+    <script>
+        const U3Quiz = (function () {
+            'use strict';
+
+            // ========== STATE ==========
+            let state = {
+                currentQuestion: 1,
+                totalQuestions: 15,
+                answers: {},
+                checked: {},
+            };
+
+            let dom = {};
+
+            function init() {
+                // ========== DOM REFERENCES ==========
+                dom.container = document.getElementById('u3-green-town-quiz-container');
+                if (!dom.container) {
+                    console.warn('U3Quiz: Container not found. Init aborted.');
+                    return;
+                }
+                dom.resultsSlide = document.getElementById('u3slide-results');
+                dom.counterEl = document.getElementById('u3slide-counter');
+                dom.progressFill = document.getElementById('u3slide-progress-fill');
+
+                // Initialize UI
+                updateCounter();
+                updateProgress();
+                attachEvents();
+                console.log('U3Quiz: Initialized');
+            }
+
+            // ========== HELPER FUNCTIONS ==========
+            function updateCounter() {
+                if (!dom.counterEl) return;
+                let text = `Question ${state.currentQuestion} / ${state.totalQuestions}`;
+                if (dom.container.classList.contains('u3slide-review-mode')) {
+                    text = `Review: ${state.currentQuestion} / ${state.totalQuestions}`;
+                }
+                dom.counterEl.textContent = text;
+            }
+
+            function updateProgress() {
+                if (!dom.progressFill) return;
+                const percent = (state.currentQuestion / state.totalQuestions) * 100;
+                dom.progressFill.style.width = percent + '%';
+            }
+
+            function showSlide(num) {
+                if (!dom.container) return;
+
+                const slides = dom.container.querySelectorAll('.u3slide-question');
+                slides.forEach(function (slide) {
+                    slide.classList.remove('u3slide-active');
+                });
+                if (dom.resultsSlide) dom.resultsSlide.classList.remove('u3slide-active');
+
+                if (num > state.totalQuestions) {
+                    showResults();
+                } else {
+                    const targetSlide = dom.container.querySelector(`.u3slide-question[data-id="${num}"]`);
+                    if (targetSlide) {
+                        targetSlide.classList.add('u3slide-active');
+                    }
+                    state.currentQuestion = num;
+                    updateCounter();
+                    updateProgress();
+                }
+            }
+
+            function showResults() {
+                if (dom.resultsSlide) dom.resultsSlide.classList.add('u3slide-active');
+
+                // Calculate score
+                let correctCount = 0;
+                for (let i = 1; i <= state.totalQuestions; i++) {
+                    const slide = dom.container.querySelector(`.u3slide-question[data-id="${i}"]`);
+                    if (!slide) continue;
+                    const correctAnswer = slide.getAttribute('data-answer');
+                    if (state.answers[i] === correctAnswer) {
+                        correctCount++;
+                    }
+                }
+
+                const percent = Math.round((correctCount / state.totalQuestions) * 100);
+                let emoji = '😢';
+                let message = '';
+
+                if (percent >= 90) {
+                    emoji = '🏆';
+                    message = 'Excellent! You\'re an environment expert! / Excellent ! Tu es un expert de l\'environnement !';
+                } else if (percent >= 70) {
+                    emoji = '🌟';
+                    message = 'Great work! You know your vocabulary well! / Bravo ! Tu connais bien le vocabulaire !';
+                } else if (percent >= 50) {
+                    emoji = '👍';
+                    message = 'Good effort! Review and try again. / Bon effort ! Révise et réessaie.';
+                } else if (percent >= 30) {
+                    emoji = '📚';
+                    message = 'Keep studying! You can improve. / Continue à étudier ! Tu peux t\'améliorer.';
+                } else {
+                    emoji = '💪';
+                    message = 'Don\'t give up! Study the vocabulary and try again. / N\'abandonne pas ! Étudie le vocabulaire et réessaie.';
+                }
+
+                document.getElementById('u3slide-results-emoji').textContent = emoji;
+                document.getElementById('u3slide-results-score').textContent = `${correctCount} / ${state.totalQuestions} (${percent}%)`;
+                document.getElementById('u3slide-results-message').textContent = message;
+
+                if (dom.counterEl) dom.counterEl.textContent = 'Results / Résultats';
+                if (dom.progressFill) dom.progressFill.style.width = '100%';
+            }
+
+            function findSlideFromButton(btn) {
+                let node = btn;
+                while (node) {
+                    if (node.classList && node.classList.contains('u3slide-question')) {
+                        return node;
+                    }
+                    node = node.parentNode;
+                }
+                return null;
+            }
+
+            function handleChoiceClick(e) {
+                const btn = e.currentTarget;
+                const slide = findSlideFromButton(btn);
+                if (!slide) return;
+
+                const questionId = slide.getAttribute('data-id');
+                if (state.checked[questionId]) return; // Already checked
+
+                // Deselect others
+                const siblings = slide.querySelectorAll('.u3slide-choice');
+                siblings.forEach(function (sib) {
+                    sib.classList.remove('u3slide-selected');
+                });
+
+                // Select this one
+                btn.classList.add('u3slide-selected');
+                state.answers[questionId] = btn.getAttribute('data-option');
+            }
+
+            function handleCheckAnswer(questionId) {
+                const slide = dom.container.querySelector(`.u3slide-question[data-id="${questionId}"]`);
+                if (!slide) return;
+
+                const correctAnswer = slide.getAttribute('data-answer');
+                const feedbackText = slide.getAttribute('data-feedback');
+                const feedback = document.getElementById(`u3slide-feedback-${questionId}`);
+                const buttons = slide.querySelectorAll('.u3slide-choice');
+                const userAnswer = state.answers[questionId];
+                const checkBtn = document.getElementById(`u3slide-check-${questionId}`);
+                const nextBtn = document.getElementById(`u3slide-next-${questionId}`);
+
+                if (!userAnswer) {
+                    if (feedback) {
+                        feedback.innerHTML = '⚠️ Please select an answer first! / Sélectionne une réponse d\'abord !';
+                        feedback.classList.remove('u3slide-success');
+                        feedback.classList.add('u3slide-show', 'u3slide-error');
+                    }
+                    return;
+                }
+
+                state.checked[questionId] = true;
+                if (checkBtn) checkBtn.disabled = true;
+                if (nextBtn) nextBtn.disabled = false;
+
+                buttons.forEach(function (btn) {
+                    const opt = btn.getAttribute('data-option');
+                    btn.disabled = true;
+
+                    if (opt === correctAnswer) {
+                        btn.classList.add('u3slide-correct-choice');
+                    } else if (opt === userAnswer && userAnswer !== correctAnswer) {
+                        btn.classList.add('u3slide-wrong-choice');
+                    }
+                });
+
+                if (feedback) {
+                    if (userAnswer === correctAnswer) {
+                        feedback.innerHTML = `✅ Correct! ${feedbackText}`;
+                        feedback.classList.remove('u3slide-error');
+                        feedback.classList.add('u3slide-show', 'u3slide-success');
+                    } else {
+                        feedback.innerHTML = `❌ Incorrect. The answer is <strong>${correctAnswer}</strong>. ${feedbackText}`;
+                        feedback.classList.remove('u3slide-success');
+                        feedback.classList.add('u3slide-show', 'u3slide-error');
+                    }
+                }
+            }
+
+            function resetQuiz() {
+                state.currentQuestion = 1;
+                state.answers = {};
+                state.checked = {};
+                if (dom.container) dom.container.classList.remove('u3slide-review-mode');
+
+                const slides = dom.container.querySelectorAll('.u3slide-question');
+                slides.forEach(function (slide) {
+                    const questionId = slide.getAttribute('data-id');
+                    const feedback = document.getElementById(`u3slide-feedback-${questionId}`);
+                    const buttons = slide.querySelectorAll('.u3slide-choice');
+                    const checkBtn = document.getElementById(`u3slide-check-${questionId}`);
+                    const nextBtn = document.getElementById(`u3slide-next-${questionId}`);
+
+                    if (feedback) {
+                        feedback.classList.remove('u3slide-show', 'u3slide-success', 'u3slide-error');
+                        feedback.innerHTML = '';
+                    }
+
+                    buttons.forEach(function (btn) {
+                        btn.classList.remove('u3slide-selected', 'u3slide-correct-choice', 'u3slide-wrong-choice');
+                        btn.disabled = false;
+                    });
+
+                    if (checkBtn) checkBtn.disabled = false;
+                    if (nextBtn) nextBtn.disabled = true;
+                });
+
+                showSlide(1);
+            }
+
+            // ========== ATTACH DIRECT LISTENERS ==========
+            function attachEvents() {
+                if (!dom.container) return;
+
+                // 1. Choices
+                const choices = dom.container.querySelectorAll('.u3slide-choice');
+                choices.forEach(function (btn) {
+                    // Remove old just in case? Usually not needed if refreshing but good practice
+                    // We just add new ones assuming init runs once or on fresh DOM
+                    btn.addEventListener('click', handleChoiceClick); // Using onclick property as simple direct assignment
+                });
+
+                // 2. Control Buttons
+                // We'll iterate all questions to find specific buttons
+                for (let i = 1; i <= state.totalQuestions; i++) {
+
+                    // Check button
+                    const checkBtn = document.getElementById(`u3slide-check-${i}`);
+                    if (checkBtn) {
+                        checkBtn.addEventListener('click', function () { handleCheckAnswer(i); });
+                    }
+
+                    // Next button
+                    const nextBtn = document.getElementById(`u3slide-next-${i}`);
+                    if (nextBtn) {
+                        nextBtn.addEventListener('click', function () { showSlide(i + 1); });
+                    }
+
+                    // Prev button
+                    const prevBtn = document.getElementById(`u3slide-prev-${i}`);
+                    if (prevBtn) {
+                        prevBtn.addEventListener('click', function () { showSlide(i - 1); });
+                    }
+                }
+
+                // 3. Review / Restart
+                const reviewBtn = document.getElementById('u3slide-review-btn');
+                if (reviewBtn) {
+                    reviewBtn.addEventListener('click', function () {
+                        if (dom.container) dom.container.classList.add('u3slide-review-mode');
+                        showSlide(1);
+                    });
+                }
+
+                const restartBtn = document.getElementById('u3slide-restart-btn');
+                if (restartBtn) {
+                    restartBtn.addEventListener('click', resetQuiz);
+                }
+            }
+
+            // Auto-init
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', init);
+            } else {
+                init();
+            }
+
+            // Public API
+            return {
+                init: init,
+                reset: resetQuiz
+            };
+
+        })();
+    </script>
+
+
+

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JEU 3 : Parcours d'une Photo - Informatique 9e</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>📸 JEU 3 : Parcours d'une Photo</h1>
+        <p class="instructions">Clique sur les endroits où il y a un risque pour ta photo ! 🔍</p>
+
+        <div class="journey-path">
+            <!-- Étape 1 : Téléphone d'Alice -->
+            <div class="step" data-step="1" data-has-risk="false">
+                <div class="step-icon">📱</div>
+                <div class="step-label">Téléphone d'Alice</div>
+                <div class="step-status"></div>
+            </div>
+
+            <!-- Connecteur 1 -->
+            <div class="connector"></div>
+
+            <!-- Étape 2 : Antenne téléphonique -->
+            <div class="step clickable" data-step="2" data-has-risk="true">
+                <div class="step-icon">📡</div>
+                <div class="step-label">Antenne téléphonique</div>
+                <div class="step-status"></div>
+            </div>
+
+            <!-- Connecteur 2 -->
+            <div class="connector"></div>
+
+            <!-- Étape 3 : Serveur Internet -->
+            <div class="step clickable" data-step="3" data-has-risk="true">
+                <div class="step-icon">🖥️</div>
+                <div class="step-label">Serveur Internet</div>
+                <div class="step-status"></div>
+            </div>
+
+            <!-- Connecteur 3 -->
+            <div class="connector"></div>
+
+            <!-- Étape 4 : Câble sous-marin -->
+            <div class="step clickable" data-step="4" data-has-risk="true">
+                <div class="step-icon">🌊</div>
+                <div class="step-label">Câble sous-marin</div>
+                <div class="step-status"></div>
+            </div>
+
+            <!-- Connecteur 4 -->
+            <div class="connector"></div>
+
+            <!-- Étape 5 : Serveur du destinataire -->
+            <div class="step clickable" data-step="5" data-has-risk="true">
+                <div class="step-icon">💾</div>
+                <div class="step-label">Serveur destinataire</div>
+                <div class="step-status"></div>
+            </div>
+
+            <!-- Connecteur 5 -->
+            <div class="connector"></div>
+
+            <!-- Étape 6 : Téléphone de Bob -->
+            <div class="step" data-step="6" data-has-risk="false">
+                <div class="step-icon">📱</div>
+                <div class="step-label">Téléphone de Bob</div>
+                <div class="step-status"></div>
+            </div>
+        </div>
+
+        <div id="feedback" class="feedback"></div>
+        <div id="progress" class="progress">Risques trouvés : <span id="score">0</span> / 4</div>
+        <button id="resetBtn" class="reset-btn">🔄 Recommencer</button>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

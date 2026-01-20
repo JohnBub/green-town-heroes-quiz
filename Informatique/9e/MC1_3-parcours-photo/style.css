@@ -1,0 +1,227 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Comic Sans MS', 'Comic Sans', cursive;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    letter-spacing: 0.05em;
+}
+
+.container {
+    background: white;
+    border-radius: 20px;
+    padding: 30px;
+    max-width: 1000px;
+    width: 100%;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+}
+
+h1 {
+    text-align: center;
+    color: #667eea;
+    font-size: 2em;
+    margin-bottom: 10px;
+    line-height: 1.4;
+}
+
+.instructions {
+    text-align: center;
+    font-size: 1.2em;
+    color: #666;
+    margin-bottom: 30px;
+    line-height: 1.8;
+}
+
+/* Parcours visuel */
+.journey-path {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+    margin-bottom: 30px;
+}
+
+/* Étapes du parcours */
+.step {
+    background: linear-gradient(135deg, #e0e7ff 0%, #cfd9ff 100%);
+    border: 3px solid #a5b4fc;
+    border-radius: 15px;
+    padding: 20px 30px;
+    min-width: 250px;
+    text-align: center;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.step.clickable {
+    cursor: pointer;
+    background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+    border-color: #fbbf24;
+}
+
+.step.clickable:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 20px rgba(251, 191, 36, 0.4);
+}
+
+.step-icon {
+    font-size: 3em;
+    margin-bottom: 10px;
+}
+
+.step-label {
+    font-size: 1.2em;
+    color: #333;
+    font-weight: bold;
+    line-height: 1.6;
+}
+
+/* États des étapes */
+.step.clicked-correct {
+    background: linear-gradient(135deg, #bbf7d0 0%, #86efac 100%);
+    border-color: #22c55e;
+    cursor: not-allowed;
+}
+
+.step.clicked-incorrect {
+    background: linear-gradient(135deg, #fecaca 0%, #fca5a5 100%);
+    border-color: #ef4444;
+    animation: shake 0.5s;
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-10px); }
+    75% { transform: translateX(10px); }
+}
+
+/* Statut de l'étape */
+.step-status {
+    font-size: 2em;
+    margin-top: 10px;
+    min-height: 30px;
+}
+
+/* Connecteurs entre les étapes */
+.connector {
+    width: 4px;
+    height: 30px;
+    background: linear-gradient(180deg, #a5b4fc 0%, #667eea 100%);
+    position: relative;
+}
+
+.connector::before {
+    content: '⬇️';
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 1.2em;
+}
+
+/* Feedback */
+.feedback {
+    text-align: center;
+    font-size: 1.3em;
+    font-weight: bold;
+    min-height: 80px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    line-height: 1.8;
+    margin-bottom: 20px;
+}
+
+.feedback.success {
+    color: #22c55e;
+}
+
+.feedback.error {
+    color: #ef4444;
+}
+
+.feedback.complete {
+    color: #667eea;
+    font-size: 1.6em;
+    animation: celebrate 0.6s ease;
+}
+
+@keyframes celebrate {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+}
+
+/* Progression */
+.progress {
+    text-align: center;
+    font-size: 1.3em;
+    font-weight: bold;
+    color: #667eea;
+    margin-bottom: 20px;
+}
+
+#score {
+    color: #f59e0b;
+    font-size: 1.2em;
+}
+
+/* Bouton reset */
+.reset-btn {
+    display: block;
+    margin: 0 auto;
+    padding: 15px 40px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    border-radius: 25px;
+    font-size: 1.2em;
+    font-family: 'Comic Sans MS', 'Comic Sans', cursive;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: bold;
+}
+
+.reset-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+}
+
+.reset-btn:active {
+    transform: scale(0.95);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    h1 {
+        font-size: 1.6em;
+    }
+
+    .instructions {
+        font-size: 1em;
+    }
+
+    .step {
+        min-width: 200px;
+        padding: 15px 20px;
+    }
+
+    .step-icon {
+        font-size: 2.5em;
+    }
+
+    .step-label {
+        font-size: 1em;
+    }
+
+    .connector {
+        height: 25px;
+    }
+}

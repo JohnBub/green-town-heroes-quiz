@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🌐 Composants du Réseau 🔌</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header class="game-header">
+            <h1>🌐 Composants du Réseau 🔌</h1>
+            <p class="subtitle">Connecte chaque composant à sa fonction !</p>
+            <div class="level-indicator">
+                <span class="level-badge" id="levelBadge">Niveau 1/2</span>
+                <span class="error-counter" id="errorCounter">Erreurs : 0</span>
+            </div>
+        </header>
+
+        <div class="game-board" id="gameBoard">
+            <!-- Components Column (Left) -->
+            <div class="components-column">
+                <h2 class="column-title">📦 Composants</h2>
+                <div class="items-list" id="componentsList">
+                    <!-- Components will be dynamically added here -->
+                </div>
+            </div>
+
+            <!-- Connection Canvas -->
+            <svg class="connection-canvas" id="connectionCanvas">
+                <!-- SVG lines will be drawn here -->
+            </svg>
+
+            <!-- Functions Column (Right) -->
+            <div class="functions-column">
+                <h2 class="column-title">⚙️ Fonctions</h2>
+                <div class="items-list" id="functionsList">
+                    <!-- Functions will be dynamically added here -->
+                </div>
+            </div>
+        </div>
+
+        <div class="game-controls">
+            <button class="hint-btn" id="hintBtn">💡 Indice</button>
+            <button class="check-btn" id="checkBtn">✨ Vérifier ✨</button>
+        </div>
+
+        <div class="feedback" id="feedback"></div>
+
+        <!-- Level Complete Modal -->
+        <div class="modal" id="levelCompleteModal">
+            <div class="modal-content">
+                <div class="celebration">🎉 🎊 ✨</div>
+                <h2>🎯 Niveau 1 Terminé ! 🎯</h2>
+                <p class="level-msg">Super travail ! Prêt pour le niveau suivant ?</p>
+                <div class="level-stats">
+                    <div class="stat">
+                        <span class="stat-label">Erreurs</span>
+                        <span class="stat-value" id="level1Errors">0</span>
+                    </div>
+                </div>
+                <button class="next-level-btn" id="nextLevelBtn">➡️ Niveau 2</button>
+            </div>
+        </div>
+
+        <!-- Final Score Modal -->
+        <div class="modal" id="finalScoreModal">
+            <div class="modal-content">
+                <div class="celebration">🏆 🌟 🎊 ✨ 🏆</div>
+                <h2>🎉 Jeu Terminé ! 🎉</h2>
+                <div class="final-score">
+                    <div class="stars" id="finalStars">
+                        <!-- Stars will be added here -->
+                    </div>
+                    <p class="score-message" id="scoreMessage"></p>
+                </div>
+                <div class="final-stats">
+                    <div class="stat">
+                        <span class="stat-label">Total Erreurs</span>
+                        <span class="stat-value" id="totalErrors">0</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-label">Associations</span>
+                        <span class="stat-value">6/6</span>
+                    </div>
+                </div>
+                <button class="restart-btn" id="restartBtn">🔄 Recommencer</button>
+            </div>
+        </div>
+
+        <!-- Hint Modal -->
+        <div class="modal hint-modal" id="hintModal">
+            <div class="modal-content">
+                <h3>💡 Indice</h3>
+                <p class="hint-text" id="hintText"></p>
+                <button class="close-hint-btn" id="closeHintBtn">Compris !</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Data packet template (hidden) -->
+    <div class="data-packet-template" style="display: none;">
+        <div class="data-packet">📦</div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

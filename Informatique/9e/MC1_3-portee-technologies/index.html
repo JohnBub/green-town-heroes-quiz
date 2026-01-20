@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🔵 Portée des Technologies Sans Fil 📶</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header class="game-header">
+            <h1>📡 Portée des Technologies 📡</h1>
+            <p class="subtitle">Classe les technologies du plus proche au plus loin !</p>
+        </header>
+
+        <div class="game-area">
+            <!-- Draggable Tech Cards -->
+            <div class="tech-cards" id="techCards">
+                <div class="tech-card" draggable="true" data-tech="bluetooth" data-range="10">
+                    <div class="card-icon">🔵</div>
+                    <div class="card-content">
+                        <h3>Bluetooth</h3>
+                        <p class="range-hint">10 mètres</p>
+                    </div>
+                    <div class="signal-waves"></div>
+                </div>
+
+                <div class="tech-card" draggable="true" data-tech="wifi" data-range="50">
+                    <div class="card-icon">📶</div>
+                    <div class="card-content">
+                        <h3>Wi-Fi</h3>
+                        <p class="range-hint">50 mètres</p>
+                    </div>
+                    <div class="signal-waves"></div>
+                </div>
+
+                <div class="tech-card" draggable="true" data-tech="mobile" data-range="5000">
+                    <div class="card-icon">📡</div>
+                    <div class="card-content">
+                        <h3>4G/5G</h3>
+                        <p class="range-hint">plusieurs km</p>
+                    </div>
+                    <div class="signal-waves"></div>
+                </div>
+            </div>
+
+            <!-- Drop Zones -->
+            <div class="drop-zones" id="dropZones">
+                <div class="zone-label">Classe du plus proche ➜ au plus loin :</div>
+
+                <div class="drop-zone" data-position="1">
+                    <span class="position-number">1️⃣</span>
+                    <span class="zone-text">Plus proche</span>
+                </div>
+
+                <div class="drop-zone" data-position="2">
+                    <span class="position-number">2️⃣</span>
+                    <span class="zone-text">Moyenne portée</span>
+                </div>
+
+                <div class="drop-zone" data-position="3">
+                    <span class="position-number">3️⃣</span>
+                    <span class="zone-text">Plus loin</span>
+                </div>
+            </div>
+
+            <button class="check-btn" id="checkBtn" disabled>
+                ✨ Vérifier ma réponse ✨
+            </button>
+
+            <div class="feedback" id="feedback"></div>
+        </div>
+
+        <!-- Success Modal with Bonus -->
+        <div class="modal" id="successModal">
+            <div class="modal-content">
+                <div class="celebration">🎉 🎊 ✨ 🌟 🎉</div>
+                <h2>🏆 Bravo ! 🏆</h2>
+                <p class="success-msg">Tu as parfaitement classé les technologies !</p>
+
+                <div class="bonus-section">
+                    <h3>🔐 Bonus : Ordre de Sécurité 🔐</h3>
+                    <p class="bonus-intro">Plus la portée est courte, plus c'est sécurisé !</p>
+
+                    <div class="security-ranking">
+                        <div class="security-item secure">
+                            <span class="rank">🥇 Plus sécurisé</span>
+                            <div class="tech-mini">
+                                <span class="mini-icon">🔵</span>
+                                <span>Bluetooth</span>
+                                <span class="reason">(portée limitée = moins de risques)</span>
+                            </div>
+                        </div>
+
+                        <div class="security-item medium">
+                            <span class="rank">🥈 Moyennement sécurisé</span>
+                            <div class="tech-mini">
+                                <span class="mini-icon">📶</span>
+                                <span>Wi-Fi</span>
+                                <span class="reason">(utilise un mot de passe)</span>
+                            </div>
+                        </div>
+
+                        <div class="security-item risk">
+                            <span class="rank">🥉 Moins sécurisé</span>
+                            <div class="tech-mini">
+                                <span class="mini-icon">📡</span>
+                                <span>4G/5G</span>
+                                <span class="reason">(portée étendue = plus vulnérable)</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <button class="restart-btn" id="restartBtn">🔄 Recommencer</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,579 @@
+/* ═══════════════════════════════════════════════════
+   🔒 Security Risks Journey - Cyber Dark Theme
+   ═══════════════════════════════════════════════════ */
+
+:root {
+    /* Cyber Security Palette */
+    --cyber-bg: #0A0E27;
+    --cyber-bg-light: #141B3A;
+    --cyber-surface: #1E2749;
+    --cyber-neon-green: #00FF41;
+    --cyber-neon-blue: #00D4FF;
+    --cyber-neon-red: #FF0055;
+    --cyber-neon-yellow: #FFD700;
+    --cyber-neon-purple: #B026FF;
+
+    /* Text Colors */
+    --text-primary: #E8F0FF;
+    --text-secondary: #A0B0D0;
+    --text-muted: #6B7A99;
+
+    /* Status Colors */
+    --safe-green: #00FF88;
+    --risk-red: #FF3366;
+    --warning-orange: #FF9933;
+
+    /* Effects */
+    --glow-green: 0 0 20px rgba(0, 255, 65, 0.5);
+    --glow-blue: 0 0 20px rgba(0, 212, 255, 0.5);
+    --glow-red: 0 0 20px rgba(255, 0, 85, 0.5);
+    --shadow-deep: 0 10px 40px rgba(0, 0, 0, 0.6);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Comic Sans MS', 'Comic Sans', cursive;
+    background: var(--cyber-bg);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    letter-spacing: 0.05em;
+    line-height: 1.8;
+    position: relative;
+    overflow-x: hidden;
+}
+
+/* Animated Grid Background */
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image:
+        linear-gradient(rgba(0, 212, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 212, 255, 0.03) 1px, transparent 1px);
+    background-size: 50px 50px;
+    animation: gridMove 20s linear infinite;
+    pointer-events: none;
+    z-index: 0;
+}
+
+@keyframes gridMove {
+    0% { background-position: 0 0; }
+    100% { background-position: 50px 50px; }
+}
+
+/* Scanning Line Effect */
+body::after {
+    content: '';
+    position: fixed;
+    top: -100%;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(90deg,
+        transparent,
+        var(--cyber-neon-blue),
+        transparent
+    );
+    box-shadow: var(--glow-blue);
+    animation: scan 4s ease-in-out infinite;
+    pointer-events: none;
+    z-index: 10;
+}
+
+@keyframes scan {
+    0% { top: -5%; }
+    100% { top: 105%; }
+}
+
+.game-container {
+    background: rgba(30, 39, 73, 0.8);
+    backdrop-filter: blur(20px);
+    border-radius: 24px;
+    padding: 40px;
+    max-width: 1600px;
+    width: 100%;
+    box-shadow:
+        var(--shadow-deep),
+        0 0 0 1px rgba(0, 212, 255, 0.2),
+        inset 0 0 60px rgba(0, 212, 255, 0.05);
+    position: relative;
+    z-index: 1;
+    border: 1px solid rgba(0, 212, 255, 0.3);
+}
+
+/* Header */
+.game-header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.game-header h1 {
+    font-size: clamp(1.8rem, 4vw, 2.8rem);
+    color: var(--cyber-neon-blue);
+    text-shadow: var(--glow-blue);
+    margin-bottom: 12px;
+    font-weight: bold;
+    animation: titlePulse 3s ease-in-out infinite;
+}
+
+@keyframes titlePulse {
+    0%, 100% { text-shadow: var(--glow-blue); }
+    50% { text-shadow: 0 0 30px rgba(0, 212, 255, 0.8); }
+}
+
+.subtitle {
+    font-size: clamp(1rem, 2vw, 1.3rem);
+    color: var(--text-secondary);
+    font-weight: 600;
+    margin-bottom: 20px;
+}
+
+.score-display {
+    display: inline-block;
+    background: var(--cyber-surface);
+    padding: 12px 32px;
+    border-radius: 12px;
+    border: 2px solid var(--cyber-neon-green);
+    box-shadow: var(--glow-green);
+}
+
+.score-label {
+    color: var(--text-secondary);
+    font-size: 1.1rem;
+    margin-right: 8px;
+}
+
+.score-value {
+    color: var(--cyber-neon-green);
+    font-size: 1.4rem;
+    font-weight: bold;
+    text-shadow: var(--glow-green);
+}
+
+/* Journey Container */
+.journey-container {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 60px 20px;
+    margin-bottom: 30px;
+    min-height: 300px;
+}
+
+.connection-lines {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.connection-line {
+    stroke: var(--cyber-neon-blue);
+    stroke-width: 3;
+    fill: none;
+    opacity: 0.4;
+    stroke-dasharray: 10 5;
+    animation: flowData 2s linear infinite;
+}
+
+@keyframes flowData {
+    0% { stroke-dashoffset: 0; }
+    100% { stroke-dashoffset: 30; }
+}
+
+/* Journey Points */
+.journey-point {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.point-icon {
+    width: 80px;
+    height: 80px;
+    background: var(--cyber-surface);
+    border: 3px solid var(--cyber-neon-blue);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.5rem;
+    box-shadow: var(--glow-blue);
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.point-icon::before {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(0, 212, 255, 0.2) 0%, transparent 70%);
+    animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); opacity: 0.5; }
+    50% { transform: scale(1.2); opacity: 0.8; }
+}
+
+.journey-point:hover .point-icon {
+    transform: scale(1.1);
+    box-shadow: 0 0 30px rgba(0, 212, 255, 0.8);
+}
+
+.point-label {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    text-align: center;
+    font-weight: 600;
+    line-height: 1.4;
+}
+
+/* Risk Point Styling */
+.risk-point .point-icon {
+    border-color: var(--risk-red);
+    box-shadow: var(--glow-red);
+}
+
+.risk-point.found .point-icon {
+    border-color: var(--cyber-neon-yellow);
+    box-shadow: 0 0 25px rgba(255, 215, 0, 0.6);
+    animation: foundPulse 1s ease;
+}
+
+@keyframes foundPulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.15); }
+}
+
+/* Safe Point Styling */
+.safe-point .point-icon {
+    border-color: var(--safe-green);
+    box-shadow: var(--glow-green);
+}
+
+.safe-point.clicked .point-icon {
+    animation: shake 0.5s ease;
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-8px); }
+    75% { transform: translateX(8px); }
+}
+
+/* Neutral Point */
+.neutral-point .point-icon {
+    border-color: var(--text-muted);
+    box-shadow: 0 0 15px rgba(107, 122, 153, 0.3);
+    opacity: 0.6;
+}
+
+/* Point Feedback */
+.point-feedback {
+    position: absolute;
+    top: -40px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 2rem;
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.3s ease;
+}
+
+.journey-point.found .point-feedback,
+.journey-point.clicked .point-feedback {
+    opacity: 1;
+    animation: feedbackBounce 0.6s ease;
+}
+
+@keyframes feedbackBounce {
+    0% { transform: translateX(-50%) translateY(10px) scale(0); }
+    60% { transform: translateX(-50%) translateY(-5px) scale(1.2); }
+    100% { transform: translateX(-50%) translateY(0) scale(1); }
+}
+
+/* Info Panel */
+.info-panel {
+    background: var(--cyber-surface);
+    border: 2px solid var(--cyber-neon-blue);
+    border-radius: 16px;
+    padding: 24px;
+    margin-bottom: 30px;
+    min-height: 140px;
+    box-shadow: var(--glow-blue);
+    opacity: 0;
+    transform: translateY(-10px);
+    transition: all 0.4s ease;
+}
+
+.info-panel.active {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.info-content {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.info-icon {
+    font-size: 3rem;
+    flex-shrink: 0;
+}
+
+.info-title {
+    font-size: 1.4rem;
+    color: var(--cyber-neon-yellow);
+    margin-bottom: 8px;
+    text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+}
+
+.info-text {
+    font-size: 1.1rem;
+    color: var(--text-primary);
+    line-height: 1.6;
+}
+
+/* Controls */
+.controls {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 30px;
+}
+
+.btn-reset {
+    font-family: 'Comic Sans MS', 'Comic Sans', cursive;
+    font-size: 1.3rem;
+    font-weight: bold;
+    padding: 16px 40px;
+    background: var(--cyber-surface);
+    color: var(--cyber-neon-blue);
+    border: 2px solid var(--cyber-neon-blue);
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    letter-spacing: 0.05em;
+    box-shadow: var(--glow-blue);
+}
+
+.btn-reset:hover {
+    background: var(--cyber-neon-blue);
+    color: var(--cyber-bg);
+    transform: translateY(-2px);
+    box-shadow: 0 0 30px rgba(0, 212, 255, 0.8);
+}
+
+.btn-reset:active {
+    transform: translateY(0);
+}
+
+/* Victory Modal */
+.victory-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(10, 14, 39, 0.95);
+    backdrop-filter: blur(10px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+
+.victory-modal.active {
+    opacity: 1;
+    pointer-events: all;
+}
+
+.modal-content {
+    background: var(--cyber-surface);
+    border: 3px solid var(--cyber-neon-green);
+    border-radius: 24px;
+    padding: 50px 70px;
+    text-align: center;
+    box-shadow:
+        var(--shadow-deep),
+        var(--glow-green);
+    position: relative;
+    animation: modalSlideIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+    max-width: 600px;
+}
+
+@keyframes modalSlideIn {
+    0% { transform: scale(0.7) translateY(-50px); opacity: 0; }
+    100% { transform: scale(1) translateY(0); opacity: 1; }
+}
+
+.modal-icon {
+    font-size: 5rem;
+    margin-bottom: 20px;
+    animation: iconSpin 2s ease-in-out infinite;
+}
+
+@keyframes iconSpin {
+    0%, 100% { transform: rotate(0deg); }
+    50% { transform: rotate(10deg); }
+}
+
+.modal-title {
+    font-size: 2.5rem;
+    color: var(--cyber-neon-yellow);
+    margin-bottom: 20px;
+    text-shadow: 0 0 20px rgba(255, 215, 0, 0.6);
+}
+
+.modal-message {
+    font-size: 1.4rem;
+    color: var(--text-primary);
+    margin-bottom: 30px;
+    line-height: 1.6;
+}
+
+.modal-lesson {
+    background: rgba(0, 255, 65, 0.1);
+    border: 2px solid var(--cyber-neon-green);
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 30px;
+    font-size: 1.2rem;
+    color: var(--text-primary);
+    line-height: 1.6;
+    text-align: left;
+}
+
+.modal-lesson strong {
+    color: var(--cyber-neon-green);
+    text-shadow: var(--glow-green);
+}
+
+.btn-play-again {
+    font-family: 'Comic Sans MS', 'Comic Sans', cursive;
+    font-size: 1.4rem;
+    font-weight: bold;
+    padding: 18px 50px;
+    background: var(--cyber-neon-green);
+    color: var(--cyber-bg);
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: var(--glow-green);
+}
+
+.btn-play-again:hover {
+    background: var(--cyber-neon-blue);
+    box-shadow: var(--glow-blue);
+    transform: scale(1.05);
+}
+
+/* Responsive Design */
+@media (max-width: 1400px) {
+    .journey-container {
+        flex-wrap: wrap;
+        gap: 40px 20px;
+    }
+
+    .journey-point {
+        flex: 0 0 calc(20% - 20px);
+    }
+}
+
+@media (max-width: 1024px) {
+    .journey-point {
+        flex: 0 0 calc(33.333% - 20px);
+    }
+
+    .point-icon {
+        width: 70px;
+        height: 70px;
+        font-size: 2rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .game-container {
+        padding: 24px;
+    }
+
+    .journey-container {
+        padding: 40px 10px;
+    }
+
+    .journey-point {
+        flex: 0 0 calc(50% - 20px);
+    }
+
+    .point-icon {
+        width: 65px;
+        height: 65px;
+        font-size: 1.8rem;
+    }
+
+    .point-label {
+        font-size: 0.85rem;
+    }
+
+    .info-content {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .modal-content {
+        padding: 40px 30px;
+        margin: 20px;
+    }
+
+    .modal-title {
+        font-size: 2rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .game-header h1 {
+        font-size: 1.5rem;
+    }
+
+    .journey-point {
+        flex: 0 0 100%;
+    }
+
+    .point-icon {
+        width: 80px;
+        height: 80px;
+        font-size: 2.5rem;
+    }
+
+    .btn-reset {
+        width: 100%;
+    }
+}

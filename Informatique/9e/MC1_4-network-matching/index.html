@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🌐 Match les Connexions !</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="game-container">
+        <header class="game-header">
+            <h1>🌐 Associe les Connexions !</h1>
+            <p class="instructions">Crée 3 lignes en associant le symbole, la description et l'exemple 🎯</p>
+        </header>
+
+        <div class="matching-area">
+            <!-- Column 1: Symbols -->
+            <div class="column column-symbols">
+                <h2 class="column-title">Symbole</h2>
+                <div class="card" data-id="bluetooth" data-col="1">
+                    <div class="card-content">
+                        <span class="symbol">🔵</span>
+                        <p class="label">Bluetooth</p>
+                    </div>
+                </div>
+                <div class="card" data-id="wifi" data-col="1">
+                    <div class="card-content">
+                        <span class="symbol">📶</span>
+                        <p class="label">Wi-Fi</p>
+                    </div>
+                </div>
+                <div class="card" data-id="mobile" data-col="1">
+                    <div class="card-content">
+                        <span class="symbol">📡</span>
+                        <p class="label">Antenne</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Column 2: Descriptions -->
+            <div class="column column-descriptions">
+                <h2 class="column-title">Description</h2>
+                <div class="card" data-id="bluetooth" data-col="2">
+                    <div class="card-content">
+                        <p class="text">Connecte des appareils proches (écouteurs, manette)</p>
+                    </div>
+                </div>
+                <div class="card" data-id="wifi" data-col="2">
+                    <div class="card-content">
+                        <p class="text">Connexion via la box de la maison</p>
+                    </div>
+                </div>
+                <div class="card" data-id="mobile" data-col="2">
+                    <div class="card-content">
+                        <p class="text">Internet mobile avec les antennes téléphoniques</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Column 3: Examples -->
+            <div class="column column-examples">
+                <h2 class="column-title">Exemple</h2>
+                <div class="card" data-id="bluetooth" data-col="3">
+                    <div class="card-content">
+                        <p class="text">Casque sans fil</p>
+                        <span class="example-emoji">🎧</span>
+                    </div>
+                </div>
+                <div class="card" data-id="wifi" data-col="3">
+                    <div class="card-content">
+                        <p class="text">Netflix à la maison</p>
+                        <span class="example-emoji">📺</span>
+                    </div>
+                </div>
+                <div class="card" data-id="mobile" data-col="3">
+                    <div class="card-content">
+                        <p class="text">TikTok dans le métro</p>
+                        <span class="example-emoji">🚇</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <svg class="connection-svg" width="100%" height="100%">
+            <!-- Connection lines will be drawn here -->
+        </svg>
+
+        <div class="controls">
+            <button class="btn-reset" id="resetBtn">🔄 Recommencer</button>
+            <button class="btn-check" id="checkBtn">✨ Vérifier</button>
+        </div>
+
+        <div class="feedback" id="feedback"></div>
+    </div>
+
+    <!-- Victory Modal -->
+    <div class="victory-modal" id="victoryModal">
+        <div class="modal-content">
+            <div class="confetti-container" id="confettiContainer"></div>
+            <h2 class="victory-title">🎉 Bravo !</h2>
+            <p class="victory-message">Tu as tout associé correctement ! 🌟</p>
+            <button class="btn-play-again" id="playAgainBtn">🔄 Rejouer</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

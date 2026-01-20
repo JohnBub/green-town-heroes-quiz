@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Sécurité Internet - Informatique 9e</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="quiz-container">
+        <!-- Header -->
+        <div class="quiz-header">
+            <h1 class="quiz-title">🔒 Sécurité Internet</h1>
+            <p class="quiz-subtitle">Quiz Vrai/Faux - Risques des échanges d'information</p>
+        </div>
+
+        <!-- Progress Section -->
+        <div class="progress-section">
+            <span class="question-counter" id="questionCounter">Question 1 / 5</span>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+        </div>
+
+        <!-- Question Container -->
+        <div class="question-container" id="questionContainer">
+            <p class="question-text" id="questionText"></p>
+
+            <div class="button-group">
+                <button class="answer-btn" id="btnVrai" data-answer="true">VRAI</button>
+                <button class="answer-btn" id="btnFaux" data-answer="false">FAUX</button>
+            </div>
+
+            <div class="feedback-container" id="feedbackContainer">
+                <span class="feedback-emoji" id="feedbackEmoji"></span>
+                <p class="feedback-text" id="feedbackText"></p>
+            </div>
+
+            <button class="next-btn hidden" id="nextBtn">Question Suivante →</button>
+        </div>
+
+        <!-- Results Screen -->
+        <div class="results-container hidden" id="resultsContainer">
+            <div class="results-emoji" id="resultsEmoji">🎉</div>
+            <h2 class="results-title">Quiz Terminé !</h2>
+            <div class="results-score" id="resultsScore">0 / 5</div>
+            <p class="results-message" id="resultsMessage"></p>
+            <button class="restart-btn" id="restartBtn">↺ Recommencer</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

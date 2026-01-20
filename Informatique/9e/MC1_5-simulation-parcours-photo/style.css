@@ -1,0 +1,381 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Comic Sans MS', 'Comic Sans', cursive;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    padding: 20px;
+    letter-spacing: 0.05em;
+}
+
+.container {
+    background: white;
+    border-radius: 20px;
+    padding: 30px;
+    max-width: 1400px;
+    margin: 0 auto;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+}
+
+h1 {
+    text-align: center;
+    color: #667eea;
+    font-size: 2em;
+    margin-bottom: 10px;
+    line-height: 1.4;
+}
+
+.instructions {
+    text-align: center;
+    font-size: 1.2em;
+    color: #666;
+    margin-bottom: 20px;
+    line-height: 1.8;
+}
+
+.story {
+    background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+    border: 3px solid #fbbf24;
+    border-radius: 15px;
+    padding: 20px;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.story p {
+    font-size: 1.2em;
+    color: #333;
+    line-height: 1.8;
+}
+
+/* Info progression */
+.progress-info {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 30px;
+    gap: 20px;
+}
+
+.step-counter,
+.distance-counter {
+    background: #e0e7ff;
+    padding: 15px 25px;
+    border-radius: 15px;
+    font-size: 1.1em;
+    font-weight: bold;
+    color: #667eea;
+    text-align: center;
+    flex: 1;
+}
+
+.step-counter span,
+.distance-counter span {
+    color: #f59e0b;
+    font-size: 1.3em;
+}
+
+/* Carte du réseau */
+.network-map {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    overflow-x: auto;
+    padding: 30px 10px;
+    margin-bottom: 30px;
+    background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+    border-radius: 20px;
+    min-height: 250px;
+}
+
+/* Personnages */
+.character {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    min-width: 100px;
+    position: relative;
+}
+
+.character-icon {
+    font-size: 4em;
+}
+
+.character-name {
+    font-size: 1.2em;
+    font-weight: bold;
+    color: #333;
+}
+
+/* Indicateur de photo */
+.photo-indicator {
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    font-size: 2em;
+    animation: pulse 1s infinite;
+    display: none;
+}
+
+.photo-indicator.active {
+    display: block;
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.2); }
+}
+
+/* Étapes du réseau */
+.network-step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    min-width: 120px;
+    padding: 15px;
+    background: white;
+    border: 3px solid #cbd5e1;
+    border-radius: 15px;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.network-step.clickable {
+    cursor: pointer;
+}
+
+.network-step.clickable:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.3);
+    border-color: #667eea;
+}
+
+.network-step.active {
+    background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+    border-color: #fbbf24;
+    animation: highlight 0.6s ease;
+}
+
+.network-step.completed {
+    background: linear-gradient(135deg, #bbf7d0 0%, #86efac 100%);
+    border-color: #22c55e;
+    cursor: not-allowed;
+}
+
+.network-step.wrong {
+    background: linear-gradient(135deg, #fecaca 0%, #fca5a5 100%);
+    border-color: #ef4444;
+    animation: shake 0.5s;
+}
+
+@keyframes highlight {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-10px); }
+    75% { transform: translateX(10px); }
+}
+
+.step-icon {
+    font-size: 3em;
+}
+
+.step-label {
+    font-size: 0.9em;
+    color: #333;
+    font-weight: bold;
+    text-align: center;
+    line-height: 1.4;
+}
+
+.step-number {
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    background: #667eea;
+    color: white;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 0.9em;
+}
+
+/* Connecteurs */
+.connector {
+    width: 40px;
+    height: 4px;
+    background: linear-gradient(90deg, #cbd5e1 0%, #94a3b8 100%);
+    position: relative;
+}
+
+.connector.long {
+    width: 80px;
+}
+
+.connector::after {
+    content: '→';
+    position: absolute;
+    right: -15px;
+    top: -10px;
+    font-size: 1.5em;
+    color: #94a3b8;
+}
+
+.cable-icon {
+    position: absolute;
+    top: -20px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 1.5em;
+}
+
+/* Feedback */
+.feedback {
+    text-align: center;
+    font-size: 1.3em;
+    font-weight: bold;
+    min-height: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    line-height: 1.8;
+    margin-bottom: 20px;
+}
+
+.feedback.success {
+    color: #22c55e;
+}
+
+.feedback.error {
+    color: #ef4444;
+}
+
+/* Résultat final */
+.final-result {
+    display: none;
+    background: linear-gradient(135deg, #bbf7d0 0%, #86efac 100%);
+    border: 3px solid #22c55e;
+    border-radius: 20px;
+    padding: 30px;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.final-result.show {
+    display: block;
+    animation: celebrate 0.8s ease;
+}
+
+@keyframes celebrate {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+}
+
+.final-result h2 {
+    color: #22c55e;
+    font-size: 2em;
+    margin-bottom: 20px;
+}
+
+.result-text {
+    font-size: 1.4em;
+    color: #333;
+    margin-bottom: 15px;
+    line-height: 1.8;
+}
+
+.result-text strong {
+    color: #667eea;
+    font-size: 1.2em;
+}
+
+.learn-text {
+    font-size: 1.2em;
+    color: #059669;
+    margin-top: 20px;
+    padding: 15px;
+    background: white;
+    border-radius: 15px;
+    line-height: 1.8;
+}
+
+/* Bouton reset */
+.reset-btn {
+    display: block;
+    margin: 0 auto;
+    padding: 15px 40px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    border-radius: 25px;
+    font-size: 1.2em;
+    font-family: 'Comic Sans MS', 'Comic Sans', cursive;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: bold;
+}
+
+.reset-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+}
+
+.reset-btn:active {
+    transform: scale(0.95);
+}
+
+/* Responsive */
+@media (max-width: 1200px) {
+    .network-map {
+        justify-content: flex-start;
+    }
+}
+
+@media (max-width: 768px) {
+    h1 {
+        font-size: 1.6em;
+    }
+
+    .instructions,
+    .story p {
+        font-size: 1em;
+    }
+
+    .progress-info {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .character-icon {
+        font-size: 3em;
+    }
+
+    .step-icon {
+        font-size: 2.5em;
+    }
+
+    .network-step {
+        min-width: 100px;
+        padding: 10px;
+    }
+
+    .connector {
+        width: 30px;
+    }
+
+    .connector.long {
+        width: 60px;
+    }
+}

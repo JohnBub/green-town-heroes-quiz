@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Casse le Code - Informatique 9e</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Casse le Code</h1>
+            <p class="subtitle">Trouve le decalage secret</p>
+        </header>
+
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressFill"></div>
+            <span class="progress-text" id="progressText">1/8</span>
+        </div>
+
+        <div class="score-display">
+            <span class="score-label">Score:</span>
+            <span class="score-value" id="scoreValue">0</span>
+        </div>
+
+        <main class="game-area" id="gameArea">
+            <div class="alphabet-strip">
+                <div class="alphabet-label">Position dans l'alphabet:</div>
+                <div class="alphabet-letters" id="alphabetStrip"></div>
+            </div>
+
+            <div class="code-display">
+                <div class="message-box encoded">
+                    <div class="message-label">Message encode</div>
+                    <div class="message-text" id="encodedMessage"></div>
+                </div>
+
+                <div class="arrow-container">
+                    <div class="arrow">
+                        <span class="question-mark">?</span>
+                    </div>
+                </div>
+
+                <div class="message-box original">
+                    <div class="message-label">Message original</div>
+                    <div class="message-text" id="originalMessage"></div>
+                </div>
+            </div>
+
+            <div class="comparison-area" id="comparisonArea"></div>
+
+            <div class="input-area">
+                <label for="shiftInput">Quel est le decalage?</label>
+                <div class="input-group">
+                    <input type="range" id="shiftSlider" min="0" max="25" value="0">
+                    <input type="number" id="shiftInput" min="0" max="25" value="0">
+                </div>
+                <button class="btn-verify" id="verifyBtn">Verifier</button>
+            </div>
+
+            <div class="hint-area">
+                <button class="btn-hint" id="hintBtn">Indice</button>
+                <div class="hint-text" id="hintText"></div>
+            </div>
+
+            <div class="feedback" id="feedback"></div>
+        </main>
+
+        <div class="results-screen" id="resultsScreen">
+            <h2>Mission Accomplie!</h2>
+            <div class="final-score">
+                <span class="label">Score Final:</span>
+                <span class="value" id="finalScore">0</span>
+                <span class="max">/ 80</span>
+            </div>
+            <div class="results-message" id="resultsMessage"></div>
+            <button class="btn-restart" id="restartBtn">Nouvelle Mission</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

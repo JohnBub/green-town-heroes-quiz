@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz de Révision Chiffrement - Informatique 9e</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Quiz de Révision Chiffrement</h1>
+            <p class="subtitle">Module 2 - Informatique 9e</p>
+        </header>
+
+        <!-- Start Screen -->
+        <div id="start-screen" class="screen active">
+            <div class="intro-card">
+                <h2>Bienvenue au Quiz de Révision!</h2>
+                <p>Testez vos connaissances sur le chiffrement:</p>
+                <ul class="topics-list">
+                    <li>Histoire du chiffrement</li>
+                    <li>Code César</li>
+                    <li>Carré de Polybe</li>
+                    <li>Chiffrement moderne</li>
+                </ul>
+                <div class="quiz-info">
+                    <span>15 questions</span>
+                    <span>4 choix par question</span>
+                    <span>Feedback immédiat</span>
+                </div>
+                <button id="start-btn" class="btn-primary">Commencer le Quiz</button>
+            </div>
+        </div>
+
+        <!-- Quiz Screen -->
+        <div id="quiz-screen" class="screen">
+            <div class="progress-container">
+                <div class="progress-bar">
+                    <div id="progress-fill" class="progress-fill"></div>
+                </div>
+                <span id="progress-text" class="progress-text">1/15</span>
+            </div>
+
+            <div class="score-display">
+                <span>Score: <span id="current-score">0</span>/15</span>
+            </div>
+
+            <div id="question-card" class="question-card">
+                <span id="category-badge" class="category-badge">Catégorie</span>
+                <h2 id="question-text" class="question-text">Question</h2>
+
+                <div id="options-container" class="options-container">
+                    <!-- Options will be inserted here -->
+                </div>
+
+                <div id="feedback-box" class="feedback-box hidden">
+                    <div id="feedback-icon" class="feedback-icon"></div>
+                    <p id="feedback-text" class="feedback-text"></p>
+                    <p id="explanation-text" class="explanation-text"></p>
+                </div>
+
+                <button id="next-btn" class="btn-primary hidden">Question Suivante</button>
+            </div>
+        </div>
+
+        <!-- Results Screen -->
+        <div id="results-screen" class="screen">
+            <div class="results-card">
+                <h2>Quiz Terminé!</h2>
+                <div id="final-score" class="final-score">
+                    <span id="score-number">0</span>/15
+                </div>
+                <div id="grade-display" class="grade-display">
+                    <span id="grade-letter">A</span>
+                </div>
+                <p id="grade-message" class="grade-message"></p>
+
+                <div class="results-stats">
+                    <div class="stat">
+                        <span class="stat-value" id="correct-count">0</span>
+                        <span class="stat-label">Correctes</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-value" id="incorrect-count">0</span>
+                        <span class="stat-label">Incorrectes</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-value" id="percentage">0%</span>
+                        <span class="stat-label">Pourcentage</span>
+                    </div>
+                </div>
+
+                <div class="results-buttons">
+                    <button id="review-btn" class="btn-secondary">Voir les Réponses</button>
+                    <button id="restart-btn" class="btn-primary">Recommencer</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Review Screen -->
+        <div id="review-screen" class="screen">
+            <div class="review-header">
+                <h2>Révision des Réponses</h2>
+                <button id="back-to-results" class="btn-secondary">Retour aux Résultats</button>
+            </div>
+            <div id="review-container" class="review-container">
+                <!-- Review items will be inserted here -->
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

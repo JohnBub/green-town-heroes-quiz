@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arnaque ou Pas ? - Informatique 9e</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Arnaque ou Pas ?</h1>
+            <p class="subtitle">Apprenez a identifier les messages frauduleux</p>
+        </header>
+
+        <!-- Start Screen -->
+        <div id="start-screen" class="screen active">
+            <div class="intro-card">
+                <div class="warning-icon">&#9888;</div>
+                <h2>Bienvenue !</h2>
+                <p>Chaque jour, nous recevons des messages par email, SMS ou reseaux sociaux. Certains sont legitimes, d'autres sont des <strong>arnaques</strong> qui cherchent a voler vos informations ou votre argent.</p>
+                <p>Dans ce quiz, vous allez analyser <strong>10 messages</strong> et decider s'ils sont legitimes ou frauduleux.</p>
+                <button id="start-btn" class="btn btn-primary">Commencer</button>
+            </div>
+        </div>
+
+        <!-- Game Screen -->
+        <div id="game-screen" class="screen">
+            <div class="progress-bar">
+                <div class="progress-fill" id="progress-fill"></div>
+            </div>
+            <div class="stats">
+                <span>Message <span id="current-question">1</span>/10</span>
+                <span>Score: <span id="score">0</span></span>
+            </div>
+
+            <div class="message-container">
+                <div class="message-header">
+                    <span class="message-type" id="message-type">EMAIL</span>
+                    <span class="message-sender" id="message-sender">expediteur@email.com</span>
+                </div>
+                <div class="message-bubble" id="message-content">
+                    <!-- Message content will be inserted here -->
+                </div>
+            </div>
+
+            <div class="answer-buttons">
+                <button id="scam-btn" class="btn btn-scam">
+                    <span class="btn-icon">&#10060;</span>
+                    Arnaque !
+                </button>
+                <button id="legit-btn" class="btn btn-legit">
+                    <span class="btn-icon">&#10004;</span>
+                    Legitime
+                </button>
+            </div>
+
+            <!-- Feedback Modal -->
+            <div id="feedback-modal" class="modal hidden">
+                <div class="modal-content">
+                    <div class="feedback-icon" id="feedback-icon"></div>
+                    <h3 id="feedback-title"></h3>
+                    <p id="feedback-text"></p>
+                    <div class="red-flags" id="red-flags">
+                        <h4>Indices a reperer :</h4>
+                        <ul id="flags-list"></ul>
+                    </div>
+                    <button id="next-btn" class="btn btn-primary">Suivant</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Results Screen -->
+        <div id="results-screen" class="screen">
+            <div class="results-card">
+                <h2>Resultats</h2>
+                <div class="final-score">
+                    <span id="final-score-value">0</span>/10
+                </div>
+                <p id="score-message"></p>
+
+                <div class="tips-section">
+                    <h3>Conseils pour reperer les arnaques :</h3>
+                    <ul class="tips-list">
+                        <li><span class="tip-icon">&#128269;</span> Verifiez toujours l'expediteur et les liens</li>
+                        <li><span class="tip-icon">&#9200;</span> Mefiez-vous de l'urgence excessive</li>
+                        <li><span class="tip-icon">&#127873;</span> "Trop beau pour etre vrai" = probablement faux</li>
+                        <li><span class="tip-icon">&#128274;</span> Ne partagez jamais vos mots de passe</li>
+                        <li><span class="tip-icon">&#128176;</span> Ne payez jamais sans verification</li>
+                        <li><span class="tip-icon">&#128172;</span> En cas de doute, contactez l'expediteur par un autre moyen</li>
+                    </ul>
+                </div>
+
+                <button id="restart-btn" class="btn btn-primary">Rejouer</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

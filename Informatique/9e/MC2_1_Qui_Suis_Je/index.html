@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Qui Suis-Je ? - Informatique 9e</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Qui Suis-Je ?</h1>
+            <p class="subtitle">L'Histoire du Chiffrement</p>
+        </header>
+
+        <!-- Start Screen -->
+        <div id="start-screen" class="screen active">
+            <div class="intro-card">
+                <div class="mystery-icon">?</div>
+                <h2>Bienvenue dans le Quiz Mystere</h2>
+                <p>Devinez les personnages et inventions celebres de l'histoire du chiffrement.</p>
+                <div class="rules">
+                    <h3>Regles du jeu</h3>
+                    <ul>
+                        <li>4 indices progressifs par enigme</li>
+                        <li>Plus vous devinez tot, plus vous gagnez de points</li>
+                        <li>Indice 1 = 25 pts | Indice 2 = 20 pts | Indice 3 = 15 pts | Indice 4 = 10 pts</li>
+                    </ul>
+                </div>
+                <button id="start-btn" class="btn-primary">Commencer</button>
+            </div>
+        </div>
+
+        <!-- Game Screen -->
+        <div id="game-screen" class="screen">
+            <div class="game-header">
+                <div class="progress-info">
+                    <span id="question-counter">Enigme 1/8</span>
+                    <div class="score-display">
+                        <span class="score-label">Score:</span>
+                        <span id="current-score">0</span>
+                    </div>
+                </div>
+                <div class="points-available">
+                    <span>Points disponibles:</span>
+                    <span id="available-points" class="points-value">25</span>
+                </div>
+            </div>
+
+            <div class="hints-container">
+                <div class="hint-card" id="hint-1">
+                    <div class="hint-number">1</div>
+                    <div class="hint-text locked">
+                        <span class="lock-icon">🔒</span>
+                    </div>
+                </div>
+                <div class="hint-card" id="hint-2">
+                    <div class="hint-number">2</div>
+                    <div class="hint-text locked">
+                        <span class="lock-icon">🔒</span>
+                    </div>
+                </div>
+                <div class="hint-card" id="hint-3">
+                    <div class="hint-number">3</div>
+                    <div class="hint-text locked">
+                        <span class="lock-icon">🔒</span>
+                    </div>
+                </div>
+                <div class="hint-card" id="hint-4">
+                    <div class="hint-number">4</div>
+                    <div class="hint-text locked">
+                        <span class="lock-icon">🔒</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="guess-section">
+                <div class="input-group">
+                    <input type="text" id="guess-input" placeholder="Votre reponse..." autocomplete="off">
+                    <button id="submit-guess" class="btn-primary">Valider</button>
+                </div>
+                <button id="next-hint" class="btn-secondary">Indice suivant</button>
+            </div>
+
+            <div id="feedback" class="feedback hidden"></div>
+
+            <div id="answer-reveal" class="answer-reveal hidden">
+                <div class="reveal-content">
+                    <h3>La reponse etait:</h3>
+                    <div class="revealed-answer"></div>
+                    <p class="points-earned"></p>
+                    <button id="next-question" class="btn-primary">Enigme suivante</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Results Screen -->
+        <div id="results-screen" class="screen">
+            <div class="results-card">
+                <h2>Resultats Finaux</h2>
+                <div class="final-score">
+                    <span class="score-number" id="final-score">0</span>
+                    <span class="score-max">/ 200 points</span>
+                </div>
+                <div class="performance-badge" id="performance-badge"></div>
+
+                <div class="leaderboard">
+                    <h3>Recapitulatif</h3>
+                    <div id="summary-list" class="summary-list"></div>
+                </div>
+
+                <button id="restart-btn" class="btn-primary">Rejouer</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

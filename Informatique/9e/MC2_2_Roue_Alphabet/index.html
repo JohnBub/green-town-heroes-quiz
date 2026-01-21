@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>La Roue de César - Informatique 9e</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>La Roue de César</h1>
+            <p class="subtitle">Informatique 9e - Chiffrement par décalage</p>
+        </header>
+
+        <main>
+            <div class="wheel-section">
+                <div class="wheel-container">
+                    <svg id="cipher-wheel" viewBox="0 0 400 400">
+                        <!-- Outer ring (fixed) -->
+                        <circle cx="200" cy="200" r="180" class="outer-ring"/>
+                        <circle cx="200" cy="200" r="140" class="inner-ring-bg"/>
+
+                        <!-- Inner ring (rotates) -->
+                        <g id="inner-ring">
+                            <circle cx="200" cy="200" r="140" class="inner-ring"/>
+                        </g>
+
+                        <!-- Letters will be added by JavaScript -->
+                        <g id="outer-letters"></g>
+                        <g id="inner-letters"></g>
+
+                        <!-- Center circle -->
+                        <circle cx="200" cy="200" r="80" class="center-circle"/>
+                        <text x="200" y="190" class="shift-display" id="shift-display">+0</text>
+                        <text x="200" y="220" class="shift-label">décalage</text>
+                    </svg>
+                </div>
+
+                <div class="slider-container">
+                    <label for="shift-slider">Décalage: <span id="shift-value">0</span></label>
+                    <input type="range" id="shift-slider" min="0" max="25" value="0">
+                    <div class="slider-labels">
+                        <span>0</span>
+                        <span>13</span>
+                        <span>25</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="controls-section">
+                <div class="formula-display">
+                    <span id="formula">A → A (décalage +0)</span>
+                </div>
+
+                <div class="mode-toggle">
+                    <button id="mode-btn" class="mode-btn encode">Encoder</button>
+                </div>
+
+                <div class="input-group">
+                    <label for="input-text">Message à <span id="action-label">encoder</span>:</label>
+                    <input type="text" id="input-text" placeholder="Entrez votre message..." autocomplete="off">
+                </div>
+
+                <div class="output-group">
+                    <label>Résultat:</label>
+                    <div class="output-text" id="output-text"></div>
+                </div>
+
+                <div class="current-letter" id="current-letter-display">
+                    <span class="original"></span>
+                    <span class="arrow">→</span>
+                    <span class="shifted"></span>
+                </div>
+            </div>
+
+            <div class="info-section">
+                <div class="info-card">
+                    <h3>Exemples avec "BONJOUR"</h3>
+                    <div id="examples"></div>
+                </div>
+
+                <div class="info-card">
+                    <h3>Le saviez-vous?</h3>
+                    <ul>
+                        <li><strong>ROT13</strong>: Avec un décalage de 13, encoder = décoder (car 13 + 13 = 26)</li>
+                        <li><strong>Cycle complet</strong>: Un décalage de 26 = un décalage de 0 (retour au début)</li>
+                        <li><strong>Jules César</strong> utilisait souvent un décalage de 3</li>
+                    </ul>
+                </div>
+            </div>
+        </main>
+
+        <footer>
+            <p>MC2.2 - Cryptographie et sécurité informatique</p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

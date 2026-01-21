@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Personnages et Époques - Informatique 9e</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Personnages et Époques du Chiffrement</h1>
+            <p class="subtitle">Associe chaque personnage à son époque et sa méthode de chiffrement</p>
+        </header>
+
+        <div class="game-info">
+            <div class="score-container">
+                <span class="score-label">Score:</span>
+                <span id="score">0</span> / <span id="total">8</span>
+            </div>
+            <div class="controls">
+                <button id="shuffleBtn" class="btn">Mélanger</button>
+                <button id="resetBtn" class="btn">Recommencer</button>
+            </div>
+        </div>
+
+        <div class="instructions">
+            <p>Clique sur un élément de chaque colonne pour créer une association</p>
+        </div>
+
+        <svg id="connections" class="connections-svg"></svg>
+
+        <div class="game-area">
+            <div class="column" id="personColumn">
+                <h2>Personnage</h2>
+                <div class="items-container" id="personItems"></div>
+            </div>
+            <div class="column" id="eraColumn">
+                <h2>Époque</h2>
+                <div class="items-container" id="eraItems"></div>
+            </div>
+            <div class="column" id="methodColumn">
+                <h2>Méthode</h2>
+                <div class="items-container" id="methodItems"></div>
+            </div>
+        </div>
+
+        <div id="feedback" class="feedback hidden"></div>
+
+        <div id="reviewModal" class="modal hidden">
+            <div class="modal-content">
+                <h2>Résultats</h2>
+                <div id="reviewContent"></div>
+                <button id="closeModal" class="btn btn-primary">Fermer</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

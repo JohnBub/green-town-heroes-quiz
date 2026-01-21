@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Que Ferais-Tu ? - Informatique 9e</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Que Ferais-Tu ?</h1>
+            <p class="subtitle">Scénarios de sécurité informatique</p>
+        </header>
+
+        <main id="game-area">
+            <!-- Start Screen -->
+            <div id="start-screen" class="screen active">
+                <div class="intro-card">
+                    <div class="intro-icon">🛡️</div>
+                    <h2>Bienvenue !</h2>
+                    <p>Dans ce quiz, tu vas être confronté(e) à des situations de la vie quotidienne liées à la sécurité informatique.</p>
+                    <p>Pour chaque scénario, choisis la meilleure réponse. Attention, certaines réponses sont meilleures que d'autres !</p>
+                    <div class="scoring-info">
+                        <h3>Système de points</h3>
+                        <div class="score-legend">
+                            <span class="legend-item best">Meilleur choix = 10 pts</span>
+                            <span class="legend-item ok">Acceptable = 5 pts</span>
+                            <span class="legend-item wrong">Mauvais choix = 0 pt</span>
+                        </div>
+                    </div>
+                    <button id="start-btn" class="btn-primary">Commencer</button>
+                </div>
+            </div>
+
+            <!-- Game Screen -->
+            <div id="game-screen" class="screen">
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progress-fill"></div>
+                </div>
+                <div class="game-header">
+                    <span class="scenario-counter">Scénario <span id="current-scenario">1</span>/<span id="total-scenarios">8</span></span>
+                    <span class="score-display">Score: <span id="current-score">0</span> pts</span>
+                </div>
+
+                <div class="scenario-card" id="scenario-card">
+                    <div class="scenario-icon" id="scenario-icon">📧</div>
+                    <div class="scenario-context" id="scenario-context">Contexte du scénario</div>
+                    <div class="scenario-question" id="scenario-question">Question du scénario</div>
+                </div>
+
+                <div class="choices-container" id="choices-container">
+                    <!-- Choices will be inserted here -->
+                </div>
+
+                <div class="feedback-card" id="feedback-card">
+                    <div class="feedback-header" id="feedback-header">
+                        <span class="feedback-icon" id="feedback-icon">✓</span>
+                        <span class="feedback-title" id="feedback-title">Titre</span>
+                    </div>
+                    <div class="feedback-points" id="feedback-points">+10 pts</div>
+                    <div class="feedback-explanation" id="feedback-explanation">
+                        Explication détaillée...
+                    </div>
+                    <button id="next-btn" class="btn-primary">Suivant</button>
+                </div>
+            </div>
+
+            <!-- Results Screen -->
+            <div id="results-screen" class="screen">
+                <div class="results-card">
+                    <div class="results-icon" id="results-icon">🏆</div>
+                    <h2>Quiz terminé !</h2>
+                    <div class="final-score">
+                        <span class="score-value" id="final-score">0</span>
+                        <span class="score-max">/ <span id="max-score">80</span> pts</span>
+                    </div>
+                    <div class="security-level" id="security-level">
+                        <span class="level-label">Niveau de sécurité:</span>
+                        <span class="level-value" id="level-value">Expert</span>
+                    </div>
+                    <div class="results-message" id="results-message">
+                        Message personnalisé...
+                    </div>
+                    <div class="stats-grid">
+                        <div class="stat-item">
+                            <span class="stat-value" id="best-count">0</span>
+                            <span class="stat-label">Meilleurs choix</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-value" id="ok-count">0</span>
+                            <span class="stat-label">Acceptables</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-value" id="wrong-count">0</span>
+                            <span class="stat-label">À éviter</span>
+                        </div>
+                    </div>
+                    <button id="restart-btn" class="btn-primary">Recommencer</button>
+                </div>
+            </div>
+        </main>
+
+        <footer>
+            <p>Informatique 9e - Sécurité informatique</p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

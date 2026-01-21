@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trouve les Coordonnees - Informatique 9e</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="game-container">
+        <!-- Start Screen -->
+        <div id="start-screen" class="screen active">
+            <h1>Trouve les Coordonnees</h1>
+            <p class="subtitle">Quiz de vitesse - Carre de Polybe</p>
+
+            <div class="polybius-preview">
+                <table class="polybius-grid small">
+                    <tr>
+                        <th></th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th>
+                    </tr>
+                    <tr>
+                        <th>1</th><td>A</td><td>B</td><td>C</td><td>D</td><td>E</td>
+                    </tr>
+                    <tr>
+                        <th>2</th><td>F</td><td>G</td><td>H</td><td>I/J</td><td>K</td>
+                    </tr>
+                    <tr>
+                        <th>3</th><td>L</td><td>M</td><td>N</td><td>O</td><td>P</td>
+                    </tr>
+                    <tr>
+                        <th>4</th><td>Q</td><td>R</td><td>S</td><td>T</td><td>U</td>
+                    </tr>
+                    <tr>
+                        <th>5</th><td>V</td><td>W</td><td>X</td><td>Y</td><td>Z</td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="mode-selection">
+                <h3>Choisis ton mode</h3>
+                <div class="mode-buttons">
+                    <button class="mode-btn" data-mode="letter-to-coord">
+                        <span class="mode-icon">A → 11</span>
+                        <span class="mode-name">Lettre → Coordonnees</span>
+                    </button>
+                    <button class="mode-btn" data-mode="coord-to-letter">
+                        <span class="mode-icon">11 → A</span>
+                        <span class="mode-name">Coordonnees → Lettre</span>
+                    </button>
+                    <button class="mode-btn" data-mode="mixed">
+                        <span class="mode-icon">?</span>
+                        <span class="mode-name">Mode mixte</span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="difficulty-selection">
+                <h3>Difficulte</h3>
+                <div class="difficulty-buttons">
+                    <button class="diff-btn active" data-difficulty="easy">
+                        <span>Facile</span>
+                        <small>Grille visible, pas de timer</small>
+                    </button>
+                    <button class="diff-btn" data-difficulty="medium">
+                        <span>Moyen</span>
+                        <small>Grille visible, 5s par question</small>
+                    </button>
+                    <button class="diff-btn" data-difficulty="hard">
+                        <span>Difficile</span>
+                        <small>Grille cachee, 5s par question</small>
+                    </button>
+                </div>
+            </div>
+
+            <button id="start-btn" class="primary-btn" disabled>Commencer</button>
+        </div>
+
+        <!-- Game Screen -->
+        <div id="game-screen" class="screen">
+            <div class="game-header">
+                <div class="progress-info">
+                    <span id="current-round">1</span>/<span id="total-rounds">15</span>
+                </div>
+                <div class="score-info">
+                    <span class="score-label">Score:</span>
+                    <span id="score">0</span>
+                </div>
+                <div class="streak-info">
+                    <span class="streak-label">Serie:</span>
+                    <span id="streak">0</span>
+                    <span class="streak-fire" id="streak-fire"></span>
+                </div>
+                <div class="timer-container" id="timer-container">
+                    <div class="timer-bar" id="timer-bar"></div>
+                </div>
+            </div>
+
+            <div class="game-content">
+                <div class="grid-container" id="grid-container">
+                    <table class="polybius-grid" id="polybius-grid">
+                        <tr>
+                            <th></th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th>
+                        </tr>
+                        <tr>
+                            <th>1</th><td data-row="1" data-col="1">A</td><td data-row="1" data-col="2">B</td><td data-row="1" data-col="3">C</td><td data-row="1" data-col="4">D</td><td data-row="1" data-col="5">E</td>
+                        </tr>
+                        <tr>
+                            <th>2</th><td data-row="2" data-col="1">F</td><td data-row="2" data-col="2">G</td><td data-row="2" data-col="3">H</td><td data-row="2" data-col="4">I/J</td><td data-row="2" data-col="5">K</td>
+                        </tr>
+                        <tr>
+                            <th>3</th><td data-row="3" data-col="1">L</td><td data-row="3" data-col="2">M</td><td data-row="3" data-col="3">N</td><td data-row="3" data-col="4">O</td><td data-row="3" data-col="5">P</td>
+                        </tr>
+                        <tr>
+                            <th>4</th><td data-row="4" data-col="1">Q</td><td data-row="4" data-col="2">R</td><td data-row="4" data-col="3">S</td><td data-row="4" data-col="4">T</td><td data-row="4" data-col="5">U</td>
+                        </tr>
+                        <tr>
+                            <th>5</th><td data-row="5" data-col="1">V</td><td data-row="5" data-col="2">W</td><td data-row="5" data-col="3">X</td><td data-row="5" data-col="4">Y</td><td data-row="5" data-col="5">Z</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="question-area">
+                    <div class="question-type" id="question-type">Trouve les coordonnees de:</div>
+                    <div class="question-display" id="question-display">A</div>
+                </div>
+
+                <div class="answer-area">
+                    <input type="text" id="answer-input" class="answer-input" maxlength="2" autocomplete="off" placeholder="??">
+                    <div class="feedback" id="feedback"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Results Screen -->
+        <div id="results-screen" class="screen">
+            <h2>Resultats</h2>
+
+            <div class="final-score">
+                <div class="score-circle">
+                    <span id="final-score">0</span>
+                    <small>points</small>
+                </div>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-box">
+                    <span class="stat-value" id="correct-count">0</span>
+                    <span class="stat-label">Bonnes reponses</span>
+                </div>
+                <div class="stat-box">
+                    <span class="stat-value" id="wrong-count">0</span>
+                    <span class="stat-label">Erreurs</span>
+                </div>
+                <div class="stat-box">
+                    <span class="stat-value" id="best-streak">0</span>
+                    <span class="stat-label">Meilleure serie</span>
+                </div>
+                <div class="stat-box">
+                    <span class="stat-value" id="avg-time">0s</span>
+                    <span class="stat-label">Temps moyen</span>
+                </div>
+            </div>
+
+            <div class="mistakes-section" id="mistakes-section">
+                <h3>Revue des erreurs</h3>
+                <div class="mistakes-list" id="mistakes-list"></div>
+            </div>
+
+            <div class="results-buttons">
+                <button id="retry-btn" class="primary-btn">Rejouer</button>
+                <button id="menu-btn" class="secondary-btn">Menu principal</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

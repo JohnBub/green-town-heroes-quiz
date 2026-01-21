@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Passé vs Présent - Informatique 9e</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Passé vs Présent</h1>
+            <p class="subtitle">L'évolution du chiffrement à travers les âges</p>
+        </header>
+
+        <div class="game-info">
+            <div class="score-display">
+                <span class="label">Score:</span>
+                <span id="score">0</span>/<span id="total">8</span>
+            </div>
+            <div class="attempts-display">
+                <span class="label">Tentatives:</span>
+                <span id="attempts">0</span>
+            </div>
+            <button id="shuffle-btn" class="btn-shuffle">Mélanger</button>
+        </div>
+
+        <div class="game-container">
+            <div class="column past-column">
+                <h2 class="column-title past-title">Passé</h2>
+                <div id="past-items" class="items-container"></div>
+            </div>
+
+            <div class="connection-area">
+                <svg id="connections-svg"></svg>
+            </div>
+
+            <div class="column present-column">
+                <h2 class="column-title present-title">Présent</h2>
+                <div id="present-items" class="items-container"></div>
+            </div>
+        </div>
+
+        <div id="popup" class="popup hidden">
+            <div class="popup-content">
+                <div class="popup-header">
+                    <span class="popup-icon">&#10003;</span>
+                    <h3 id="popup-title">Bonne réponse!</h3>
+                </div>
+                <div class="popup-match">
+                    <span id="popup-past" class="popup-past-text"></span>
+                    <span class="popup-arrow">&#8594;</span>
+                    <span id="popup-present" class="popup-present-text"></span>
+                </div>
+                <p id="popup-explanation" class="popup-explanation"></p>
+                <button id="popup-close" class="btn-continue">Continuer</button>
+            </div>
+        </div>
+
+        <div id="final-screen" class="final-screen hidden">
+            <div class="final-content">
+                <h2>Félicitations!</h2>
+                <div class="final-stats">
+                    <p>Score final: <span id="final-score"></span>/8</p>
+                    <p>Tentatives: <span id="final-attempts"></span></p>
+                    <p>Précision: <span id="final-accuracy"></span>%</p>
+                </div>
+                <h3>Récapitulatif des connexions</h3>
+                <div id="final-review" class="final-review"></div>
+                <button id="restart-btn" class="btn-restart">Recommencer</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

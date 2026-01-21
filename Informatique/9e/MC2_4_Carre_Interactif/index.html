@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carré de Polybe Interactif - Informatique 9e</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Carré de Polybe Interactif</h1>
+            <p class="subtitle">Informatique 9e - Cryptographie</p>
+        </header>
+
+        <main>
+            <!-- Polybius Square Grid -->
+            <section class="grid-section">
+                <h2>Le Carré de Polybe</h2>
+                <p class="instruction">Cliquez sur une lettre pour voir ses coordonnées</p>
+
+                <div class="polybius-container">
+                    <div class="polybius-grid" id="polybiusGrid">
+                        <!-- Header row -->
+                        <div class="cell header corner"></div>
+                        <div class="cell header col-header" data-col="1">1</div>
+                        <div class="cell header col-header" data-col="2">2</div>
+                        <div class="cell header col-header" data-col="3">3</div>
+                        <div class="cell header col-header" data-col="4">4</div>
+                        <div class="cell header col-header" data-col="5">5</div>
+
+                        <!-- Row 1 -->
+                        <div class="cell header row-header" data-row="1">1</div>
+                        <div class="cell letter" data-letter="A" data-row="1" data-col="1">A</div>
+                        <div class="cell letter" data-letter="B" data-row="1" data-col="2">B</div>
+                        <div class="cell letter" data-letter="C" data-row="1" data-col="3">C</div>
+                        <div class="cell letter" data-letter="D" data-row="1" data-col="4">D</div>
+                        <div class="cell letter" data-letter="E" data-row="1" data-col="5">E</div>
+
+                        <!-- Row 2 -->
+                        <div class="cell header row-header" data-row="2">2</div>
+                        <div class="cell letter" data-letter="F" data-row="2" data-col="1">F</div>
+                        <div class="cell letter" data-letter="G" data-row="2" data-col="2">G</div>
+                        <div class="cell letter" data-letter="H" data-row="2" data-col="3">H</div>
+                        <div class="cell letter" data-letter="I" data-row="2" data-col="4">I/J</div>
+                        <div class="cell letter" data-letter="K" data-row="2" data-col="5">K</div>
+
+                        <!-- Row 3 -->
+                        <div class="cell header row-header" data-row="3">3</div>
+                        <div class="cell letter" data-letter="L" data-row="3" data-col="1">L</div>
+                        <div class="cell letter" data-letter="M" data-row="3" data-col="2">M</div>
+                        <div class="cell letter" data-letter="N" data-row="3" data-col="3">N</div>
+                        <div class="cell letter" data-letter="O" data-row="3" data-col="4">O</div>
+                        <div class="cell letter" data-letter="P" data-row="3" data-col="5">P</div>
+
+                        <!-- Row 4 -->
+                        <div class="cell header row-header" data-row="4">4</div>
+                        <div class="cell letter" data-letter="Q" data-row="4" data-col="1">Q</div>
+                        <div class="cell letter" data-letter="R" data-row="4" data-col="2">R</div>
+                        <div class="cell letter" data-letter="S" data-row="4" data-col="3">S</div>
+                        <div class="cell letter" data-letter="T" data-row="4" data-col="4">T</div>
+                        <div class="cell letter" data-letter="U" data-row="4" data-col="5">U</div>
+
+                        <!-- Row 5 -->
+                        <div class="cell header row-header" data-row="5">5</div>
+                        <div class="cell letter" data-letter="V" data-row="5" data-col="1">V</div>
+                        <div class="cell letter" data-letter="W" data-row="5" data-col="2">W</div>
+                        <div class="cell letter" data-letter="X" data-row="5" data-col="3">X</div>
+                        <div class="cell letter" data-letter="Y" data-row="5" data-col="4">Y</div>
+                        <div class="cell letter" data-letter="Z" data-row="5" data-col="5">Z</div>
+                    </div>
+
+                    <div class="coordinate-display" id="coordinateDisplay">
+                        <span class="coord-label">Coordonnées:</span>
+                        <span class="coord-value" id="coordValue">--</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Mode Selection -->
+            <section class="mode-section">
+                <div class="mode-tabs">
+                    <button class="mode-tab active" data-mode="encode" id="encodeTab">Encoder</button>
+                    <button class="mode-tab" data-mode="decode" id="decodeTab">Décoder</button>
+                    <button class="mode-tab" data-mode="practice" id="practiceTab">S'entraîner</button>
+                </div>
+
+                <!-- Encode Mode -->
+                <div class="mode-content active" id="encodeMode">
+                    <h3>Mode Encodage</h3>
+                    <p>Entrez un message pour le convertir en coordonnées</p>
+                    <div class="input-group">
+                        <input type="text" id="encodeInput" placeholder="Ex: BONJOUR" maxlength="30">
+                        <button class="btn primary" id="encodeBtn">Encoder</button>
+                    </div>
+                    <div class="result-area" id="encodeResult">
+                        <div class="result-steps" id="encodeSteps"></div>
+                        <div class="result-final" id="encodeFinal"></div>
+                    </div>
+                </div>
+
+                <!-- Decode Mode -->
+                <div class="mode-content" id="decodeMode">
+                    <h3>Mode Décodage</h3>
+                    <p>Entrez des coordonnées (séparées par des espaces) pour les décoder</p>
+                    <div class="input-group">
+                        <input type="text" id="decodeInput" placeholder="Ex: 12 34 33 24 34 45 42">
+                        <button class="btn primary" id="decodeBtn">Décoder</button>
+                    </div>
+                    <div class="result-area" id="decodeResult">
+                        <div class="result-steps" id="decodeSteps"></div>
+                        <div class="result-final" id="decodeFinal"></div>
+                    </div>
+                </div>
+
+                <!-- Practice Mode -->
+                <div class="mode-content" id="practiceMode">
+                    <div class="practice-header">
+                        <h3>Mode Entraînement</h3>
+                        <div class="score-display">
+                            <span>Score: </span>
+                            <span id="currentScore">0</span>
+                            <span>/</span>
+                            <span id="totalQuestions">0</span>
+                        </div>
+                    </div>
+
+                    <div class="challenge-area" id="challengeArea">
+                        <div class="challenge-type" id="challengeType"></div>
+                        <div class="challenge-question" id="challengeQuestion"></div>
+                        <div class="input-group">
+                            <input type="text" id="practiceInput" placeholder="Votre réponse...">
+                            <button class="btn primary" id="submitAnswer">Vérifier</button>
+                        </div>
+                        <div class="feedback" id="practiceFeedback"></div>
+                    </div>
+
+                    <div class="practice-controls">
+                        <button class="btn secondary" id="startPractice">Commencer l'entraînement</button>
+                        <button class="btn secondary" id="nextChallenge" style="display: none;">Défi suivant</button>
+                    </div>
+
+                    <div class="practice-complete" id="practiceComplete" style="display: none;">
+                        <h3>Entraînement terminé!</h3>
+                        <p>Votre score final: <span id="finalScore"></span></p>
+                        <button class="btn primary" id="restartPractice">Recommencer</button>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            <p>Carré de Polybe - Système de chiffrement de l'Antiquité grecque</p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Temps de Craquage - Informatique 9e</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Temps de Craquage</h1>
+        <p class="instructions">Combien de temps faut-il pour craquer un mot de passe ?</p>
+
+        <!-- Onglets de navigation -->
+        <div class="tabs">
+            <button class="tab-btn active" data-tab="analyzer">Analyseur</button>
+            <button class="tab-btn" data-tab="quiz">Quiz Comparatif</button>
+        </div>
+
+        <!-- Section Analyseur -->
+        <div class="tab-content active" id="analyzer">
+            <div class="analyzer-section">
+                <div class="password-input-container">
+                    <label for="passwordInput">Entre un mot de passe :</label>
+                    <div class="input-wrapper">
+                        <input type="text" id="passwordInput" placeholder="Tape un mot de passe..." autocomplete="off">
+                        <button id="toggleVisibility" class="visibility-btn" title="Afficher/Masquer">
+                            <span class="eye-icon">&#128065;</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="strength-meter">
+                    <div class="meter-bar">
+                        <div class="meter-fill" id="meterFill"></div>
+                    </div>
+                    <div class="meter-label" id="strengthLabel">Entre un mot de passe</div>
+                </div>
+
+                <div class="crack-time-display">
+                    <div class="time-icon" id="timeIcon">&#9202;</div>
+                    <div class="time-value" id="timeValue">-</div>
+                    <div class="time-label" id="timeLabel">Temps de craquage estime</div>
+                </div>
+
+                <div class="analysis-details" id="analysisDetails">
+                    <h3>Analyse du mot de passe</h3>
+                    <div class="detail-grid">
+                        <div class="detail-item">
+                            <span class="detail-label">Longueur</span>
+                            <span class="detail-value" id="lengthValue">0</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Minuscules</span>
+                            <span class="detail-value" id="lowercaseValue">Non</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Majuscules</span>
+                            <span class="detail-value" id="uppercaseValue">Non</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Chiffres</span>
+                            <span class="detail-value" id="numbersValue">Non</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Symboles</span>
+                            <span class="detail-value" id="symbolsValue">Non</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Jeu de caracteres</span>
+                            <span class="detail-value" id="charsetValue">0</span>
+                        </div>
+                    </div>
+                    <div class="calculation-explanation" id="calculationExplanation">
+                        <h4>Comment ca marche ?</h4>
+                        <p id="explanationText"></p>
+                    </div>
+                </div>
+
+                <div class="tips-section">
+                    <h3>Astuces pour un mot de passe solide</h3>
+                    <ul class="tips-list">
+                        <li><span class="tip-icon">&#10004;</span> Au moins 12 caracteres</li>
+                        <li><span class="tip-icon">&#10004;</span> Melange majuscules + minuscules</li>
+                        <li><span class="tip-icon">&#10004;</span> Ajoute des chiffres</li>
+                        <li><span class="tip-icon">&#10004;</span> Inclus des symboles (!@#$%)</li>
+                        <li><span class="tip-icon">&#10060;</span> Evite les mots du dictionnaire</li>
+                        <li><span class="tip-icon">&#10060;</span> Pas de dates de naissance</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section Quiz -->
+        <div class="tab-content" id="quiz">
+            <div class="quiz-section">
+                <div class="progress-bar">
+                    <div class="progress-text">Question <span id="currentQuestion">1</span> sur 6</div>
+                    <div class="score-text">Score : <span id="quizScore">0</span> / 6</div>
+                </div>
+
+                <!-- Questions du quiz -->
+                <div class="quiz-card active" data-question="1">
+                    <h3 class="quiz-question">Quel mot de passe prend le plus de temps a craquer ?</h3>
+                    <div class="password-options">
+                        <button class="password-option" data-password="chat123" data-correct="false">
+                            <span class="password-text">chat123</span>
+                            <span class="time-hint"></span>
+                        </button>
+                        <button class="password-option" data-password="M0nCh@t2024!" data-correct="true">
+                            <span class="password-text">M0nCh@t2024!</span>
+                            <span class="time-hint"></span>
+                        </button>
+                    </div>
+                    <div class="quiz-feedback"></div>
+                    <div class="quiz-explanation">
+                        <strong>Explication :</strong> "M0nCh@t2024!" est beaucoup plus long (12 caracteres) et utilise majuscules, minuscules, chiffres ET symboles. "chat123" n'a que 7 caracteres avec minuscules et chiffres seulement.
+                    </div>
+                </div>
+
+                <div class="quiz-card" data-question="2">
+                    <h3 class="quiz-question">Quel mot de passe prend le plus de temps a craquer ?</h3>
+                    <div class="password-options">
+                        <button class="password-option" data-password="ABCDEFGH" data-correct="false">
+                            <span class="password-text">ABCDEFGH</span>
+                            <span class="time-hint"></span>
+                        </button>
+                        <button class="password-option" data-password="AbCdEfGh" data-correct="true">
+                            <span class="password-text">AbCdEfGh</span>
+                            <span class="time-hint"></span>
+                        </button>
+                    </div>
+                    <div class="quiz-feedback"></div>
+                    <div class="quiz-explanation">
+                        <strong>Explication :</strong> Meme longueur (8 caracteres), mais "AbCdEfGh" utilise majuscules ET minuscules (52 possibilites par caractere), alors que "ABCDEFGH" n'utilise que des majuscules (26 possibilites).
+                    </div>
+                </div>
+
+                <div class="quiz-card" data-question="3">
+                    <h3 class="quiz-question">Quel mot de passe prend le plus de temps a craquer ?</h3>
+                    <div class="password-options">
+                        <button class="password-option" data-password="Soleil2024" data-correct="false">
+                            <span class="password-text">Soleil2024</span>
+                            <span class="time-hint"></span>
+                        </button>
+                        <button class="password-option" data-password="S0l3!l#24" data-correct="true">
+                            <span class="password-text">S0l3!l#24</span>
+                            <span class="time-hint"></span>
+                        </button>
+                    </div>
+                    <div class="quiz-feedback"></div>
+                    <div class="quiz-explanation">
+                        <strong>Explication :</strong> "Soleil2024" est un mot courant + annee, tres previsible. "S0l3!l#24" remplace des lettres par des chiffres et symboles, rendant le craquage beaucoup plus difficile meme s'il est plus court.
+                    </div>
+                </div>
+
+                <div class="quiz-card" data-question="4">
+                    <h3 class="quiz-question">Quel mot de passe prend le plus de temps a craquer ?</h3>
+                    <div class="password-options">
+                        <button class="password-option" data-password="monmotdepasse" data-correct="false">
+                            <span class="password-text">monmotdepasse</span>
+                            <span class="time-hint"></span>
+                        </button>
+                        <button class="password-option" data-password="Kx7!mP2@" data-correct="true">
+                            <span class="password-text">Kx7!mP2@</span>
+                            <span class="time-hint"></span>
+                        </button>
+                    </div>
+                    <div class="quiz-feedback"></div>
+                    <div class="quiz-explanation">
+                        <strong>Explication :</strong> Meme si "monmotdepasse" est plus long, c'est une phrase francaise tres courante. Les hackers utilisent des dictionnaires de mots/phrases communes. "Kx7!mP2@" est aleatoire et donc beaucoup plus difficile a deviner.
+                    </div>
+                </div>
+
+                <div class="quiz-card" data-question="5">
+                    <h3 class="quiz-question">Quel mot de passe prend le plus de temps a craquer ?</h3>
+                    <div class="password-options">
+                        <button class="password-option" data-password="aaaaaaaaaa" data-correct="false">
+                            <span class="password-text">aaaaaaaaaa</span>
+                            <span class="time-hint"></span>
+                        </button>
+                        <button class="password-option" data-password="aB3dE5gH" data-correct="true">
+                            <span class="password-text">aB3dE5gH</span>
+                            <span class="time-hint"></span>
+                        </button>
+                    </div>
+                    <div class="quiz-feedback"></div>
+                    <div class="quiz-explanation">
+                        <strong>Explication :</strong> "aaaaaaaaaa" (10 a) semble long mais c'est un pattern repetitif detecte instantanement. "aB3dE5gH" (8 caracteres) melange 3 types de caracteres, rendant chaque position impredictible.
+                    </div>
+                </div>
+
+                <div class="quiz-card" data-question="6">
+                    <h3 class="quiz-question">Quel mot de passe prend le plus de temps a craquer ?</h3>
+                    <div class="password-options">
+                        <button class="password-option" data-password="J@ime!eF00t" data-correct="true">
+                            <span class="password-text">J@ime!eF00t</span>
+                            <span class="time-hint"></span>
+                        </button>
+                        <button class="password-option" data-password="football123" data-correct="false">
+                            <span class="password-text">football123</span>
+                            <span class="time-hint"></span>
+                        </button>
+                    </div>
+                    <div class="quiz-feedback"></div>
+                    <div class="quiz-explanation">
+                        <strong>Explication :</strong> "football123" est un mot tres courant + chiffres simples, present dans toutes les listes de mots de passe pirates. "J@ime!eF00t" utilise une phrase codee avec symboles et substitutions creatives.
+                    </div>
+                </div>
+
+                <!-- Resultat final du quiz -->
+                <div class="quiz-result" id="quizResult">
+                    <h2>Quiz termine !</h2>
+                    <p class="result-score">Tu as reussi <span id="finalQuizScore">0</span> sur 6 !</p>
+                    <p class="result-message" id="resultMessage"></p>
+                    <div class="key-learnings">
+                        <h3>Ce qu'il faut retenir :</h3>
+                        <ul>
+                            <li><strong>Longueur compte :</strong> Chaque caractere multiplie les possibilites</li>
+                            <li><strong>Variete compte :</strong> Plus de types de caracteres = plus de combinaisons</li>
+                            <li><strong>Aleatoire gagne :</strong> Les patterns et mots connus sont crackes instantanement</li>
+                            <li><strong>Formule :</strong> Possibilites = (taille du jeu)^(longueur)</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <button id="quizNextBtn" class="next-btn" style="display: none;">Suivant</button>
+                <button id="quizRestartBtn" class="restart-btn" style="display: none;">Recommencer le quiz</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

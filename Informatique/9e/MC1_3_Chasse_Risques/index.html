@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chasse aux Risques - Informatique 9e</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>🔍 Chasse aux Risques</h1>
+        <p class="instructions">Clique sur tous les endroits où un risque de sécurité existe ! 🎯</p>
+
+        <div class="progress-bar">
+            <div class="progress-text">Risques trouvés : <span id="foundCount">0</span> / 7</div>
+            <div class="score-text">Erreurs : <span id="errorCount">0</span></div>
+        </div>
+
+        <div class="network-path">
+            <!-- Téléphone Alice (pas de risque) -->
+            <div class="network-node" data-node="alice" data-risk="false">
+                <div class="node-icon">📱</div>
+                <div class="node-label">Téléphone d'Alice</div>
+                <div class="node-status"></div>
+            </div>
+            <div class="connector">→</div>
+
+            <!-- Wifi maison (risque) -->
+            <div class="network-node clickable" data-node="wifi" data-risk="true">
+                <div class="node-icon">📶</div>
+                <div class="node-label">Wi-Fi maison</div>
+                <div class="node-status"></div>
+                <div class="risk-explanation hidden">Quelqu'un sur le même réseau Wi-Fi peut intercepter tes données !</div>
+            </div>
+            <div class="connector">→</div>
+
+            <!-- Box Internet (risque) -->
+            <div class="network-node clickable" data-node="box" data-risk="true">
+                <div class="node-icon">📦</div>
+                <div class="node-label">Box Internet</div>
+                <div class="node-status"></div>
+                <div class="risk-explanation hidden">Ton opérateur peut voir ton trafic Internet !</div>
+            </div>
+            <div class="connector">→</div>
+
+            <!-- Antenne opérateur (risque) -->
+            <div class="network-node clickable" data-node="antenne1" data-risk="true">
+                <div class="node-icon">📡</div>
+                <div class="node-label">Antenne opérateur</div>
+                <div class="node-status"></div>
+                <div class="risk-explanation hidden">Les communications mobiles peuvent être interceptées !</div>
+            </div>
+            <div class="connector">→</div>
+
+            <!-- Serveur local (risque) -->
+            <div class="network-node clickable" data-node="serveur1" data-risk="true">
+                <div class="node-icon">🖥️</div>
+                <div class="node-label">Serveur local</div>
+                <div class="node-status"></div>
+                <div class="risk-explanation hidden">Les données stockées sur les serveurs peuvent être piratées !</div>
+            </div>
+            <div class="connector">→</div>
+
+            <!-- Câble sous-marin (risque) -->
+            <div class="network-node clickable" data-node="cable" data-risk="true">
+                <div class="node-icon">🌊</div>
+                <div class="node-label">Câble sous-marin</div>
+                <div class="node-status"></div>
+                <div class="risk-explanation hidden">Les câbles peuvent être écoutés par des gouvernements ou des pirates !</div>
+            </div>
+            <div class="connector">→</div>
+
+            <!-- Serveur étranger (risque) -->
+            <div class="network-node clickable" data-node="serveur2" data-risk="true">
+                <div class="node-icon">🌍</div>
+                <div class="node-label">Serveur étranger</div>
+                <div class="node-status"></div>
+                <div class="risk-explanation hidden">Tes données sont stockées dans un pays avec d'autres lois sur la vie privée !</div>
+            </div>
+            <div class="connector">→</div>
+
+            <!-- Antenne finale (risque) -->
+            <div class="network-node clickable" data-node="antenne2" data-risk="true">
+                <div class="node-icon">📡</div>
+                <div class="node-label">Antenne de Bob</div>
+                <div class="node-status"></div>
+                <div class="risk-explanation hidden">Interception possible avant la réception finale !</div>
+            </div>
+            <div class="connector">→</div>
+
+            <!-- Téléphone Bob (pas de risque) -->
+            <div class="network-node" data-node="bob" data-risk="false">
+                <div class="node-icon">📱</div>
+                <div class="node-label">Téléphone de Bob</div>
+                <div class="node-status"></div>
+            </div>
+        </div>
+
+        <div class="feedback hidden" id="feedback"></div>
+
+        <!-- Modal de victoire -->
+        <div class="modal hidden" id="victoryModal">
+            <div class="modal-content">
+                <div class="celebration">🎉 🏆 🎉</div>
+                <h2>Bravo !</h2>
+                <p class="victory-message">Tu as identifié tous les risques !</p>
+                <div class="final-stats">
+                    <div class="stat">
+                        <span class="stat-label">Risques trouvés</span>
+                        <span class="stat-value">7/7</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-label">Erreurs</span>
+                        <span class="stat-value" id="finalErrors">0</span>
+                    </div>
+                </div>
+                <p class="lesson">📚 Retiens : Plus l'information voyage loin, plus elle est exposée à des risques !</p>
+                <button class="restart-btn" id="restartBtn">🔄 Recommencer</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

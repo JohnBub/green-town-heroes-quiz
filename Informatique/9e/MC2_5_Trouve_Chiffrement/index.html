@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Le Chiffrement au Quotidien - Informatique 9e</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Le Chiffrement au Quotidien</h1>
+            <p class="subtitle">Découvre où le chiffrement protège tes données!</p>
+        </header>
+
+        <div id="progress-container">
+            <div class="progress-bar">
+                <div id="progress-fill"></div>
+            </div>
+            <span id="progress-text">Question 1/10</span>
+        </div>
+
+        <div id="score-display">
+            <span id="score">Score: 0</span>
+        </div>
+
+        <main id="game-area">
+            <div id="scenario-card" class="card">
+                <div id="scenario-icon"></div>
+                <p id="scenario-text"></p>
+            </div>
+
+            <div id="question-prompt">
+                <p>Cette situation utilise-t-elle le chiffrement?</p>
+            </div>
+
+            <div id="buttons-container">
+                <button id="btn-encrypted" class="answer-btn encrypted">
+                    <span class="btn-icon">🔒</span>
+                    <span class="btn-text">Chiffré</span>
+                </button>
+                <button id="btn-not-encrypted" class="answer-btn not-encrypted">
+                    <span class="btn-icon">🔓</span>
+                    <span class="btn-text">Pas chiffré</span>
+                </button>
+            </div>
+
+            <div id="feedback-container" class="hidden">
+                <div id="feedback-icon"></div>
+                <p id="feedback-result"></p>
+                <p id="feedback-explanation"></p>
+                <button id="btn-next" class="next-btn">Suivant →</button>
+            </div>
+        </main>
+
+        <div id="results-screen" class="hidden">
+            <div class="results-card">
+                <h2>Résultats</h2>
+                <div id="final-score"></div>
+                <div id="encryption-count">
+                    <div class="stat-icon">🔐</div>
+                    <p id="daily-encryption"></p>
+                </div>
+                <div id="results-breakdown">
+                    <h3>Récapitulatif</h3>
+                    <ul id="answers-list"></ul>
+                </div>
+                <div id="security-tips">
+                    <h3>🛡️ Conseils de sécurité</h3>
+                    <ul>
+                        <li>Vérifie toujours le <strong>cadenas</strong> et <strong>HTTPS</strong> avant d'entrer des données sensibles</li>
+                        <li>Préfère les apps de messagerie avec <strong>chiffrement de bout en bout</strong></li>
+                        <li>Utilise des <strong>mots de passe forts</strong> et l'authentification à deux facteurs</li>
+                        <li>Méfie-toi des <strong>WiFi publics</strong> non sécurisés</li>
+                    </ul>
+                </div>
+                <button id="btn-restart" class="restart-btn">Rejouer 🔄</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

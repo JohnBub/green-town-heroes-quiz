@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Le Test de Mamie - Informatique 9e</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Start Screen -->
+        <div id="start-screen" class="screen active">
+            <div class="grandma-intro">
+                <div class="grandma-avatar large">
+                    <span class="grandma-emoji">👵</span>
+                </div>
+            </div>
+            <h1>Le Test de Mamie</h1>
+            <p class="subtitle">Avant de publier en ligne, demande-toi :</p>
+            <p class="quote">"Est-ce que je montrerais ça à ma mamie ?"</p>
+            <p class="description">
+                Évalue différentes publications en ligne et découvre si elles passent le test de Mamie !
+            </p>
+            <button id="start-btn" class="btn primary">Commencer le test</button>
+        </div>
+
+        <!-- Game Screen -->
+        <div id="game-screen" class="screen">
+            <div class="header">
+                <div class="progress-info">
+                    <span id="current-post">1</span> / <span id="total-posts">10</span>
+                </div>
+                <div class="score-display">
+                    Score: <span id="score">0</span>
+                </div>
+            </div>
+
+            <div class="progress-bar">
+                <div id="progress-fill" class="progress-fill"></div>
+            </div>
+
+            <div class="game-content">
+                <div class="grandma-section">
+                    <div class="grandma-avatar" id="grandma-avatar">
+                        <span class="grandma-emoji" id="grandma-emoji">👵</span>
+                    </div>
+                    <div class="grandma-speech" id="grandma-speech">
+                        Voyons voir ce que tu veux publier...
+                    </div>
+                </div>
+
+                <div class="post-container">
+                    <div class="social-post" id="social-post">
+                        <div class="post-header">
+                            <div class="user-avatar">👤</div>
+                            <div class="user-info">
+                                <span class="username">Toi</span>
+                                <span class="post-time">À l'instant</span>
+                            </div>
+                        </div>
+                        <div class="post-content" id="post-content">
+                            <!-- Content will be inserted here -->
+                        </div>
+                        <div class="post-actions">
+                            <span>❤️ J'aime</span>
+                            <span>💬 Commenter</span>
+                            <span>↗️ Partager</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="answer-buttons" id="answer-buttons">
+                    <button class="btn approve" data-answer="approve">
+                        <span class="btn-icon">👵</span>
+                        <span class="btn-text">Mamie approuve !</span>
+                    </button>
+                    <button class="btn reject" data-answer="reject">
+                        <span class="btn-icon">🙈</span>
+                        <span class="btn-text">Pas pour Mamie !</span>
+                    </button>
+                </div>
+
+                <div class="feedback-section hidden" id="feedback-section">
+                    <div class="feedback-card" id="feedback-card">
+                        <div class="feedback-icon" id="feedback-icon"></div>
+                        <div class="feedback-result" id="feedback-result"></div>
+                        <div class="feedback-category" id="feedback-category"></div>
+                        <div class="feedback-explanation" id="feedback-explanation"></div>
+                    </div>
+                    <button class="btn primary" id="next-btn">Publication suivante</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Results Screen -->
+        <div id="results-screen" class="screen">
+            <div class="results-content">
+                <div class="grandma-avatar large">
+                    <span class="grandma-emoji" id="final-grandma">👵</span>
+                </div>
+                <h2 id="results-title">Résultats du Test</h2>
+                <div class="final-score">
+                    <span id="final-score">0</span> / <span id="final-total">10</span>
+                </div>
+                <p id="score-message" class="score-message"></p>
+
+                <div class="wisdom-section">
+                    <h3>Les conseils de Mamie :</h3>
+                    <div class="wisdom-cards" id="wisdom-cards">
+                        <!-- Wisdom cards will be inserted here -->
+                    </div>
+                </div>
+
+                <div class="stats-section">
+                    <h3>Catégories à retenir :</h3>
+                    <div class="category-stats" id="category-stats">
+                        <!-- Category stats will be inserted here -->
+                    </div>
+                </div>
+
+                <button id="restart-btn" class="btn primary">Refaire le test</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

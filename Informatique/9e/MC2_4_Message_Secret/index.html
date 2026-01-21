@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Messages Secrets de Polybe - Informatique 9e</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Messages Secrets de Polybe</h1>
+            <p class="subtitle">Informatique 9e</p>
+        </header>
+
+        <!-- Start Screen -->
+        <div id="start-screen" class="screen active">
+            <div class="briefing-paper">
+                <h2>Agent, bienvenue!</h2>
+                <p>Tu as ete selectionne pour une serie de missions secretes. Tu devras decoder des messages chiffres avec le carre de Polybe.</p>
+                <p>Chaque paire de chiffres represente une lettre. Le premier chiffre indique la ligne, le second la colonne.</p>
+                <div class="polybius-preview">
+                    <table>
+                        <tr><th></th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th></tr>
+                        <tr><th>1</th><td>A</td><td>B</td><td>C</td><td>D</td><td>E</td></tr>
+                        <tr><th>2</th><td>F</td><td>G</td><td>H</td><td>I/J</td><td>K</td></tr>
+                        <tr><th>3</th><td>L</td><td>M</td><td>N</td><td>O</td><td>P</td></tr>
+                        <tr><th>4</th><td>Q</td><td>R</td><td>S</td><td>T</td><td>U</td></tr>
+                        <tr><th>5</th><td>V</td><td>W</td><td>X</td><td>Y</td><td>Z</td></tr>
+                    </table>
+                </div>
+                <p><strong>Exemple:</strong> 23 15 31 31 34 = HELLO</p>
+                <button id="start-btn" class="btn-primary">Commencer les Missions</button>
+            </div>
+        </div>
+
+        <!-- Game Screen -->
+        <div id="game-screen" class="screen">
+            <div class="mission-header">
+                <span id="mission-number">Mission 1/5</span>
+                <span id="score-display">Score: 0</span>
+            </div>
+
+            <div class="briefing-paper mission-briefing">
+                <div class="stamp">TOP SECRET</div>
+                <h2 id="mission-title">L'Espion</h2>
+                <p id="mission-story" class="story-text"></p>
+                <div class="coded-message">
+                    <span class="label">Message code:</span>
+                    <span id="coded-text" class="code"></span>
+                </div>
+            </div>
+
+            <div class="decode-area">
+                <div class="polybius-grid" id="polybius-grid">
+                    <table>
+                        <tr><th></th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th></tr>
+                        <tr><th>1</th><td data-letter="A">A</td><td data-letter="B">B</td><td data-letter="C">C</td><td data-letter="D">D</td><td data-letter="E">E</td></tr>
+                        <tr><th>2</th><td data-letter="F">F</td><td data-letter="G">G</td><td data-letter="H">H</td><td data-letter="I">I/J</td><td data-letter="K">K</td></tr>
+                        <tr><th>3</th><td data-letter="L">L</td><td data-letter="M">M</td><td data-letter="N">N</td><td data-letter="O">O</td><td data-letter="P">P</td></tr>
+                        <tr><th>4</th><td data-letter="Q">Q</td><td data-letter="R">R</td><td data-letter="S">S</td><td data-letter="T">T</td><td data-letter="U">U</td></tr>
+                        <tr><th>5</th><td data-letter="V">V</td><td data-letter="W">W</td><td data-letter="X">X</td><td data-letter="Y">Y</td><td data-letter="Z">Z</td></tr>
+                    </table>
+                </div>
+
+                <div class="answer-section">
+                    <label for="answer-input">Ta reponse:</label>
+                    <input type="text" id="answer-input" placeholder="Tape le message decode..." autocomplete="off">
+                    <div class="hint-display" id="hint-display"></div>
+                    <div class="button-group">
+                        <button id="hint-btn" class="btn-secondary">Indice</button>
+                        <button id="submit-btn" class="btn-primary">Verifier</button>
+                    </div>
+                    <p class="hints-remaining" id="hints-remaining">Indices restants: 3</p>
+                </div>
+            </div>
+
+            <div id="feedback" class="feedback"></div>
+        </div>
+
+        <!-- Result Screen -->
+        <div id="result-screen" class="screen">
+            <div class="briefing-paper result-paper">
+                <h2>Mission Terminee!</h2>
+                <div id="final-rank" class="rank"></div>
+                <div id="final-score" class="final-score"></div>
+                <div id="missions-summary" class="summary"></div>
+                <button id="restart-btn" class="btn-primary">Nouvelle Mission</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

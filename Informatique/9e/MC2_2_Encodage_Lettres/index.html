@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Encodage Lettre par Lettre - Informatique 9e</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Start Screen -->
+        <div id="start-screen" class="screen active">
+            <h1>Encodage Lettre par Lettre</h1>
+            <p class="subtitle">Pratique du chiffrement de César</p>
+
+            <div class="instructions">
+                <h3>Comment jouer</h3>
+                <p>1. Observe le décalage indiqué</p>
+                <p>2. Encode ou décode la lettre affichée</p>
+                <p>3. Tape ta réponse (une seule lettre)</p>
+                <p>4. Appuie sur Entrée pour valider</p>
+            </div>
+
+            <div class="mode-selection">
+                <h3>Choisis ton mode</h3>
+                <div class="mode-buttons">
+                    <button class="mode-btn" data-mode="normal">Normal</button>
+                    <button class="mode-btn" data-mode="speed">Chrono</button>
+                </div>
+            </div>
+
+            <button id="start-btn" class="primary-btn">Commencer</button>
+        </div>
+
+        <!-- Game Screen -->
+        <div id="game-screen" class="screen">
+            <div class="game-header">
+                <div class="round-info">
+                    <span id="round-label">Manche 1: Encodage</span>
+                    <span id="shift-display">Décalage: +3</span>
+                </div>
+                <div class="stats">
+                    <div class="stat">
+                        <span class="stat-label">Question</span>
+                        <span id="progress">1/15</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-label">Score</span>
+                        <span id="score">0</span>
+                    </div>
+                    <div class="stat streak-stat">
+                        <span class="stat-label">Série</span>
+                        <span id="streak">0</span>
+                    </div>
+                    <div id="timer-display" class="stat timer-stat hidden">
+                        <span class="stat-label">Temps</span>
+                        <span id="timer">10</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Alphabet Reference Strip -->
+            <div class="alphabet-container">
+                <div class="alphabet-label">Alphabet original:</div>
+                <div id="alphabet-original" class="alphabet-strip"></div>
+                <div class="alphabet-label shifted-label">Alphabet décalé:</div>
+                <div id="alphabet-shifted" class="alphabet-strip"></div>
+            </div>
+
+            <!-- Main Game Area -->
+            <div class="game-area">
+                <div id="task-type" class="task-type">ENCODE</div>
+                <div class="letter-display">
+                    <span class="letter-label">La lettre:</span>
+                    <div id="letter-to-encode" class="big-letter">A</div>
+                </div>
+
+                <div class="input-area">
+                    <label for="answer-input">Ta réponse:</label>
+                    <input type="text" id="answer-input" maxlength="1" autocomplete="off" autofocus>
+                    <button id="submit-btn">Valider</button>
+                </div>
+
+                <div id="feedback" class="feedback hidden">
+                    <span id="feedback-text"></span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Results Screen -->
+        <div id="results-screen" class="screen">
+            <h2>Résultats</h2>
+
+            <div class="final-score">
+                <div class="score-circle">
+                    <span id="final-score-value">0</span>
+                    <span class="score-total">/15</span>
+                </div>
+                <p id="score-message"></p>
+            </div>
+
+            <div class="stats-summary">
+                <div class="summary-stat">
+                    <span class="summary-value" id="final-correct">0</span>
+                    <span class="summary-label">Correct</span>
+                </div>
+                <div class="summary-stat">
+                    <span class="summary-value" id="final-streak">0</span>
+                    <span class="summary-label">Meilleure série</span>
+                </div>
+                <div class="summary-stat">
+                    <span class="summary-value" id="final-time">--</span>
+                    <span class="summary-label">Temps total</span>
+                </div>
+            </div>
+
+            <div id="mistakes-section" class="mistakes-section hidden">
+                <h3>Révision des erreurs</h3>
+                <div id="mistakes-list" class="mistakes-list"></div>
+            </div>
+
+            <div class="results-buttons">
+                <button id="retry-btn" class="primary-btn">Rejouer</button>
+                <button id="home-btn" class="secondary-btn">Accueil</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

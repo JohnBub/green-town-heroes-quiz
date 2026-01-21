@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Le Voyage d'une Photo - Informatique 9e</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>📸 Le Voyage d'une Photo</h1>
+        <p class="instructions">Aide la photo d'Alice à arriver jusqu'à Bob ! Clique sur les étapes dans le bon ordre 🎯</p>
+
+        <div class="story">
+            <p>🐱 Alice prend une photo de son chat et veut l'envoyer à Bob qui habite dans une autre ville...</p>
+        </div>
+
+        <div class="progress-info">
+            <div class="step-counter">Étape <span id="currentStep">0</span> / 8</div>
+            <div class="distance-counter">Distance parcourue : <span id="distance">0</span> km</div>
+        </div>
+
+        <div class="network-map">
+            <!-- Alice (point de départ) -->
+            <div class="character alice">
+                <div class="character-icon">👧</div>
+                <div class="character-name">Alice</div>
+                <div class="photo-indicator" id="photoIndicator">📸</div>
+            </div>
+
+            <!-- Étape 1 : Téléphone d'Alice -->
+            <div class="network-step clickable" data-step="1" data-description="Le téléphone d'Alice capture et enregistre la photo">
+                <div class="step-icon">📱</div>
+                <div class="step-label">Téléphone Alice</div>
+                <div class="step-number">1</div>
+            </div>
+
+            <!-- Connecteur -->
+            <div class="connector"></div>
+
+            <!-- Étape 2 : Antenne relais -->
+            <div class="network-step clickable" data-step="2" data-description="Le téléphone se connecte à l'antenne-relais la plus proche">
+                <div class="step-icon">📡</div>
+                <div class="step-label">Antenne-relais</div>
+                <div class="step-number">2</div>
+            </div>
+
+            <!-- Connecteur -->
+            <div class="connector"></div>
+
+            <!-- Étape 3 : Serveur opérateur -->
+            <div class="network-step clickable" data-step="3" data-description="L'antenne envoie la photo vers le serveur de l'opérateur">
+                <div class="step-icon">🖥️</div>
+                <div class="step-label">Serveur opérateur</div>
+                <div class="step-number">3</div>
+            </div>
+
+            <!-- Connecteur long (câbles) -->
+            <div class="connector long">
+                <div class="cable-icon">🌊</div>
+            </div>
+
+            <!-- Étape 4 : Câbles transmission -->
+            <div class="network-step clickable" data-step="4" data-description="Le serveur transmet la photo via des câbles (terrestres ou sous-marins)">
+                <div class="step-icon">🔌</div>
+                <div class="step-label">Câbles réseau</div>
+                <div class="step-number">4</div>
+            </div>
+
+            <!-- Connecteur -->
+            <div class="connector"></div>
+
+            <!-- Étape 5 : Serveur messagerie -->
+            <div class="network-step clickable" data-step="5" data-description="La photo arrive sur le serveur de messagerie (WhatsApp, iMessage...)">
+                <div class="step-icon">💬</div>
+                <div class="step-label">Serveur messagerie</div>
+                <div class="step-number">5</div>
+            </div>
+
+            <!-- Connecteur -->
+            <div class="connector"></div>
+
+            <!-- Étape 6 : Antenne Bob -->
+            <div class="network-step clickable" data-step="6" data-description="Le serveur envoie la photo vers l'antenne proche de Bob">
+                <div class="step-icon">📡</div>
+                <div class="step-label">Antenne Bob</div>
+                <div class="step-number">6</div>
+            </div>
+
+            <!-- Connecteur -->
+            <div class="connector"></div>
+
+            <!-- Étape 7 : Téléphone Bob -->
+            <div class="network-step clickable" data-step="7" data-description="L'antenne transmet la photo au téléphone de Bob">
+                <div class="step-icon">📱</div>
+                <div class="step-label">Téléphone Bob</div>
+                <div class="step-number">7</div>
+            </div>
+
+            <!-- Connecteur -->
+            <div class="connector"></div>
+
+            <!-- Étape 8 : Bob reçoit -->
+            <div class="network-step clickable" data-step="8" data-description="Bob reçoit et peut voir la photo">
+                <div class="step-icon">✅</div>
+                <div class="step-label">Photo reçue !</div>
+                <div class="step-number">8</div>
+            </div>
+
+            <!-- Bob (point d'arrivée) -->
+            <div class="character bob">
+                <div class="character-icon">👦</div>
+                <div class="character-name">Bob</div>
+            </div>
+        </div>
+
+        <div id="feedback" class="feedback"></div>
+
+        <div class="final-result" id="finalResult">
+            <h2>🎉 Bravo ! Tu as compris le parcours !</h2>
+            <p class="result-text">Ta photo a fait <strong id="totalDistance">450</strong> km</p>
+            <p class="result-text">Elle est passée par <strong>8 équipements</strong> avant d'arriver chez Bob !</p>
+            <p class="learn-text">💡 Chaque message que tu envoies fait ce voyage incroyable en quelques secondes !</p>
+        </div>
+
+        <button id="resetBtn" class="reset-btn" style="display: none;">🔄 Recommencer</button>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

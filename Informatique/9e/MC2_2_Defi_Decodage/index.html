@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Defi Decodage Cesar - Informatique 9e</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Defi Decodage Cesar</h1>
+            <p class="subtitle">Informatique 9e</p>
+        </header>
+
+        <!-- Start Screen -->
+        <div id="start-screen" class="screen active">
+            <div class="intro-card">
+                <h2>Bienvenue au Defi!</h2>
+                <p>Le chiffrement de Cesar est une methode de cryptage qui decale chaque lettre de l'alphabet d'un certain nombre de positions.</p>
+                <div class="example-box">
+                    <p><strong>Exemple avec decalage +3:</strong></p>
+                    <p>A → D, B → E, C → F...</p>
+                    <p>Pour decoder, on fait l'inverse: D → A, E → B, F → C...</p>
+                </div>
+                <p>Decodez les messages secrets en trouvant le mot original!</p>
+                <button id="start-btn" class="btn-primary">Commencer le Defi</button>
+            </div>
+        </div>
+
+        <!-- Game Screen -->
+        <div id="game-screen" class="screen">
+            <div class="progress-section">
+                <div class="progress-bar">
+                    <div id="progress-fill" class="progress-fill"></div>
+                </div>
+                <span id="progress-text">1/10</span>
+            </div>
+
+            <div class="score-display">
+                <span>Score: </span><span id="current-score">0</span>
+            </div>
+
+            <div class="challenge-card">
+                <div class="difficulty-badge" id="difficulty-badge">Facile</div>
+
+                <div class="encoded-section">
+                    <p class="label">Message code:</p>
+                    <div id="encoded-message" class="encoded-message">ERQMRXU</div>
+                </div>
+
+                <div class="shift-info">
+                    <span class="shift-icon">🔄</span>
+                    <span>Decalage: <strong id="shift-value">+3</strong></span>
+                </div>
+
+                <button id="hint-btn" class="btn-hint">
+                    <span class="hint-icon">💡</span> Indice
+                </button>
+                <div id="hint-display" class="hint-display hidden"></div>
+
+                <div class="options-grid" id="options-grid">
+                    <!-- Options will be inserted here -->
+                </div>
+            </div>
+
+            <div id="feedback-section" class="feedback-section hidden">
+                <div id="feedback-content" class="feedback-content">
+                    <!-- Feedback will be inserted here -->
+                </div>
+                <button id="next-btn" class="btn-primary">Question Suivante</button>
+            </div>
+        </div>
+
+        <!-- Results Screen -->
+        <div id="results-screen" class="screen">
+            <div class="results-card">
+                <h2>Defi Termine!</h2>
+                <div class="final-score">
+                    <span id="final-score">0</span><span>/10</span>
+                </div>
+                <p id="performance-message" class="performance-message"></p>
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <span class="stat-value" id="correct-count">0</span>
+                        <span class="stat-label">Correct</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-value" id="hints-used">0</span>
+                        <span class="stat-label">Indices utilises</span>
+                    </div>
+                </div>
+                <button id="restart-btn" class="btn-primary">Rejouer</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

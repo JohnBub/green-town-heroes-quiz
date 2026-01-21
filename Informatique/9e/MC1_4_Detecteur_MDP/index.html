@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Évaluation de Mots de Passe - Informatique 9e</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>🔐 Bon ou Mauvais Mot de Passe ?</h1>
+        <p class="instructions">Évalue si chaque mot de passe est sécurisé ou non ! 🔍</p>
+
+        <div class="progress-bar">
+            <div class="progress-text">Mot de passe <span id="currentPassword">1</span> sur 8</div>
+            <div class="score-text">Score : <span id="score">0</span> / 8</div>
+        </div>
+
+        <!-- Mot de passe 1 -->
+        <div class="password-card active" data-password="1" data-answer="bad">
+            <div class="password-display">
+                <div class="password-label">Mot de passe :</div>
+                <div class="password-text">123456</div>
+            </div>
+            <div class="evaluation-buttons">
+                <button class="eval-btn secure" data-choice="good">
+                    <span class="btn-icon">🔒</span>
+                    <span class="btn-text">Sécurisé</span>
+                </button>
+                <button class="eval-btn insecure" data-choice="bad">
+                    <span class="btn-icon">🔓</span>
+                    <span class="btn-text">Pas sécurisé</span>
+                </button>
+            </div>
+            <div class="feedback"></div>
+            <div class="explanation">
+                <strong>❌ Pas sécurisé !</strong> C'est le mot de passe le plus utilisé au monde ! Beaucoup trop simple à deviner.
+            </div>
+        </div>
+
+        <!-- Mot de passe 2 -->
+        <div class="password-card" data-password="2" data-answer="good">
+            <div class="password-display">
+                <div class="password-label">Mot de passe :</div>
+                <div class="password-text">MonChien@2024!</div>
+            </div>
+            <div class="evaluation-buttons">
+                <button class="eval-btn secure" data-choice="good">
+                    <span class="btn-icon">🔒</span>
+                    <span class="btn-text">Sécurisé</span>
+                </button>
+                <button class="eval-btn insecure" data-choice="bad">
+                    <span class="btn-icon">🔓</span>
+                    <span class="btn-text">Pas sécurisé</span>
+                </button>
+            </div>
+            <div class="feedback"></div>
+            <div class="explanation">
+                <strong>✅ Sécurisé !</strong> 12 caractères avec majuscules, minuscules, chiffres et symboles. Bon mélange !
+            </div>
+        </div>
+
+        <!-- Mot de passe 3 -->
+        <div class="password-card" data-password="3" data-answer="bad">
+            <div class="password-display">
+                <div class="password-label">Mot de passe :</div>
+                <div class="password-text">emma</div>
+            </div>
+            <div class="evaluation-buttons">
+                <button class="eval-btn secure" data-choice="good">
+                    <span class="btn-icon">🔒</span>
+                    <span class="btn-text">Sécurisé</span>
+                </button>
+                <button class="eval-btn insecure" data-choice="bad">
+                    <span class="btn-icon">🔓</span>
+                    <span class="btn-text">Pas sécurisé</span>
+                </button>
+            </div>
+            <div class="feedback"></div>
+            <div class="explanation">
+                <strong>❌ Pas sécurisé !</strong> Trop court (4 caractères) et c'est un prénom courant. Facile à deviner !
+            </div>
+        </div>
+
+        <!-- Mot de passe 4 -->
+        <div class="password-card" data-password="4" data-answer="good">
+            <div class="password-display">
+                <div class="password-label">Mot de passe :</div>
+                <div class="password-text">Jaj4Flm5!</div>
+            </div>
+            <div class="evaluation-buttons">
+                <button class="eval-btn secure" data-choice="good">
+                    <span class="btn-icon">🔒</span>
+                    <span class="btn-text">Sécurisé</span>
+                </button>
+                <button class="eval-btn insecure" data-choice="bad">
+                    <span class="btn-icon">🔓</span>
+                    <span class="btn-text">Pas sécurisé</span>
+                </button>
+            </div>
+            <div class="feedback"></div>
+            <div class="explanation">
+                <strong>✅ Sécurisé !</strong> Bonne technique : première lettre de chaque mot d'une phrase. Exemple : "J'aime jouer à Fortnite le mercredi soir !"
+            </div>
+        </div>
+
+        <!-- Mot de passe 5 -->
+        <div class="password-card" data-password="5" data-answer="bad">
+            <div class="password-display">
+                <div class="password-label">Mot de passe :</div>
+                <div class="password-text">password</div>
+            </div>
+            <div class="evaluation-buttons">
+                <button class="eval-btn secure" data-choice="good">
+                    <span class="btn-icon">🔒</span>
+                    <span class="btn-text">Sécurisé</span>
+                </button>
+                <button class="eval-btn insecure" data-choice="bad">
+                    <span class="btn-icon">🔓</span>
+                    <span class="btn-text">Pas sécurisé</span>
+                </button>
+            </div>
+            <div class="feedback"></div>
+            <div class="explanation">
+                <strong>❌ Pas sécurisé !</strong> C'est un mot du dictionnaire très utilisé. Les hackers testent ce mot en premier !
+            </div>
+        </div>
+
+        <!-- Mot de passe 6 -->
+        <div class="password-card" data-password="6" data-answer="bad">
+            <div class="password-display">
+                <div class="password-label">Mot de passe :</div>
+                <div class="password-text">qwerty</div>
+            </div>
+            <div class="evaluation-buttons">
+                <button class="eval-btn secure" data-choice="good">
+                    <span class="btn-icon">🔒</span>
+                    <span class="btn-text">Sécurisé</span>
+                </button>
+                <button class="eval-btn insecure" data-choice="bad">
+                    <span class="btn-icon">🔓</span>
+                    <span class="btn-text">Pas sécurisé</span>
+                </button>
+            </div>
+            <div class="feedback"></div>
+            <div class="explanation">
+                <strong>❌ Pas sécurisé !</strong> Ce sont les premières touches du clavier. Super facile à deviner pour les hackers !
+            </div>
+        </div>
+
+        <!-- Mot de passe 7 -->
+        <div class="password-card" data-password="7" data-answer="good">
+            <div class="password-display">
+                <div class="password-label">Mot de passe :</div>
+                <div class="password-text">L4V1e3stB3ll3!</div>
+            </div>
+            <div class="evaluation-buttons">
+                <button class="eval-btn secure" data-choice="good">
+                    <span class="btn-icon">🔒</span>
+                    <span class="btn-text">Sécurisé</span>
+                </button>
+                <button class="eval-btn insecure" data-choice="bad">
+                    <span class="btn-icon">🔓</span>
+                    <span class="btn-text">Pas sécurisé</span>
+                </button>
+            </div>
+            <div class="feedback"></div>
+            <div class="explanation">
+                <strong>✅ Sécurisé !</strong> Phrase codée : "La vie est belle !" avec des chiffres à la place de lettres. Long et difficile à deviner !
+            </div>
+        </div>
+
+        <!-- Mot de passe 8 -->
+        <div class="password-card" data-password="8" data-answer="bad">
+            <div class="password-display">
+                <div class="password-label">Mot de passe :</div>
+                <div class="password-text">14032012</div>
+            </div>
+            <div class="evaluation-buttons">
+                <button class="eval-btn secure" data-choice="good">
+                    <span class="btn-icon">🔒</span>
+                    <span class="btn-text">Sécurisé</span>
+                </button>
+                <button class="eval-btn insecure" data-choice="bad">
+                    <span class="btn-icon">🔓</span>
+                    <span class="btn-text">Pas sécurisé</span>
+                </button>
+            </div>
+            <div class="feedback"></div>
+            <div class="explanation">
+                <strong>❌ Pas sécurisé !</strong> Ça ressemble à une date de naissance (14/03/2012). Les hackers testent souvent les dates !
+            </div>
+        </div>
+
+        <!-- Résultat final -->
+        <div class="final-result" id="finalResult">
+            <h2>🎉 Quiz terminé !</h2>
+            <p class="final-score">Tu as réussi <span id="finalScore">0</span> sur 8 !</p>
+            <p class="final-message" id="finalMessage"></p>
+            <div class="security-tips">
+                <h3>💡 Astuces pour un bon mot de passe :</h3>
+                <ul>
+                    <li>✅ Au moins 12 caractères</li>
+                    <li>✅ Mélange de majuscules, minuscules, chiffres et symboles</li>
+                    <li>✅ Utilise une phrase secrète</li>
+                    <li>❌ Jamais de dates de naissance</li>
+                    <li>❌ Jamais de prénoms ou mots du dictionnaire</li>
+                    <li>❌ Jamais le même mot de passe partout</li>
+                </ul>
+            </div>
+        </div>
+
+        <button id="nextBtn" class="next-btn" style="display: none;">Suivant ➡️</button>
+        <button id="restartBtn" class="restart-btn" style="display: none;">🔄 Recommencer</button>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

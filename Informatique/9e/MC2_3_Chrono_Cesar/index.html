@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chrono Cesar - Informatique 9e</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="game-container">
+        <!-- Start Screen -->
+        <div id="start-screen" class="screen">
+            <h1>Chrono Cesar</h1>
+            <div class="subtitle">Defi de Chiffrement</div>
+
+            <div class="instructions">
+                <h2>Comment jouer ?</h2>
+                <p>Tu as <strong>60 secondes</strong> pour encoder un maximum de mots avec le chiffre de Cesar !</p>
+                <ul>
+                    <li>Un mot et un decalage s'affichent</li>
+                    <li>Tape le mot encode et valide avec Entree</li>
+                    <li>Chaque bonne reponse = <span class="points">+10 points</span></li>
+                    <li>Mauvaise reponse = on passe au suivant</li>
+                </ul>
+                <div class="example">
+                    <strong>Exemple :</strong> CHAT avec decalage +1 = DIBU
+                </div>
+            </div>
+
+            <div class="high-score-display" id="high-score-display">
+                Meilleur score : <span id="best-score">0</span>
+            </div>
+
+            <button id="start-btn" class="btn-primary">Commencer !</button>
+        </div>
+
+        <!-- Game Screen -->
+        <div id="game-screen" class="screen hidden">
+            <div class="game-header">
+                <div class="timer-container">
+                    <div class="timer-label">TEMPS</div>
+                    <div id="timer" class="timer">60</div>
+                </div>
+                <div class="score-container">
+                    <div class="score-label">SCORE</div>
+                    <div id="score" class="score">0</div>
+                </div>
+            </div>
+
+            <div class="game-content">
+                <div class="word-display">
+                    <div class="word-label">Mot a encoder :</div>
+                    <div id="current-word" class="current-word">CHAT</div>
+                </div>
+
+                <div class="shift-display">
+                    <span class="shift-label">Decalage :</span>
+                    <span id="shift-value" class="shift-value">+3</span>
+                </div>
+
+                <div class="input-section">
+                    <input type="text" id="answer-input" class="answer-input"
+                           placeholder="Tape ta reponse..." autocomplete="off" autofocus>
+                    <button id="submit-btn" class="btn-submit">Valider</button>
+                </div>
+
+                <div id="feedback" class="feedback hidden"></div>
+            </div>
+
+            <div class="progress-bar">
+                <div id="timer-bar" class="timer-bar"></div>
+            </div>
+        </div>
+
+        <!-- End Screen -->
+        <div id="end-screen" class="screen hidden">
+            <h1>Temps ecoule !</h1>
+
+            <div class="final-stats">
+                <div class="stat-item">
+                    <div class="stat-value" id="final-score">0</div>
+                    <div class="stat-label">Points</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value" id="words-encoded">0</div>
+                    <div class="stat-label">Mots encodes</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value" id="accuracy">0%</div>
+                    <div class="stat-label">Precision</div>
+                </div>
+            </div>
+
+            <div id="new-record" class="new-record hidden">
+                Nouveau record !
+            </div>
+
+            <div class="end-buttons">
+                <button id="restart-btn" class="btn-primary">Rejouer</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

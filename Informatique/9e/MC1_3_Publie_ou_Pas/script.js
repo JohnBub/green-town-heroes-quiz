@@ -4,30 +4,30 @@ const publications = [
         type: "INSTAGRAM",
         author: "@emma_loves_cats",
         emoji: "🐱",
-        text: "Mon chat Moustache qui fait la sieste sur le canape !",
-        detail: "Photo d'un chat sur un canape uni",
+        text: "Mon chat Moustache qui fait la sieste sur le canapé !",
+        detail: "Photo d'un chat sur un canapé uni",
         isRisky: false,
         explanation: "Cette publication est safe !",
         infoTitle: "Pourquoi c'est safe ?",
         reasons: [
             "Aucune information personnelle visible",
             "Pas de localisation identifiable",
-            "Pas de details sur ta vie privee",
-            "Une photo de chat ne revele rien sur toi"
+            "Pas de détails sur ta vie privée",
+            "Une photo de chat ne révèle rien sur toi"
         ]
     },
     {
         type: "INSTAGRAM",
         author: "@lucas_2012",
         emoji: "🏠",
-        text: "Nouvelle deco devant chez moi ! Vous aimez ?",
-        detail: "Photo avec numero de maison et nom de rue visible",
+        text: "Nouvelle déco devant chez moi ! Vous aimez ?",
+        detail: "Photo avec numéro de maison et nom de rue visible",
         isRisky: true,
-        explanation: "Cette publication est risquee !",
-        infoTitle: "Pourquoi c'est risque ?",
+        explanation: "Cette publication est risquée !",
+        infoTitle: "Pourquoi c'est risqué ?",
         reasons: [
-            "Ton adresse exacte est visible (numero + rue)",
-            "N'importe qui peut savoir ou tu habites",
+            "Ton adresse exacte est visible (numéro + rue)",
+            "N'importe qui peut savoir où tu habites",
             "Des personnes malveillantes pourraient utiliser cette info",
             "Mieux vaut flouter ou recadrer pour cacher l'adresse"
         ]
@@ -36,32 +36,32 @@ const publications = [
         type: "STORY",
         author: "@sophie.vacances",
         emoji: "✈️",
-        text: "Trop content ! On part en vacances demain pour 2 semaines en Espagne ! La maison va etre vide hihi",
+        text: "Trop content ! On part en vacances demain pour 2 semaines en Espagne ! La maison va être vide hihi",
         detail: "",
         isRisky: true,
-        explanation: "Cette publication est risquee !",
-        infoTitle: "Pourquoi c'est risque ?",
+        explanation: "Cette publication est risquée !",
+        infoTitle: "Pourquoi c'est risqué ?",
         reasons: [
             "Tu annonces publiquement que ta maison sera vide",
             "Des cambrioleurs surveillent ce genre de posts",
-            "Mieux vaut partager APRES les vacances",
-            "Ou au moins en prive avec des amis proches"
+            "Mieux vaut partager APRÈS les vacances",
+            "Ou au moins en privé avec des amis proches"
         ]
     },
     {
         type: "INSTAGRAM",
         author: "@nature_lover",
         emoji: "🌅",
-        text: "Magnifique coucher de soleil a la montagne !",
-        detail: "Photo d'un paysage de montagne sans element identifiable",
+        text: "Magnifique coucher de soleil à la montagne !",
+        detail: "Photo d'un paysage de montagne sans élément identifiable",
         isRisky: false,
         explanation: "Cette publication est safe !",
         infoTitle: "Pourquoi c'est safe ?",
         reasons: [
             "Aucune information personnelle",
-            "Pas de localisation precise identifiable",
+            "Pas de localisation précise identifiable",
             "C'est juste un beau paysage",
-            "Partager la nature ne revele rien sur toi"
+            "Partager la nature ne révèle rien sur toi"
         ]
     },
     {
@@ -69,15 +69,15 @@ const publications = [
         author: "@max_live",
         emoji: "📍",
         text: "Au McDo avec les potes ! Venez nous rejoindre !",
-        detail: "Story avec localisation en temps reel activee",
+        detail: "Story avec localisation en temps réel activée",
         isRisky: true,
-        explanation: "Cette publication est risquee !",
-        infoTitle: "Pourquoi c'est risque ?",
+        explanation: "Cette publication est risquée !",
+        infoTitle: "Pourquoi c'est risqué ?",
         reasons: [
-            "Ta position exacte est visible en temps reel",
-            "N'importe qui peut savoir ou tu es maintenant",
+            "Ta position exacte est visible en temps réel",
+            "N'importe qui peut savoir où tu es maintenant",
             "Des personnes inconnues pourraient venir",
-            "Desactive la localisation en direct sur tes stories"
+            "Désactive la localisation en direct sur tes stories"
         ]
     },
     {
@@ -85,14 +85,14 @@ const publications = [
         author: "@student_life",
         emoji: "📝",
         text: "Trop fier de mes notes ce trimestre !",
-        detail: "Photo du bulletin avec nom complet, classe et ecole visibles",
+        detail: "Photo du bulletin avec nom complet, classe et école visibles",
         isRisky: true,
-        explanation: "Cette publication est risquee !",
-        infoTitle: "Pourquoi c'est risque ?",
+        explanation: "Cette publication est risquée !",
+        infoTitle: "Pourquoi c'est risqué ?",
         reasons: [
             "Ton nom complet est visible",
-            "On connait ton ecole et ta classe",
-            "Ces infos peuvent servir a l'usurpation d'identite",
+            "On connaît ton école et ta classe",
+            "Ces infos peuvent servir à l'usurpation d'identité",
             "Floute au moins ton nom si tu veux partager"
         ]
     },
@@ -100,31 +100,31 @@ const publications = [
         type: "TIKTOK",
         author: "@meme_master",
         emoji: "😂",
-        text: "Ce meme m'a tue ! Je partage avec vous",
-        detail: "Meme drole trouve sur Internet",
+        text: "Ce mème m'a tué ! Je partage avec vous",
+        detail: "Mème drôle trouvé sur Internet",
         isRisky: false,
         explanation: "Cette publication est safe !",
         infoTitle: "Pourquoi c'est safe ?",
         reasons: [
-            "Ce n'est pas tes donnees personnelles",
-            "Juste un contenu humoristique partage",
+            "Ce ne sont pas tes données personnelles",
+            "Juste un contenu humoristique partagé",
             "Aucune information sur toi",
-            "Partager des memes est inoffensif"
+            "Partager des mèmes est inoffensif"
         ]
     },
     {
         type: "SNAPCHAT",
         author: "@lonely_tonight",
         emoji: "🏡",
-        text: "Enfin seul(e) a la maison ce soir ! Parents en weekend, trop bien !",
+        text: "Enfin seul(e) à la maison ce soir ! Parents en weekend, trop bien !",
         detail: "",
         isRisky: true,
-        explanation: "Cette publication est risquee !",
-        infoTitle: "Pourquoi c'est risque ?",
+        explanation: "Cette publication est risquée !",
+        infoTitle: "Pourquoi c'est risqué ?",
         reasons: [
-            "Tu annonces que tu es seul(e) et vulnerable",
+            "Tu annonces que tu es seul(e) et vulnérable",
             "Tes parents sont absents = moins de surveillance",
-            "Des personnes malintentionnees surveillent ce genre de posts",
+            "Des personnes malintentionnées surveillent ce genre de posts",
             "Ne jamais annoncer publiquement quand tu es seul(e)"
         ]
     }
@@ -313,15 +313,15 @@ function showResults() {
     const percentage = (score / publications.length) * 100;
 
     if (percentage === 100) {
-        message = "Parfait ! Tu sais parfaitement proteger ta vie privee en ligne !";
+        message = "Parfait ! Tu sais parfaitement protéger ta vie privée en ligne !";
     } else if (percentage >= 75) {
-        message = "Excellent ! Tu as de bons reflexes pour proteger tes donnees.";
+        message = "Excellent ! Tu as de bons réflexes pour protéger tes données.";
     } else if (percentage >= 50) {
         message = "Pas mal ! Mais reste vigilant avant de publier.";
     } else if (percentage >= 25) {
-        message = "Attention ! Relis les conseils pour mieux proteger ta vie privee.";
+        message = "Attention ! Relis les conseils pour mieux protéger ta vie privée.";
     } else {
-        message = "Il faut etre plus prudent ! Chaque publication peut reveler des infos sur toi.";
+        message = "Il faut être plus prudent ! Chaque publication peut révéler des infos sur toi.";
     }
 
     scoreMessage.textContent = message;

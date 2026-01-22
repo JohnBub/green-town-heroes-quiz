@@ -3,17 +3,17 @@ const traces = [
     {
         time: "07h15",
         type: "🔍 Recherche Google",
-        detail: "\"meteo Lausanne\""
+        detail: "\"météo Lausanne\""
     },
     {
         time: "08h20",
         type: "📍 Position GPS",
-        detail: "Ecole de Montchoisi, Lausanne"
+        detail: "École de Montchoisi, Lausanne"
     },
     {
         time: "12h05",
         type: "💳 Achat Twint",
-        detail: "Boulangerie \"Le Pain Dore\" - CHF 4.50"
+        detail: "Boulangerie \"Le Pain Doré\" - CHF 4.50"
     },
     {
         time: "16h30",
@@ -23,60 +23,60 @@ const traces = [
     {
         time: "20h00",
         type: "📺 Connexion Netflix",
-        detail: "Visionnage de la serie \"Stranger Things\""
+        detail: "Visionnage de la série \"Stranger Things\""
     },
     {
         time: "22h30",
-        type: "💬 Derniere activite WhatsApp",
-        detail: "Message envoye a \"Maman\""
+        type: "💬 Dernière activité WhatsApp",
+        detail: "Message envoyé à \"Maman\""
     }
 ];
 
 // Questions about Lucas based on his traces
 const questions = [
     {
-        text: "Ou habite Lucas approximativement ?",
+        text: "Où habite Lucas approximativement ?",
         options: [
-            "A Geneve",
-            "Pres de Lausanne",
-            "A Zurich",
-            "A Berne"
+            "À Genève",
+            "Près de Lausanne",
+            "À Zurich",
+            "À Berne"
         ],
         correct: 1,
-        explanation: "La recherche meteo \"Lausanne\" a 7h15 + l'ecole a Lausanne indiquent qu'il habite dans cette region."
+        explanation: "La recherche météo \"Lausanne\" à 7h15 + l'école à Lausanne indiquent qu'il habite dans cette région."
     },
     {
         text: "Quel est probablement le hobby de Lucas ?",
         options: [
             "Le basket",
-            "Les jeux video",
+            "Les jeux vidéo",
             "Le football",
             "La natation"
         ],
         correct: 2,
-        explanation: "Sa photo Instagram a 16h30 le montre sur un terrain de football avec des amis."
+        explanation: "Sa photo Instagram à 16h30 le montre sur un terrain de football avec des amis."
     },
     {
-        text: "A quelle heure Lucas se couche-t-il probablement ?",
+        text: "À quelle heure Lucas se couche-t-il probablement ?",
         options: [
             "Vers 20h00",
             "Vers 21h00",
             "Vers 22h30",
-            "Apres minuit"
+            "Après minuit"
         ],
         correct: 2,
-        explanation: "Son dernier message WhatsApp est a 22h30, ce qui suggere qu'il se couche peu apres."
+        explanation: "Son dernier message WhatsApp est à 22h30, ce qui suggère qu'il se couche peu après."
     },
     {
         text: "Qu'a fait Lucas pendant sa pause de midi ?",
         options: [
-            "Il est rentre chez lui",
-            "Il a mange a la cantine",
-            "Il a achete quelque chose a la boulangerie",
-            "Il n'a rien mange"
+            "Il est rentré chez lui",
+            "Il a mangé à la cantine",
+            "Il a acheté quelque chose à la boulangerie",
+            "Il n'a rien mangé"
         ],
         correct: 2,
-        explanation: "L'achat Twint de CHF 4.50 a la boulangerie \"Le Pain Dore\" a 12h05 montre qu'il y a achete son repas."
+        explanation: "L'achat Twint de CHF 4.50 à la boulangerie \"Le Pain Doré\" à 12h05 montre qu'il y a acheté son repas."
     }
 ];
 
@@ -252,7 +252,7 @@ function selectAnswer(index, button, container) {
 
     const nextBtn = document.createElement('button');
     nextBtn.className = 'btn btn-primary';
-    nextBtn.textContent = currentQuestion < questions.length - 1 ? 'Question suivante' : 'Voir les resultats';
+    nextBtn.textContent = currentQuestion < questions.length - 1 ? 'Question suivante' : 'Voir les résultats';
     nextBtn.addEventListener('click', nextQuestion);
     nextContainer.appendChild(nextBtn);
 
@@ -279,13 +279,13 @@ function showResults() {
     const percentage = (score / questions.length) * 100;
 
     if (percentage === 100) {
-        scoreMessage.textContent = 'Parfait ! Tu as tout compris sur les traces numeriques de Lucas !';
+        scoreMessage.textContent = 'Parfait ! Tu as tout compris sur les traces numériques de Lucas !';
     } else if (percentage >= 75) {
-        scoreMessage.textContent = 'Excellent ! Tu sais bien analyser les traces numeriques.';
+        scoreMessage.textContent = 'Excellent ! Tu sais bien analyser les traces numériques.';
     } else if (percentage >= 50) {
-        scoreMessage.textContent = 'Pas mal ! Continue a t\'entrainer.';
+        scoreMessage.textContent = 'Pas mal ! Continue à t\'entraîner.';
     } else {
-        scoreMessage.textContent = 'Relis les traces attentivement et reessaie !';
+        scoreMessage.textContent = 'Relis les traces attentivement et réessaie !';
     }
 
     showScreen(resultsScreen);

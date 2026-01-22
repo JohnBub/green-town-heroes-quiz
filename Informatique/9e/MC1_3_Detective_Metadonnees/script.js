@@ -3,34 +3,34 @@ const photos = [
     {
         id: 1,
         visual: "🏞️📸",
-        description: "Selfie d'Emma dans un parc avec le lac Leman en arriere-plan",
+        description: "Selfie d'Emma dans un parc avec le lac Léman en arrière-plan",
         realMetadata: {
             hasGPS: true,
-            location: "Parc de la Grange, Geneve",
+            location: "Parc de la Grange, Genève",
             time: "14h32",
             device: "iPhone 14"
         },
         questions: [
             {
                 icon: "📍",
-                text: "Cette photo contient-elle des coordonnees GPS ?",
+                text: "Cette photo contient-elle des coordonnées GPS ?",
                 options: ["Oui", "Non"],
                 correct: 0,
-                explanation: "Les smartphones enregistrent automatiquement la position GPS dans les photos (sauf si desactive)"
+                explanation: "Les smartphones enregistrent automatiquement la position GPS dans les photos (sauf si désactivé)"
             },
             {
                 icon: "🕐",
-                text: "A quelle heure cette photo a-t-elle ete prise ?",
+                text: "À quelle heure cette photo a-t-elle été prise ?",
                 options: ["08h15", "14h32", "19h45", "23h10"],
                 correct: 1,
-                explanation: "L'heure exacte est toujours enregistree dans les metadonnees EXIF de la photo"
+                explanation: "L'heure exacte est toujours enregistrée dans les métadonnées EXIF de la photo"
             },
             {
                 icon: "📱",
                 text: "Quel appareil a pris cette photo ?",
                 options: ["Samsung Galaxy", "iPhone 14", "Appareil photo Canon", "Huawei"],
                 correct: 1,
-                explanation: "Le modele exact de l'appareil est enregistre dans les metadonnees"
+                explanation: "Le modèle exact de l'appareil est enregistré dans les métadonnées"
             }
         ]
     },
@@ -47,31 +47,31 @@ const photos = [
         questions: [
             {
                 icon: "📍",
-                text: "Cette photo contient-elle des coordonnees GPS ?",
+                text: "Cette photo contient-elle des coordonnées GPS ?",
                 options: ["Oui", "Non"],
                 correct: 0,
-                explanation: "Meme dans un restaurant, le GPS peut localiser precisement ou tu te trouves"
+                explanation: "Même dans un restaurant, le GPS peut localiser précisément où tu te trouves"
             },
             {
                 icon: "🕐",
-                text: "A quelle heure cette photo a-t-elle ete prise ?",
+                text: "À quelle heure cette photo a-t-elle été prise ?",
                 options: ["12h30", "15h00", "19h15", "21h45"],
                 correct: 2,
-                explanation: "Les metadonnees montrent que c'etait l'heure du diner"
+                explanation: "Les métadonnées montrent que c'était l'heure du dîner"
             },
             {
                 icon: "📱",
                 text: "Quel appareil a pris cette photo ?",
                 options: ["iPhone 12", "Google Pixel", "Samsung Galaxy S23", "OnePlus"],
                 correct: 2,
-                explanation: "Le Samsung Galaxy S23 est identifie dans les donnees EXIF"
+                explanation: "Le Samsung Galaxy S23 est identifié dans les données EXIF"
             }
         ]
     },
     {
         id: 3,
         visual: "🌅🏔️",
-        description: "Coucher de soleil en montagne pendant une randonnee",
+        description: "Coucher de soleil en montagne pendant une randonnée",
         realMetadata: {
             hasGPS: true,
             location: "Zermatt, altitude 2100m",
@@ -81,31 +81,31 @@ const photos = [
         questions: [
             {
                 icon: "📍",
-                text: "Cette photo contient-elle des coordonnees GPS ?",
+                text: "Cette photo contient-elle des coordonnées GPS ?",
                 options: ["Oui", "Non"],
                 correct: 0,
-                explanation: "Meme en montagne, le GPS fonctionne et enregistre ta position exacte !"
+                explanation: "Même en montagne, le GPS fonctionne et enregistre ta position exacte !"
             },
             {
                 icon: "🕐",
-                text: "A quelle heure cette photo a-t-elle ete prise ?",
+                text: "À quelle heure cette photo a-t-elle été prise ?",
                 options: ["06h30", "12h00", "17h15", "20h47"],
                 correct: 3,
-                explanation: "L'heure du coucher de soleil est precisement enregistree"
+                explanation: "L'heure du coucher de soleil est précisément enregistrée"
             },
             {
                 icon: "📱",
                 text: "Quel appareil a pris cette photo ?",
                 options: ["iPhone 13 Pro", "Appareil reflex Nikon", "GoPro", "Samsung Galaxy"],
                 correct: 0,
-                explanation: "L'iPhone 13 Pro est identifie comme l'appareil source"
+                explanation: "L'iPhone 13 Pro est identifié comme l'appareil source"
             }
         ]
     },
     {
         id: 4,
         visual: "🐕🏡",
-        description: "Photo du chien devant la maison avec la boite aux lettres visible",
+        description: "Photo du chien devant la maison avec la boîte aux lettres visible",
         realMetadata: {
             hasGPS: true,
             location: "Chemin des Roses 15, Nyon",
@@ -115,31 +115,31 @@ const photos = [
         questions: [
             {
                 icon: "📍",
-                text: "Cette photo contient-elle des coordonnees GPS ?",
+                text: "Cette photo contient-elle des coordonnées GPS ?",
                 options: ["Oui", "Non"],
                 correct: 0,
-                explanation: "ATTENTION : Cette photo revele ton adresse exacte via le GPS ET visuellement !"
+                explanation: "ATTENTION : Cette photo révèle ton adresse exacte via le GPS ET visuellement !"
             },
             {
                 icon: "🕐",
-                text: "A quelle heure cette photo a-t-elle ete prise ?",
+                text: "À quelle heure cette photo a-t-elle été prise ?",
                 options: ["07h00", "10h23", "14h45", "18h30"],
                 correct: 1,
-                explanation: "Les metadonnees montrent l'heure exacte de la prise de vue"
+                explanation: "Les métadonnées montrent l'heure exacte de la prise de vue"
             },
             {
                 icon: "📱",
                 text: "Quel appareil a pris cette photo ?",
                 options: ["iPhone 15", "Google Pixel 7", "Samsung Galaxy", "Xiaomi"],
                 correct: 1,
-                explanation: "Le Google Pixel 7 est enregistre dans les donnees EXIF"
+                explanation: "Le Google Pixel 7 est enregistré dans les données EXIF"
             }
         ]
     },
     {
         id: 5,
         visual: "🎮📺",
-        description: "Screenshot d'un jeu video sur la TV du salon",
+        description: "Screenshot d'un jeu vidéo sur la TV du salon",
         realMetadata: {
             hasGPS: false,
             location: "Non disponible",
@@ -149,24 +149,24 @@ const photos = [
         questions: [
             {
                 icon: "📍",
-                text: "Cette photo contient-elle des coordonnees GPS ?",
+                text: "Cette photo contient-elle des coordonnées GPS ?",
                 options: ["Oui", "Non"],
                 correct: 1,
-                explanation: "Les screenshots et photos d'ecran ne contiennent generalement pas de GPS (pas de capteur photo utilise)"
+                explanation: "Les screenshots et photos d'écran ne contiennent généralement pas de GPS (pas de capteur photo utilisé)"
             },
             {
                 icon: "🕐",
-                text: "A quelle heure cette photo a-t-elle ete prise ?",
+                text: "À quelle heure cette photo a-t-elle été prise ?",
                 options: ["15h20", "18h00", "22h58", "02h30"],
                 correct: 2,
-                explanation: "Meme un screenshot enregistre l'heure exacte !"
+                explanation: "Même un screenshot enregistre l'heure exacte !"
             },
             {
                 icon: "📱",
                 text: "Quel appareil a pris cette photo ?",
                 options: ["PlayStation 5", "Nintendo Switch", "iPhone 14 Pro Max", "PC"],
                 correct: 2,
-                explanation: "C'est le telephone qui a pris la photo de l'ecran, pas la console"
+                explanation: "C'est le téléphone qui a pris la photo de l'écran, pas la console"
             }
         ]
     }
@@ -341,7 +341,7 @@ function showPhotoFeedback() {
         feedbackHeader.textContent = "🤔 Peut mieux faire ! 1/3";
         feedbackHeader.className = 'feedback-header medium';
     } else {
-        feedbackHeader.textContent = "😬 A revoir ! 0/3";
+        feedbackHeader.textContent = "😬 À revoir ! 0/3";
         feedbackHeader.className = 'feedback-header bad';
     }
 
@@ -375,7 +375,7 @@ function showPhotoFeedback() {
 
     // Update button text for last photo
     if (currentPhoto === photos.length - 1) {
-        nextPhotoBtn.textContent = 'Voir les resultats';
+        nextPhotoBtn.textContent = 'Voir les résultats';
     } else {
         nextPhotoBtn.textContent = 'Photo suivante';
     }
@@ -404,24 +404,24 @@ function showResults() {
 
     if (percentage === 100) {
         badge.textContent = '🏆';
-        resultTitle.textContent = 'Expert en Metadonnees !';
-        scoreMessage.textContent = 'Incroyable ! Tu connais parfaitement les metadonnees cachees dans les photos !';
+        resultTitle.textContent = 'Expert en Métadonnées !';
+        scoreMessage.textContent = 'Incroyable ! Tu connais parfaitement les métadonnées cachées dans les photos !';
     } else if (percentage >= 80) {
         badge.textContent = '🥇';
-        resultTitle.textContent = 'Detective Confirme !';
-        scoreMessage.textContent = 'Excellent travail ! Tu sais bien analyser les informations cachees.';
+        resultTitle.textContent = 'Détective Confirmé !';
+        scoreMessage.textContent = 'Excellent travail ! Tu sais bien analyser les informations cachées.';
     } else if (percentage >= 60) {
         badge.textContent = '🥈';
-        resultTitle.textContent = 'Bon Enqueteur !';
-        scoreMessage.textContent = 'Pas mal ! Tu commences a comprendre les metadonnees.';
+        resultTitle.textContent = 'Bon Enquêteur !';
+        scoreMessage.textContent = 'Pas mal ! Tu commences à comprendre les métadonnées.';
     } else if (percentage >= 40) {
         badge.textContent = '🥉';
-        resultTitle.textContent = 'Detective Debutant';
-        scoreMessage.textContent = 'Continue a t\'entrainer pour mieux reperer les infos cachees !';
+        resultTitle.textContent = 'Détective Débutant';
+        scoreMessage.textContent = 'Continue à t\'entraîner pour mieux repérer les infos cachées !';
     } else {
         badge.textContent = '📚';
-        resultTitle.textContent = 'A Entrainer !';
-        scoreMessage.textContent = 'Les metadonnees sont un sujet complexe. Relis les explications et reessaie !';
+        resultTitle.textContent = 'À Entraîner !';
+        scoreMessage.textContent = 'Les métadonnées sont un sujet complexe. Relis les explications et réessaie !';
     }
 
     showScreen(resultsScreen);

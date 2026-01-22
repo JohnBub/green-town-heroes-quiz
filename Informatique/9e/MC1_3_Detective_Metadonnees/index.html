@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detective de Metadonnees - Informatique 9e</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🔍 Detective de Metadonnees</h1>
+            <p class="subtitle">Decouvre les informations cachees dans les photos !</p>
+        </header>
+
+        <!-- Start Screen -->
+        <div id="start-screen" class="screen active">
+            <div class="intro-card">
+                <div class="intro-icon">🕵️</div>
+                <h2>Ta mission</h2>
+                <p>Chaque photo que tu prends contient des <strong>metadonnees</strong> : des informations cachees comme la date, l'heure, le lieu (GPS) et meme le modele de ton telephone !</p>
+                <p>En tant que detective, tu vas analyser <strong>5 photos</strong> et deviner quelles informations elles contiennent.</p>
+                <div class="metadata-preview">
+                    <div class="meta-item">📍 Position GPS</div>
+                    <div class="meta-item">🕐 Date et heure</div>
+                    <div class="meta-item">📱 Appareil utilise</div>
+                </div>
+                <button id="start-btn" class="btn btn-primary">Commencer l'enquete</button>
+            </div>
+        </div>
+
+        <!-- Game Screen -->
+        <div id="game-screen" class="screen">
+            <div class="progress-bar">
+                <div class="progress-fill" id="progress-fill"></div>
+            </div>
+            <div class="stats">
+                <span>Photo <span id="current-photo">1</span>/5</span>
+                <span>Points: <span id="score">0</span>/15</span>
+            </div>
+
+            <!-- Photo Display -->
+            <div class="photo-card">
+                <div class="photo-frame" id="photo-frame">
+                    <div class="photo-visual" id="photo-visual"></div>
+                </div>
+                <p class="photo-description" id="photo-description">Description de la photo</p>
+            </div>
+
+            <!-- Questions -->
+            <div class="questions-container" id="questions-container">
+                <!-- Questions will be inserted here -->
+            </div>
+
+            <button id="check-btn" class="btn btn-primary" disabled>Verifier mes reponses</button>
+
+            <!-- Photo Feedback -->
+            <div id="photo-feedback" class="photo-feedback hidden">
+                <div class="feedback-header" id="feedback-header"></div>
+                <div class="feedback-details" id="feedback-details"></div>
+                <button id="next-photo-btn" class="btn btn-primary">Photo suivante</button>
+            </div>
+        </div>
+
+        <!-- Results Screen -->
+        <div id="results-screen" class="screen">
+            <div class="results-card">
+                <div class="badge-container">
+                    <div class="badge" id="badge"></div>
+                </div>
+                <h2 id="result-title">Resultats</h2>
+                <div class="final-score">
+                    <span id="final-score-value">0</span>/15
+                </div>
+                <p id="score-message"></p>
+
+                <div class="tips-section">
+                    <h3>Ce qu'il faut retenir :</h3>
+                    <ul class="tips-list">
+                        <li><span class="tip-icon">📍</span> Les photos contiennent souvent ta position GPS exacte</li>
+                        <li><span class="tip-icon">🕐</span> La date et l'heure sont toujours enregistrees</li>
+                        <li><span class="tip-icon">📱</span> Le modele de ton telephone est visible</li>
+                        <li><span class="tip-icon">⚙️</span> Tu peux desactiver les metadonnees dans les reglages</li>
+                        <li><span class="tip-icon">🔒</span> Avant de partager, pense aux infos cachees !</li>
+                    </ul>
+                </div>
+
+                <button id="restart-btn" class="btn btn-primary">Rejouer</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

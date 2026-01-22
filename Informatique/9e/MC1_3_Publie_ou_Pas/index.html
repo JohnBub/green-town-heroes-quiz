@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Publie ou Pas ? - Informatique 9e</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Publie ou Pas ?</h1>
+            <p class="subtitle">Apprends a proteger ta vie privee en ligne</p>
+        </header>
+
+        <!-- Start Screen -->
+        <div id="start-screen" class="screen active">
+            <div class="intro-card">
+                <div class="intro-icon">📱</div>
+                <h2>Bienvenue !</h2>
+                <p>Chaque jour, on publie des photos, des stories et des messages sur les reseaux sociaux. Mais <strong>certaines publications peuvent reveler des informations personnelles</strong> sans qu'on s'en rende compte !</p>
+                <p>Dans ce jeu, tu vas analyser <strong>8 publications</strong> et decider si elles sont <span class="safe-text">safe</span> ou <span class="risky-text">risquees</span>.</p>
+                <button id="start-btn" class="btn btn-primary">Commencer</button>
+            </div>
+        </div>
+
+        <!-- Game Screen -->
+        <div id="game-screen" class="screen">
+            <div class="progress-bar">
+                <div class="progress-fill" id="progress-fill"></div>
+            </div>
+            <div class="stats">
+                <span>Publication <span id="current-question">1</span>/8</span>
+                <span>Score: <span id="score">0</span></span>
+            </div>
+
+            <div class="publication-container">
+                <div class="publication-header">
+                    <span class="publication-type" id="publication-type">INSTAGRAM</span>
+                    <span class="publication-author" id="publication-author">@utilisateur</span>
+                </div>
+                <div class="publication-content" id="publication-content">
+                    <!-- Publication content will be inserted here -->
+                </div>
+            </div>
+
+            <div class="answer-buttons">
+                <button id="risky-btn" class="btn btn-risky">
+                    <span class="btn-icon">🔴</span>
+                    Risquee !
+                </button>
+                <button id="safe-btn" class="btn btn-safe">
+                    <span class="btn-icon">🟢</span>
+                    Safe
+                </button>
+            </div>
+
+            <!-- Feedback Modal -->
+            <div id="feedback-modal" class="modal hidden">
+                <div class="modal-content">
+                    <div class="feedback-icon" id="feedback-icon"></div>
+                    <h3 id="feedback-title"></h3>
+                    <p id="feedback-text"></p>
+                    <div class="info-box" id="info-box">
+                        <h4 id="info-title">Pourquoi ?</h4>
+                        <ul id="reasons-list"></ul>
+                    </div>
+                    <button id="next-btn" class="btn btn-primary">Suivant</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Results Screen -->
+        <div id="results-screen" class="screen">
+            <div class="results-card">
+                <h2>Resultats</h2>
+                <div class="final-score">
+                    <span id="final-score-value">0</span>/8
+                </div>
+                <p id="score-message"></p>
+
+                <div class="tips-section">
+                    <h3>Ce qu'il faut retenir :</h3>
+                    <ul class="tips-list">
+                        <li><span class="tip-icon">📍</span> Desactive la localisation avant de poster</li>
+                        <li><span class="tip-icon">🏠</span> Ne montre pas ton adresse ou l'interieur de ta maison</li>
+                        <li><span class="tip-icon">✈️</span> N'annonce pas tes absences a l'avance</li>
+                        <li><span class="tip-icon">🔒</span> Garde tes infos personnelles privees</li>
+                        <li><span class="tip-icon">🤔</span> Reflechis : qui peut voir ca ? Pour combien de temps ?</li>
+                        <li><span class="tip-icon">⏰</span> Une publication peut rester sur Internet pour toujours !</li>
+                    </ul>
+                </div>
+
+                <button id="restart-btn" class="btn btn-primary">Rejouer</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

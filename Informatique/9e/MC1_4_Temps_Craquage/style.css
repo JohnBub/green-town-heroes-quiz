@@ -300,6 +300,126 @@ h1 {
     font-size: 0.95em;
 }
 
+/* Steps de calcul detailles */
+.calc-step {
+    background: #0f172a;
+    border-radius: 8px;
+    padding: 12px 15px;
+    margin-bottom: 10px;
+    border-left: 3px solid #334155;
+    transition: border-color 0.3s ease;
+}
+
+.calc-step:hover {
+    border-left-color: #14b8a6;
+}
+
+.calc-step.calc-final {
+    border-left-color: #14b8a6;
+    background: linear-gradient(145deg, #134e4a 0%, #0f172a 100%);
+}
+
+.step-number {
+    font-size: 1.1em;
+    margin-right: 8px;
+}
+
+.step-detail {
+    color: #64748b;
+    font-size: 0.9em;
+    font-style: italic;
+}
+
+.calc-formula {
+    font-family: 'Courier New', monospace;
+    color: #22d3ee;
+    font-size: 1em;
+    display: block;
+    margin: 5px 0 5px 28px;
+}
+
+.calc-formula sup {
+    font-size: 0.8em;
+    color: #f59e0b;
+}
+
+.calc-result {
+    color: #22c55e;
+    font-weight: bold;
+}
+
+.time-highlight {
+    color: #14b8a6;
+    font-weight: bold;
+    font-size: 1.2em;
+    text-shadow: 0 0 10px rgba(20, 184, 166, 0.5);
+}
+
+.calc-warning {
+    background: linear-gradient(145deg, #7f1d1d 0%, #450a0a 100%);
+    border-radius: 8px;
+    padding: 12px 15px;
+    margin-top: 15px;
+    border: 1px solid #ef4444;
+    color: #fca5a5;
+}
+
+/* Tech Context Box */
+.tech-context {
+    background: linear-gradient(145deg, #1e293b 0%, #0f172a 100%);
+    border-radius: 15px;
+    padding: 20px;
+    margin-top: 20px;
+    border: 1px solid #334155;
+}
+
+.tech-context h3 {
+    color: #14b8a6;
+    margin-bottom: 15px;
+    font-size: 1.1em;
+    text-align: center;
+}
+
+.tech-context table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 15px;
+}
+
+.tech-context td {
+    padding: 10px 12px;
+    border-bottom: 1px solid #334155;
+}
+
+.tech-context tr:last-child td {
+    border-bottom: none;
+}
+
+.tech-context td:first-child {
+    color: #94a3b8;
+}
+
+.tech-context td:last-child {
+    color: #22d3ee;
+    font-family: 'Courier New', monospace;
+    text-align: right;
+    font-weight: bold;
+}
+
+.tech-context tr:nth-child(3) td:last-child {
+    color: #14b8a6;
+}
+
+.tech-context .key-message {
+    background: linear-gradient(145deg, #134e4a 0%, #0f172a 100%);
+    border-radius: 10px;
+    padding: 12px;
+    text-align: center;
+    color: #14b8a6;
+    font-weight: bold;
+    border: 1px solid #14b8a6;
+}
+
 /* Section conseils */
 .tips-section {
     background: linear-gradient(145deg, #134e4a 0%, #0f172a 100%);

@@ -286,6 +286,23 @@ function updateDisplay(analysis) {
     updateExplanation(analysis);
 }
 
+// Fonction pour formater les grands nombres de maniere lisible
+function formatLargeNumber(num) {
+    if (num >= 1e18) {
+        return (num / 1e18).toFixed(1) + ' trillions';
+    } else if (num >= 1e15) {
+        return (num / 1e15).toFixed(1) + ' quadrillions';
+    } else if (num >= 1e12) {
+        return (num / 1e12).toFixed(1) + ' billions';
+    } else if (num >= 1e9) {
+        return (num / 1e9).toFixed(1) + ' milliards';
+    } else if (num >= 1e6) {
+        return (num / 1e6).toFixed(1) + ' millions';
+    } else {
+        return num.toLocaleString('fr-CH');
+    }
+}
+
 function updateExplanation(analysis) {
     if (analysis.length === 0) {
         explanationText.innerHTML = 'Entre un mot de passe pour voir l\'analyse.';
@@ -294,27 +311,61 @@ function updateExplanation(analysis) {
 
     let explanation = '';
 
-    // Explication du calcul
-    explanation += `<strong>Taille du jeu de caracteres :</strong> ${analysis.charsetSize} possibilites par caractere<br>`;
-    explanation += `<em>(`;
-    if (analysis.hasLowercase) explanation += '26 minuscules';
-    if (analysis.hasUppercase) explanation += (analysis.hasLowercase ? ' + ' : '') + '26 majuscules';
-    if (analysis.hasNumbers) explanation += ((analysis.hasLowercase || analysis.hasUppercase) ? ' + ' : '') + '10 chiffres';
-    if (analysis.hasSymbols) explanation += ((analysis.hasLowercase || analysis.hasUppercase || analysis.hasNumbers) ? ' + ' : '') + '33 symboles';
-    explanation += `)</em><br><br>`;
+    // Etape 1: Jeu de caracteres
+    explanation += `<div class="calc-step">`;
+    explanation += `<span class="step-number">1️⃣</span>`;
+    explanation += `<strong>Jeu de caracteres : ${analysis.charsetSize}</strong><br>`;
+    explanation += `<span class="step-detail">(`;
+    const parts = [];
+    if (analysis.hasLowercase) parts.push('26 minuscules');
+    if (analysis.hasUppercase) parts.push('26 majuscules');
+    if (analysis.hasNumbers) parts.push('10 chiffres');
+    if (analysis.hasSymbols) parts.push('33 symboles');
+    explanation += parts.join(' + ');
+    explanation += `)</span></div>`;
 
-    explanation += `<strong>Combinaisons possibles :</strong> ${analysis.charsetSize}^${analysis.length} = `;
+    // Etape 2: Longueur
+    explanation += `<div class="calc-step">`;
+    explanation += `<span class="step-number">2️⃣</span>`;
+    explanation += `<strong>Longueur : ${analysis.length} caracteres</strong>`;
+    explanation += `</div>`;
 
-    if (analysis.possibleCombinations > 1e15) {
-        explanation += `${analysis.possibleCombinations.toExponential(2)} combinaisons<br><br>`;
+    // Etape 3: Calcul des combinaisons
+    explanation += `<div class="calc-step">`;
+    explanation += `<span class="step-number">3️⃣</span>`;
+    explanation += `<strong>Combinaisons possibles :</strong><br>`;
+    explanation += `<span class="calc-formula">${analysis.charsetSize}<sup>${analysis.length}</sup> = `;
+    explanation += `<span class="calc-result">${analysis.possibleCombinations.toLocaleString('fr-CH')}</span></span><br>`;
+    explanation += `<span class="step-detail">(${formatLargeNumber(analysis.possibleCombinations)} !)</span>`;
+    explanation += `</div>`;
+
+    // Etape 4: Vitesse d'attaque
+    explanation += `<div class="calc-step">`;
+    explanation += `<span class="step-number">4️⃣</span>`;
+    explanation += `<strong>Vitesse d'attaque : 10 milliards/sec</strong><br>`;
+    explanation += `<span class="step-detail">🖥️ GPU moderne (carte graphique type RTX 4090)</span>`;
+    explanation += `</div>`;
+
+    // Etape 5: Calcul du temps
+    const timeInSeconds = analysis.possibleCombinations / ATTEMPTS_PER_SECOND;
+    explanation += `<div class="calc-step calc-final">`;
+    explanation += `<span class="step-number">5️⃣</span>`;
+    explanation += `<strong>Calcul du temps :</strong><br>`;
+    explanation += `<span class="calc-formula">${formatLargeNumber(analysis.possibleCombinations)} ÷ 10 milliards</span><br>`;
+    explanation += `<span class="calc-formula">= <span class="calc-result">${timeInSeconds.toLocaleString('fr-CH', {maximumFractionDigits: 0})} secondes</span></span><br>`;
+    const formattedTime = formatTime(analysis.crackTimeSeconds);
+    if (formattedTime.unit) {
+        explanation += `<span class="calc-formula">≈ <span class="time-highlight">${formattedTime.value} ${formattedTime.unit}</span></span>`;
     } else {
-        explanation += `${analysis.possibleCombinations.toLocaleString('fr-FR')} combinaisons<br><br>`;
+        explanation += `<span class="calc-formula">≈ <span class="time-highlight">${formattedTime.value}</span></span>`;
     }
+    explanation += `</div>`;
 
-    explanation += `<strong>Vitesse de test :</strong> 10 milliards d'essais/seconde<br><br>`;
-
+    // Avertissement si pattern commun
     if (analysis.isCommonPattern) {
-        explanation += `<span style="color: #ef4444;"><strong>Attention :</strong> Ce mot de passe contient un pattern commun ou un mot connu ! Les hackers testent ces patterns en priorite, ce qui reduit drastiquement le temps de craquage.</span>`;
+        explanation += `<div class="calc-warning">`;
+        explanation += `<strong>⚠️ Attention :</strong> Ce mot de passe contient un pattern commun ou un mot connu ! Les hackers testent ces patterns en priorite, ce qui reduit drastiquement le temps de craquage.`;
+        explanation += `</div>`;
     }
 
     explanationText.innerHTML = explanation;

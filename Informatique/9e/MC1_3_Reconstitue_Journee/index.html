@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reconstitue la Journee - Informatique 9e</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🕵️ Reconstitue la Journee</h1>
+            <p class="subtitle">Analyse les traces numeriques pour decouvrir la journee de Lucas</p>
+        </header>
+
+        <!-- Start Screen -->
+        <div id="start-screen" class="screen active">
+            <div class="intro-card">
+                <div class="character">
+                    <div class="avatar">👦</div>
+                    <h2>Lucas, 13 ans</h2>
+                </div>
+                <p>Lucas a laisse des <strong>traces numeriques</strong> tout au long de sa journee : recherches Google, position GPS, achats, photos, connexions...</p>
+                <p>Ton objectif : <strong>reconstituer sa journee</strong> et repondre aux questions sur sa vie privee.</p>
+                <div class="warning-box">
+                    <span class="warning-icon">⚠️</span>
+                    <span>Tu vas voir combien d'infos on peut deduire de simples traces numeriques !</span>
+                </div>
+                <button id="start-btn" class="btn btn-primary">Commencer l'enquete</button>
+            </div>
+        </div>
+
+        <!-- Game Screen -->
+        <div id="game-screen" class="screen">
+            <!-- Phase 1: Timeline -->
+            <div id="phase-timeline" class="phase active">
+                <h2 class="phase-title">📋 Etape 1 : Les traces de Lucas</h2>
+                <p class="phase-instructions">Voici les traces numeriques laissees par Lucas. Lis-les attentivement !</p>
+
+                <div class="traces-container" id="traces-container">
+                    <!-- Traces will be inserted here -->
+                </div>
+
+                <button id="continue-btn" class="btn btn-primary">J'ai bien lu, continuer</button>
+            </div>
+
+            <!-- Phase 2: Questions -->
+            <div id="phase-questions" class="phase">
+                <h2 class="phase-title">🔍 Etape 2 : Que sais-tu sur Lucas ?</h2>
+                <p class="phase-instructions">Reponds aux questions grace aux traces numeriques que tu as analysees.</p>
+
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progress-fill"></div>
+                </div>
+                <div class="stats">
+                    <span>Question <span id="current-question">1</span>/4</span>
+                    <span>Score: <span id="score">0</span>/4</span>
+                </div>
+
+                <div class="question-container" id="question-container">
+                    <!-- Question will be inserted here -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Results Screen -->
+        <div id="results-screen" class="screen">
+            <div class="results-card">
+                <div class="result-header">
+                    <div class="result-icon">🎯</div>
+                    <h2>Enquete terminee !</h2>
+                </div>
+
+                <div class="final-score">
+                    <span id="final-score-value">0</span>/4
+                </div>
+                <p id="score-message"></p>
+
+                <div class="revelation-box">
+                    <h3>🤯 Ce qu'on sait sur Lucas grace a ses traces :</h3>
+                    <ul class="revelation-list">
+                        <li>📍 Il habite pres de Lausanne (recherche meteo + ecole)</li>
+                        <li>🏫 Il va a l'Ecole de Montchoisi</li>
+                        <li>⚽ Il joue au football (photo terrain)</li>
+                        <li>🍞 Il achete souvent a la boulangerie "Le Pain Dore"</li>
+                        <li>📺 Il regarde Stranger Things sur Netflix</li>
+                        <li>😴 Il se couche vers 22h30 (dernier message WhatsApp)</li>
+                        <li>💰 Il a un compte Twint</li>
+                    </ul>
+                </div>
+
+                <div class="moral-box">
+                    <p><strong>💡 A retenir :</strong> Avec seulement 6 traces numeriques, on peut reconstituer toute ta journee et connaitre tes habitudes, ton ecole, tes hobbies, et meme tes horaires de sommeil !</p>
+                </div>
+
+                <button id="restart-btn" class="btn btn-primary">Rejouer</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

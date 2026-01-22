@@ -3,15 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Trouve les Coordonnees - Informatique 9e</title>
+    <title>Trouve les Coordonnées - Informatique 9e</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="game-container">
         <!-- Start Screen -->
         <div id="start-screen" class="screen active">
-            <h1>Trouve les Coordonnees</h1>
-            <p class="subtitle">Quiz de vitesse - Carre de Polybe</p>
+            <h1>Trouve les Coordonnées</h1>
+            <p class="subtitle">Quiz de vitesse - Carré de Polybe</p>
 
             <div class="polybius-preview">
                 <table class="polybius-grid small">
@@ -41,11 +41,11 @@
                 <div class="mode-buttons">
                     <button class="mode-btn" data-mode="letter-to-coord">
                         <span class="mode-icon">A → 11</span>
-                        <span class="mode-name">Lettre → Coordonnees</span>
+                        <span class="mode-name">Lettre → Coordonnées</span>
                     </button>
                     <button class="mode-btn" data-mode="coord-to-letter">
                         <span class="mode-icon">11 → A</span>
-                        <span class="mode-name">Coordonnees → Lettre</span>
+                        <span class="mode-name">Coordonnées → Lettre</span>
                     </button>
                     <button class="mode-btn" data-mode="mixed">
                         <span class="mode-icon">?</span>
@@ -55,7 +55,7 @@
             </div>
 
             <div class="difficulty-selection">
-                <h3>Difficulte</h3>
+                <h3>Difficulté</h3>
                 <div class="difficulty-buttons">
                     <button class="diff-btn active" data-difficulty="easy">
                         <span>Facile</span>
@@ -67,7 +67,7 @@
                     </button>
                     <button class="diff-btn" data-difficulty="hard">
                         <span>Difficile</span>
-                        <small>Grille cachee, 5s par question</small>
+                        <small>Grille cachée, 5s par question</small>
                     </button>
                 </div>
             </div>
@@ -86,7 +86,7 @@
                     <span id="score">0</span>
                 </div>
                 <div class="streak-info">
-                    <span class="streak-label">Serie:</span>
+                    <span class="streak-label">Série :</span>
                     <span id="streak">0</span>
                     <span class="streak-fire" id="streak-fire"></span>
                 </div>
@@ -120,7 +120,7 @@
                 </div>
 
                 <div class="question-area">
-                    <div class="question-type" id="question-type">Trouve les coordonnees de:</div>
+                    <div class="question-type" id="question-type">Trouve les coordonnées de :</div>
                     <div class="question-display" id="question-display">A</div>
                 </div>
 
@@ -133,7 +133,7 @@
 
         <!-- Results Screen -->
         <div id="results-screen" class="screen">
-            <h2>Resultats</h2>
+            <h2>Résultats</h2>
 
             <div class="final-score">
                 <div class="score-circle">
@@ -145,7 +145,7 @@
             <div class="stats-grid">
                 <div class="stat-box">
                     <span class="stat-value" id="correct-count">0</span>
-                    <span class="stat-label">Bonnes reponses</span>
+                    <span class="stat-label">Bonnes réponses</span>
                 </div>
                 <div class="stat-box">
                     <span class="stat-value" id="wrong-count">0</span>
@@ -153,7 +153,7 @@
                 </div>
                 <div class="stat-box">
                     <span class="stat-value" id="best-streak">0</span>
-                    <span class="stat-label">Meilleure serie</span>
+                    <span class="stat-label">Meilleure série</span>
                 </div>
                 <div class="stat-box">
                     <span class="stat-value" id="avg-time">0s</span>

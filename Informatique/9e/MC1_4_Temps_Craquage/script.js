@@ -1,7 +1,7 @@
 // ===== CONFIGURATION =====
 const ATTEMPTS_PER_SECOND = 10000000000; // 10 milliards d'essais par seconde (attaque moderne)
 
-// Patterns communs qui reduisent significativement le temps de craquage
+// Patterns communs qui réduisent significativement le temps de craquage
 const COMMON_PATTERNS = [
     /^123456/,
     /^password/i,
@@ -14,7 +14,7 @@ const COMMON_PATTERNS = [
     /^dragon/i,
     /^master/i,
     /^\d{6,8}$/, // Dates
-    /^(.)\1+$/, // Caracteres repetes
+    /^(.)\1+$/, // Caractères répétés
     /^[a-z]+\d{2,4}$/i, // mot + chiffres
     /^(lundi|mardi|mercredi|jeudi|vendredi|samedi|dimanche)/i,
     /^(janvier|fevrier|mars|avril|mai|juin|juillet|aout|septembre|octobre|novembre|decembre)/i
@@ -23,15 +23,15 @@ const COMMON_PATTERNS = [
 const COMMON_WORDS = [
     'password', 'motdepasse', 'azerty', 'qwerty', 'admin', 'login', 'bienvenue',
     'soleil', 'amour', 'football', 'basketball', 'hockey', 'tennis',
-    'chocolat', 'bonbon', 'gateau', 'pizza', 'burger',
+    'chocolat', 'bonbon', 'gâteau', 'pizza', 'burger',
     'superman', 'batman', 'spiderman', 'ironman',
     'minecraft', 'fortnite', 'roblox', 'pokemon', 'mario', 'zelda',
     'dragon', 'tigre', 'lion', 'chien', 'chat', 'cheval',
     'paris', 'france', 'suisse', 'geneve', 'lausanne',
-    'ecole', 'classe', 'professeur', 'eleve'
+    'école', 'classe', 'professeur', 'élève'
 ];
 
-// ===== ELEMENTS DOM =====
+// ===== ÉLÉMENTS DOM =====
 const passwordInput = document.getElementById('passwordInput');
 const toggleVisibility = document.getElementById('toggleVisibility');
 const meterFill = document.getElementById('meterFill');
@@ -42,7 +42,7 @@ const timeIcon = document.getElementById('timeIcon');
 const crackTimeDisplay = document.querySelector('.crack-time-display');
 const analysisDetails = document.getElementById('analysisDetails');
 
-// Detail values
+// Valeurs de détail
 const lengthValue = document.getElementById('lengthValue');
 const lowercaseValue = document.getElementById('lowercaseValue');
 const uppercaseValue = document.getElementById('uppercaseValue');
@@ -51,11 +51,11 @@ const symbolsValue = document.getElementById('symbolsValue');
 const charsetValue = document.getElementById('charsetValue');
 const explanationText = document.getElementById('explanationText');
 
-// Tabs
+// Onglets
 const tabBtns = document.querySelectorAll('.tab-btn');
 const tabContents = document.querySelectorAll('.tab-content');
 
-// Quiz elements
+// Éléments du quiz
 const quizCards = document.querySelectorAll('.quiz-card');
 const quizNextBtn = document.getElementById('quizNextBtn');
 const quizRestartBtn = document.getElementById('quizRestartBtn');
@@ -95,14 +95,14 @@ function analyzePassword(password) {
     const hasNumbers = /[0-9]/.test(password);
     const hasSymbols = /[^a-zA-Z0-9]/.test(password);
 
-    // Calcul de la taille du jeu de caracteres
+    // Calcul de la taille du jeu de caractères
     let charsetSize = 0;
     if (hasLowercase) charsetSize += 26;
     if (hasUppercase) charsetSize += 26;
     if (hasNumbers) charsetSize += 10;
     if (hasSymbols) charsetSize += 33;
 
-    // Verification des patterns communs
+    // Vérification des patterns communs
     const isCommonPattern = COMMON_PATTERNS.some(pattern => pattern.test(password)) ||
                            COMMON_WORDS.some(word => password.toLowerCase().includes(word));
 
@@ -112,13 +112,13 @@ function analyzePassword(password) {
     // Calcul du temps de craquage
     let crackTimeSeconds = possibleCombinations / ATTEMPTS_PER_SECOND;
 
-    // Reduire le temps si pattern commun detecte
+    // Réduire le temps si pattern commun détecté
     if (isCommonPattern) {
         crackTimeSeconds = crackTimeSeconds / 1000000; // Division significative
         if (crackTimeSeconds < 0.001) crackTimeSeconds = 0.001;
     }
 
-    // Determiner la force
+    // Déterminer la force
     let strength;
     if (isCommonPattern || password.length < 6 || crackTimeSeconds < 1) {
         strength = 'instant';
@@ -148,7 +148,7 @@ function analyzePassword(password) {
 
 function formatTime(seconds) {
     if (seconds < 0.001) {
-        return { value: 'Instantane', unit: '' };
+        return { value: 'Instantané', unit: '' };
     }
     if (seconds < 1) {
         return { value: 'Moins d\'une seconde', unit: '' };
@@ -179,17 +179,17 @@ function formatTime(seconds) {
     }
     if (seconds < 86400 * 365 * 1000000) {
         const val = Math.round(seconds / (86400 * 365 * 100));
-        return { value: val, unit: val === 1 ? 'siecle' : 'siecles' };
+        return { value: val, unit: val === 1 ? 'siècle' : 'siècles' };
     }
     if (seconds < 86400 * 365 * 1000000000) {
         const val = Math.round(seconds / (86400 * 365 * 1000000));
-        return { value: val, unit: 'millions d\'annees' };
+        return { value: val, unit: 'millions d\'années' };
     }
     return { value: 'Virtuellement', unit: 'impossible' };
 }
 
 function updateDisplay(analysis) {
-    // Mettre a jour les valeurs de detail
+    // Mettre à jour les valeurs de détail
     lengthValue.textContent = analysis.length || '0';
 
     lowercaseValue.textContent = analysis.hasLowercase ? 'Oui' : 'Non';
@@ -206,7 +206,7 @@ function updateDisplay(analysis) {
 
     charsetValue.textContent = analysis.charsetSize || '0';
 
-    // Mettre a jour le metre de force
+    // Mettre à jour le mètre de force
     let meterWidth = 0;
     let meterColor = '#64748b';
     let strengthText = 'Entre un mot de passe';
@@ -215,27 +215,27 @@ function updateDisplay(analysis) {
         case 'instant':
             meterWidth = 15;
             meterColor = '#ef4444';
-            strengthText = 'Tres faible - Craque instantanement !';
+            strengthText = 'Très faible - Craqué instantanément !';
             break;
         case 'weak':
             meterWidth = 35;
             meterColor = '#f59e0b';
-            strengthText = 'Faible - Craque en quelques minutes/heures';
+            strengthText = 'Faible - Craqué en quelques minutes/heures';
             break;
         case 'medium':
             meterWidth = 55;
             meterColor = '#eab308';
-            strengthText = 'Moyen - Pourrait resister quelques jours';
+            strengthText = 'Moyen - Pourrait résister quelques jours';
             break;
         case 'strong':
             meterWidth = 75;
             meterColor = '#22c55e';
-            strengthText = 'Fort - Resisterait des annees';
+            strengthText = 'Fort - Résisterait des années';
             break;
         case 'very-strong':
             meterWidth = 100;
             meterColor = '#14b8a6';
-            strengthText = 'Tres fort - Pratiquement impossible a craquer';
+            strengthText = 'Très fort - Pratiquement impossible à craquer';
             break;
     }
 
@@ -244,7 +244,7 @@ function updateDisplay(analysis) {
     strengthLabel.textContent = strengthText;
     strengthLabel.style.color = meterColor;
 
-    // Mettre a jour l'affichage du temps
+    // Mettre à jour l'affichage du temps
     const formattedTime = formatTime(analysis.crackTimeSeconds);
     if (formattedTime.unit) {
         timeValue.textContent = `${formattedTime.value} ${formattedTime.unit}`;
@@ -252,25 +252,25 @@ function updateDisplay(analysis) {
         timeValue.textContent = formattedTime.value;
     }
 
-    // Mettre a jour l'icone et la classe
+    // Mettre à jour l'icône et la classe
     crackTimeDisplay.className = `crack-time-display ${analysis.strength}`;
 
     switch (analysis.strength) {
         case 'instant':
             timeIcon.innerHTML = '&#9888;'; // Warning
-            timeLabel.textContent = 'Tres dangereux !';
+            timeLabel.textContent = 'Très dangereux !';
             break;
         case 'weak':
             timeIcon.innerHTML = '&#128274;'; // Cadenas ouvert
-            timeLabel.textContent = 'Temps de craquage estime';
+            timeLabel.textContent = 'Temps de craquage estimé';
             break;
         case 'medium':
             timeIcon.innerHTML = '&#9202;'; // Horloge
-            timeLabel.textContent = 'Temps de craquage estime';
+            timeLabel.textContent = 'Temps de craquage estimé';
             break;
         case 'strong':
-            timeIcon.innerHTML = '&#128272;'; // Cle
-            timeLabel.textContent = 'Temps de craquage estime';
+            timeIcon.innerHTML = '&#128272;'; // Clé
+            timeLabel.textContent = 'Temps de craquage estimé';
             break;
         case 'very-strong':
             timeIcon.innerHTML = '&#128737;'; // Bouclier
@@ -282,11 +282,11 @@ function updateDisplay(analysis) {
             timeLabel.textContent = 'Entre un mot de passe';
     }
 
-    // Mettre a jour l'explication
+    // Mettre à jour l'explication
     updateExplanation(analysis);
 }
 
-// Fonction pour formater les grands nombres de maniere lisible
+// Fonction pour formater les grands nombres de manière lisible
 function formatLargeNumber(num) {
     if (num >= 1e18) {
         return (num / 1e18).toFixed(1) + ' trillions';
@@ -311,10 +311,10 @@ function updateExplanation(analysis) {
 
     let explanation = '';
 
-    // Etape 1: Jeu de caracteres
+    // Étape 1: Jeu de caractères
     explanation += `<div class="calc-step">`;
     explanation += `<span class="step-number">1️⃣</span>`;
-    explanation += `<strong>Jeu de caracteres : ${analysis.charsetSize}</strong><br>`;
+    explanation += `<strong>Jeu de caractères : ${analysis.charsetSize}</strong><br>`;
     explanation += `<span class="step-detail">(`;
     const parts = [];
     if (analysis.hasLowercase) parts.push('26 minuscules');
@@ -324,13 +324,13 @@ function updateExplanation(analysis) {
     explanation += parts.join(' + ');
     explanation += `)</span></div>`;
 
-    // Etape 2: Longueur
+    // Étape 2: Longueur
     explanation += `<div class="calc-step">`;
     explanation += `<span class="step-number">2️⃣</span>`;
-    explanation += `<strong>Longueur : ${analysis.length} caracteres</strong>`;
+    explanation += `<strong>Longueur : ${analysis.length} caractères</strong>`;
     explanation += `</div>`;
 
-    // Etape 3: Calcul des combinaisons
+    // Étape 3: Calcul des combinaisons
     explanation += `<div class="calc-step">`;
     explanation += `<span class="step-number">3️⃣</span>`;
     explanation += `<strong>Combinaisons possibles :</strong><br>`;
@@ -339,14 +339,14 @@ function updateExplanation(analysis) {
     explanation += `<span class="step-detail">(${formatLargeNumber(analysis.possibleCombinations)} !)</span>`;
     explanation += `</div>`;
 
-    // Etape 4: Vitesse d'attaque
+    // Étape 4: Vitesse d'attaque
     explanation += `<div class="calc-step">`;
     explanation += `<span class="step-number">4️⃣</span>`;
     explanation += `<strong>Vitesse d'attaque : 10 milliards/sec</strong><br>`;
     explanation += `<span class="step-detail">🖥️ GPU moderne (carte graphique type RTX 4090)</span>`;
     explanation += `</div>`;
 
-    // Etape 5: Calcul du temps
+    // Étape 5: Calcul du temps
     const timeInSeconds = analysis.possibleCombinations / ATTEMPTS_PER_SECOND;
     explanation += `<div class="calc-step calc-final">`;
     explanation += `<span class="step-number">5️⃣</span>`;
@@ -364,14 +364,14 @@ function updateExplanation(analysis) {
     // Avertissement si pattern commun
     if (analysis.isCommonPattern) {
         explanation += `<div class="calc-warning">`;
-        explanation += `<strong>⚠️ Attention :</strong> Ce mot de passe contient un pattern commun ou un mot connu ! Les hackers testent ces patterns en priorite, ce qui reduit drastiquement le temps de craquage.`;
+        explanation += `<strong>⚠️ Attention :</strong> Ce mot de passe contient un pattern commun ou un mot connu ! Les hackers testent ces patterns en priorité, ce qui réduit drastiquement le temps de craquage.`;
         explanation += `</div>`;
     }
 
     explanationText.innerHTML = explanation;
 }
 
-// ===== EVENEMENTS ANALYSEUR =====
+// ===== ÉVÉNEMENTS ANALYSEUR =====
 
 passwordInput.addEventListener('input', () => {
     const password = passwordInput.value;
@@ -387,17 +387,17 @@ toggleVisibility.addEventListener('click', () => {
         : '<span class="eye-icon">&#128065;</span>';
 });
 
-// ===== EVENEMENTS ONGLETS =====
+// ===== ÉVÉNEMENTS ONGLETS =====
 
 tabBtns.forEach(btn => {
     btn.addEventListener('click', () => {
         const tabId = btn.getAttribute('data-tab');
 
-        // Mettre a jour les boutons
+        // Mettre à jour les boutons
         tabBtns.forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
 
-        // Mettre a jour le contenu
+        // Mettre à jour le contenu
         tabContents.forEach(content => {
             content.classList.remove('active');
             if (content.id === tabId) {
@@ -423,7 +423,7 @@ function handleQuizAnswer(card, selectedOption) {
     const explanation = card.querySelector('.quiz-explanation');
     const options = card.querySelectorAll('.password-option');
 
-    // Desactiver tous les boutons
+    // Désactiver tous les boutons
     options.forEach(opt => opt.classList.add('disabled'));
 
     // Afficher les temps de craquage
@@ -436,7 +436,7 @@ function handleQuizAnswer(card, selectedOption) {
 
     if (isCorrect) {
         selectedOption.classList.add('correct');
-        feedback.textContent = 'Bravo ! Bonne reponse !';
+        feedback.textContent = 'Bravo ! Bonne réponse !';
         feedback.classList.add('success');
         quizScore++;
         quizScoreSpan.textContent = quizScore;
@@ -445,7 +445,7 @@ function handleQuizAnswer(card, selectedOption) {
         feedback.textContent = 'Oups ! Ce n\'est pas le bon choix.';
         feedback.classList.add('error');
 
-        // Montrer la bonne reponse
+        // Montrer la bonne réponse
         options.forEach(opt => {
             if (opt.getAttribute('data-correct') === 'true') {
                 opt.classList.add('correct');
@@ -459,7 +459,7 @@ function handleQuizAnswer(card, selectedOption) {
     setTimeout(() => {
         quizNextBtn.style.display = 'block';
         if (currentQuestion === totalQuestions) {
-            quizNextBtn.textContent = 'Voir le resultat';
+            quizNextBtn.textContent = 'Voir le résultat';
         }
     }, 800);
 }
@@ -485,13 +485,13 @@ function showQuizResult() {
 
     let message = '';
     if (quizScore === 6) {
-        message = 'Parfait ! Tu maitrises completement les concepts de securite des mots de passe !';
+        message = 'Parfait ! Tu maîtrises complètement les concepts de sécurité des mots de passe !';
     } else if (quizScore >= 4) {
-        message = 'Tres bien ! Tu comprends bien ce qui rend un mot de passe difficile a craquer.';
+        message = 'Très bien ! Tu comprends bien ce qui rend un mot de passe difficile à craquer.';
     } else if (quizScore >= 2) {
-        message = 'Pas mal ! Continue a explorer l\'analyseur pour mieux comprendre.';
+        message = 'Pas mal ! Continue à explorer l\'analyseur pour mieux comprendre.';
     } else {
-        message = 'Utilise l\'analyseur pour experimenter avec differents mots de passe !';
+        message = 'Utilise l\'analyseur pour expérimenter avec différents mots de passe !';
     }
     resultMessage.textContent = message;
 

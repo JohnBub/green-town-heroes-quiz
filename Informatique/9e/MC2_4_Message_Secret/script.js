@@ -19,43 +19,43 @@ for (const [letter, code] of Object.entries(polybiusSquare)) {
 const missions = [
     {
         title: "L'Espion",
-        story: "Tu es un espion grec. Tu recois ce message secret de ton contact a Athenes. Decode-le pour connaitre le lieu du rendez-vous...",
+        story: "Tu es un espion grec. Tu reçois ce message secret de ton contact à Athènes. Décode-le pour connaître le lieu du rendez-vous...",
         coded: "43 15 13 42 15 44",
         answer: "SECRET",
-        success: "Bravo! Le rendez-vous secret est confirme! Ton contact t'attend a minuit.",
+        success: "Bravo ! Le rendez-vous secret est confirmé ! Ton contact t'attend à minuit.",
         failure: "Ce n'est pas le bon message. Ton contact attend toujours..."
     },
     {
-        title: "Le Tresor",
-        story: "Une vieille carte contient ces coordonnees mysterieuses. On dit qu'elles menent a un tresor cache par les anciens Grecs...",
+        title: "Le Trésor",
+        story: "Une vieille carte contient ces coordonnées mystérieuses. On dit qu'elles mènent à un trésor caché par les anciens Grecs...",
         coded: "44 42 15 43 34 42",
         answer: "TRESOR",
-        success: "Tu as trouve l'indice vers le tresor! La carte revele un chemin secret.",
-        failure: "Ce n'est pas le bon mot. Le tresor reste cache..."
+        success: "Tu as trouvé l'indice vers le trésor ! La carte révèle un chemin secret.",
+        failure: "Ce n'est pas le bon mot. Le trésor reste caché..."
     },
     {
         title: "Le Code Militaire",
-        story: "Le general Spartiate envoie des ordres urgents a ses troupes. En tant que messager, tu dois decoder ces instructions vitales...",
+        story: "Le général Spartiate envoie des ordres urgents à ses troupes. En tant que messager, tu dois décoder ces instructions vitales...",
         coded: "11 44 44 11 41 45 15",
         answer: "ATTAQUE",
-        success: "Les troupes se preparent! L'ordre est transmis avec succes.",
+        success: "Les troupes se préparent! L'ordre est transmis avec succès.",
         failure: "L'ordre n'est pas compris. Les troupes attendent..."
     },
     {
-        title: "Le Message d'Amitie",
-        story: "Ton ami d'une cite voisine t'envoie un message code. Meme en temps de guerre, l'amitie traverse les frontieres...",
+        title: "Le Message d'Amitié",
+        story: "Ton ami d'une cité voisine t'envoie un message codé. Même en temps de guerre, l'amitié traverse les frontières...",
         coded: "43 11 31 45 44",
         answer: "SALUT",
-        success: "Ton ami te salue! L'amitie est plus forte que tout.",
+        success: "Ton ami te salue ! L'amitié est plus forte que tout.",
         failure: "Tu n'as pas compris le message de ton ami..."
     },
     {
         title: "Le Mot de Passe",
-        story: "Pour entrer dans la base secrete de la resistance, tu dois decoder le mot de passe. Une seule chance...",
+        story: "Pour entrer dans la base secrète de la résistance, tu dois décoder le mot de passe. Une seule chance...",
         coded: "31 24 12 15 42 44 15",
         answer: "LIBERTE",
-        success: "La porte s'ouvre! Mission accomplie! Tu es un veritable agent secret!",
-        failure: "Mot de passe incorrect. La porte reste fermee..."
+        success: "La porte s'ouvre! Mission accomplie! Tu es un véritable agent secret!",
+        failure: "Mot de passe incorrect. La porte reste fermée..."
     }
 ];
 
@@ -230,20 +230,20 @@ function showResults() {
     let rank, rankEmoji;
 
     if (percentage >= 90) {
-        rank = "Agent Legendaire";
-        rankEmoji = "Excellent!";
+        rank = "Agent Légendaire";
+        rankEmoji = "Excellent !";
     } else if (percentage >= 70) {
-        rank = "Agent Elite";
-        rankEmoji = "Tres bien!";
+        rank = "Agent Élite";
+        rankEmoji = "Très bien !";
     } else if (percentage >= 50) {
-        rank = "Agent Confirme";
-        rankEmoji = "Bien!";
+        rank = "Agent Confirmé";
+        rankEmoji = "Bien !";
     } else if (percentage >= 30) {
         rank = "Agent Junior";
-        rankEmoji = "Continue!";
+        rankEmoji = "Continue !";
     } else {
-        rank = "Agent Debutant";
-        rankEmoji = "A ameliorer";
+        rank = "Agent Débutant";
+        rankEmoji = "À améliorer";
     }
 
     document.getElementById('final-rank').textContent = rank;
@@ -254,7 +254,7 @@ function showResults() {
     summary.textContent = ''; // Clear previous content
 
     const heading = document.createElement('h3');
-    heading.textContent = 'Resume des Missions:';
+    heading.textContent = 'Résumé des Missions:';
     summary.appendChild(heading);
 
     // Add completed missions

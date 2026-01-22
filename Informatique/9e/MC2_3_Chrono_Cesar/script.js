@@ -200,7 +200,7 @@ function checkAnswer() {
         // Wrong answer
         playSound('wrong');
 
-        feedback.textContent = `Reponse : ${correctAnswer}`;
+        feedback.textContent = `Réponse : ${correctAnswer}`;
         feedback.className = 'feedback wrong';
         feedback.classList.remove('hidden');
 

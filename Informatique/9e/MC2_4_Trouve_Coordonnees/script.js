@@ -222,7 +222,7 @@ function nextQuestion() {
 
     // Set question type text
     if (gameState.currentQuestion.type === 'letterToCoord') {
-        elements.questionType.textContent = 'Trouve les coordonnees de:';
+        elements.questionType.textContent = 'Trouve les coordonnées de :';
         elements.answerInput.maxLength = 2;
         elements.answerInput.placeholder = '??';
     } else {
@@ -338,7 +338,7 @@ function handleWrongAnswer(userAnswer) {
     // Record mistake
     gameState.mistakes.push({
         question: gameState.currentQuestion.question,
-        yourAnswer: userAnswer || 'Temps ecoule',
+        yourAnswer: userAnswer || 'Temps écoulé',
         correctAnswer: gameState.currentQuestion.answer,
         type: gameState.currentQuestion.type
     });
@@ -346,7 +346,7 @@ function handleWrongAnswer(userAnswer) {
     // Update UI
     elements.streak.textContent = '0';
     elements.answerInput.classList.add('wrong');
-    elements.feedback.textContent = 'Reponse: ' + gameState.currentQuestion.answer;
+    elements.feedback.textContent = 'Réponse : ' + gameState.currentQuestion.answer;
     elements.feedback.classList.add('wrong');
 
     // Highlight correct cell in red first, then show correct
@@ -446,7 +446,7 @@ function showResults() {
 
             const yourAnswerSpan = document.createElement('span');
             yourAnswerSpan.className = 'mistake-your';
-            yourAnswerSpan.textContent = 'Ta reponse: ' + mistake.yourAnswer;
+            yourAnswerSpan.textContent = 'Ta réponse : ' + mistake.yourAnswer;
 
             const correctAnswerSpan = document.createElement('span');
             correctAnswerSpan.className = 'mistake-correct';

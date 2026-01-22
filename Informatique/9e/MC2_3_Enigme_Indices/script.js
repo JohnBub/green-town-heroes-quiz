@@ -5,10 +5,10 @@ const puzzles = [
         decoded: "SECRET",
         shift: 3,
         hints: [
-            { text: "Le decalage est un nombre impair", points: 5 },
-            { text: "Le decalage est inferieur a 5", points: 5 },
-            { text: "Le decalage est +3 (chiffre de Cesar classique)", points: 5 },
-            { text: "La premiere lettre decodee est S", points: 5 }
+            { text: "Le décalage est un nombre impair", points: 5 },
+            { text: "Le décalage est inférieur à 5", points: 5 },
+            { text: "Le décalage est +3 (chiffre de César classique)", points: 5 },
+            { text: "La première lettre décodée est S", points: 5 }
         ]
     },
     {
@@ -16,8 +16,8 @@ const puzzles = [
         decoded: "ECOLE",
         shift: 3,
         hints: [
-            { text: "C'est un lieu ou tu vas chaque jour", points: 5 },
-            { text: "Le decalage est le meme que l'enigme precedente", points: 5 },
+            { text: "C'est un lieu où tu vas chaque jour", points: 5 },
+            { text: "Le décalage est le même que l'énigme précédente", points: 5 },
             { text: "Le mot a 5 lettres et commence par E", points: 5 },
             { text: "Tu y apprends des choses nouvelles", points: 5 }
         ]
@@ -27,10 +27,10 @@ const puzzles = [
         decoded: "JOUER",
         shift: 3,
         hints: [
-            { text: "C'est une activite amusante", points: 5 },
-            { text: "Le decalage est toujours +3", points: 5 },
+            { text: "C'est une activité amusante", points: 5 },
+            { text: "Le décalage est toujours +3", points: 5 },
             { text: "C'est un verbe du premier groupe", points: 5 },
-            { text: "On fait ca avec des jeux video", points: 5 }
+            { text: "On fait ça avec des jeux vidéo", points: 5 }
         ]
     },
     {
@@ -38,9 +38,9 @@ const puzzles = [
         decoded: "CODE",
         shift: 1,
         hints: [
-            { text: "Attention! Le decalage a change", points: 5 },
-            { text: "Le decalage est maintenant +1", points: 5 },
-            { text: "C'est ce que tu essaies de decoder!", points: 5 },
+            { text: "Attention ! Le décalage a changé", points: 5 },
+            { text: "Le décalage est maintenant +1", points: 5 },
+            { text: "C'est ce que tu essaies de décoder !", points: 5 },
             { text: "4 lettres, commence par C", points: 5 }
         ]
     },
@@ -49,9 +49,9 @@ const puzzles = [
         decoded: "ORDI",
         shift: 2,
         hints: [
-            { text: "Le decalage est un nombre pair", points: 5 },
-            { text: "Le decalage est +2", points: 5 },
-            { text: "Abreviation de 'ordinateur'", points: 5 },
+            { text: "Le décalage est un nombre pair", points: 5 },
+            { text: "Le décalage est +2", points: 5 },
+            { text: "Abréviation de 'ordinateur'", points: 5 },
             { text: "Tu l'utilises probablement en ce moment", points: 5 }
         ]
     },
@@ -60,9 +60,9 @@ const puzzles = [
         decoded: "BINAIRE",
         shift: 5,
         hints: [
-            { text: "Le decalage est le plus grand jusqu'ici", points: 5 },
-            { text: "Le decalage est +5", points: 5 },
-            { text: "Systeme de numeration avec 0 et 1", points: 5 },
+            { text: "Le décalage est le plus grand jusqu'ici", points: 5 },
+            { text: "Le décalage est +5", points: 5 },
+            { text: "Système de numération avec 0 et 1", points: 5 },
             { text: "Le langage des ordinateurs", points: 5 }
         ],
         encoded: "GNSFJWJ",
@@ -126,7 +126,7 @@ function loadPuzzle() {
     hintsUsed = 0;
 
     encodedText.textContent = puzzle.encoded;
-    hintsList.innerHTML = '<div class="hint-placeholder">Aucun indice revele</div>';
+    hintsList.innerHTML = '<div class="hint-placeholder">Aucun indice révélé</div>';
     hintsCount.textContent = `0/${puzzle.hints.length}`;
     answerInput.value = '';
     feedback.className = 'feedback';
@@ -185,7 +185,7 @@ function checkAnswer() {
     const userAnswer = answerInput.value.trim().toUpperCase();
 
     if (!userAnswer) {
-        showFeedback('Entrez une reponse', 'error');
+        showFeedback('Entrez une réponse', 'error');
         return;
     }
 
@@ -225,25 +225,25 @@ function showSuccess() {
 
     if (hintsUsed === 0) {
         successIcon.textContent = '🌟';
-        successTitle.textContent = 'Parfait!';
-        successMessage.textContent = 'Resolu sans aucun indice!';
+        successTitle.textContent = 'Parfait !';
+        successMessage.textContent = 'Résolu sans aucun indice !';
     } else if (hintsUsed <= 2) {
         successIcon.textContent = '🔓';
-        successTitle.textContent = 'Excellent!';
-        successMessage.textContent = `Resolu avec seulement ${hintsUsed} indice${hintsUsed > 1 ? 's' : ''}!`;
+        successTitle.textContent = 'Excellent !';
+        successMessage.textContent = `Résolu avec seulement ${hintsUsed} indice${hintsUsed > 1 ? 's' : ''} !`;
     } else {
         successIcon.textContent = '✓';
-        successTitle.textContent = 'Bien joue!';
-        successMessage.textContent = `Resolu avec ${hintsUsed} indices.`;
+        successTitle.textContent = 'Bien joué !';
+        successMessage.textContent = `Résolu avec ${hintsUsed} indices.`;
     }
 
     pointsEarned.textContent = `+${currentPoints} points`;
     solutionText.textContent = puzzle.decoded;
 
     if (currentPuzzle === puzzles.length - 1) {
-        nextBtn.textContent = 'Voir les Resultats';
+        nextBtn.textContent = 'Voir les Résultats';
     } else {
-        nextBtn.textContent = 'Enigme Suivante';
+        nextBtn.textContent = 'Énigme Suivante';
     }
 
     showScreen('success');
@@ -268,13 +268,13 @@ function showFinalScreen() {
     const percentage = (totalScore / maxScore) * 100;
 
     if (percentage >= 90) {
-        finalRating.textContent = '🌟 Detective Extraordinaire! Tu as un talent naturel pour le dechiffrement!';
+        finalRating.textContent = '🌟 Détective Extraordinaire ! Tu as un talent naturel pour le déchiffrement !';
         finalRating.className = 'final-rating excellent';
     } else if (percentage >= 70) {
-        finalRating.textContent = '🔍 Bon Detective! Tu maitrises bien les codes secrets!';
+        finalRating.textContent = '🔍 Bon Détective ! Tu maîtrises bien les codes secrets !';
         finalRating.className = 'final-rating good';
     } else {
-        finalRating.textContent = '📚 Apprenti Detective! Continue a t\'entrainer!';
+        finalRating.textContent = '📚 Apprenti Détective ! Continue à t\'entraîner !';
         finalRating.className = 'final-rating average';
     }
 

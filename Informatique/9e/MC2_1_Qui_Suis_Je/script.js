@@ -161,7 +161,7 @@ function loadQuestion() {
     answerReveal.classList.add('hidden');
 
     // Update counter
-    questionCounter.textContent = "Enigme " + (currentQuestionIndex + 1) + "/" + gameData.length;
+    questionCounter.textContent = "Énigme " + (currentQuestionIndex + 1) + "/" + gameData.length;
     currentScoreDisplay.textContent = totalScore;
     availablePointsDisplay.textContent = pointsPerHint[0];
 

@@ -9,13 +9,13 @@
 <body>
     <div class="container">
         <h1>Construis ton Mot de Passe</h1>
-        <p class="instructions">Apprends a creer un mot de passe solide etape par etape !</p>
+        <p class="instructions">Apprends à créer un mot de passe solide étape par étape !</p>
 
-        <!-- Etape 1: Phrase memorable -->
+        <!-- Étape 1: Phrase mémorable -->
         <div class="step-card active" data-step="1">
             <div class="step-header">
-                <span class="step-number">Etape 1</span>
-                <span class="step-title">Choisis une phrase memorable</span>
+                <span class="step-number">Étape 1</span>
+                <span class="step-title">Choisis une phrase mémorable</span>
             </div>
             <div class="step-content">
                 <p class="step-explanation">
@@ -23,7 +23,7 @@
                     Elle doit avoir au moins 6 mots.
                 </p>
                 <div class="input-group">
-                    <label for="phraseInput">Ta phrase secrete :</label>
+                    <label for="phraseInput">Ta phrase secrète :</label>
                     <input type="text" id="phraseInput" placeholder="Ex: J'aime jouer au foot le mercredi soir" maxlength="100">
                     <p class="hint">Astuce : Utilise une phrase personnelle que toi seul connais !</p>
                 </div>
@@ -31,16 +31,16 @@
             </div>
         </div>
 
-        <!-- Etape 2: Premieres lettres -->
+        <!-- Étape 2: Premières lettres -->
         <div class="step-card" data-step="2">
             <div class="step-header">
-                <span class="step-number">Etape 2</span>
-                <span class="step-title">Prends les premieres lettres</span>
+                <span class="step-number">Étape 2</span>
+                <span class="step-title">Prends les premières lettres</span>
             </div>
             <div class="step-content">
                 <p class="step-explanation">
-                    On garde uniquement la premiere lettre de chaque mot.
-                    Ca devient deja difficile a deviner !
+                    On garde uniquement la première lettre de chaque mot.
+                    Ça devient déjà difficile à deviner !
                 </p>
                 <div class="transformation-display">
                     <div class="transform-from">
@@ -51,18 +51,18 @@
                         <span class="arrow-icon">&#8595;</span>
                     </div>
                     <div class="transform-to">
-                        <span class="label">Premieres lettres :</span>
+                        <span class="label">Premières lettres :</span>
                         <span class="value password-preview" id="step2Result">-</span>
                     </div>
                 </div>
-                <button class="action-btn" id="step2Btn">Etape suivante</button>
+                <button class="action-btn" id="step2Btn">Étape suivante</button>
             </div>
         </div>
 
-        <!-- Etape 3: Ajouter des chiffres -->
+        <!-- Étape 3: Ajouter des chiffres -->
         <div class="step-card" data-step="3">
             <div class="step-header">
-                <span class="step-number">Etape 3</span>
+                <span class="step-number">Étape 3</span>
                 <span class="step-title">Ajoute des chiffres</span>
             </div>
             <div class="step-content">
@@ -90,20 +90,20 @@
                     <span class="sub-item">o &#8594; 0</span>
                     <span class="sub-item">s &#8594; 5</span>
                 </div>
-                <button class="action-btn" id="step3Btn">Etape suivante</button>
+                <button class="action-btn" id="step3Btn">Étape suivante</button>
             </div>
         </div>
 
-        <!-- Etape 4: Ajouter des caracteres speciaux -->
+        <!-- Étape 4: Ajouter des caractères spéciaux -->
         <div class="step-card" data-step="4">
             <div class="step-header">
-                <span class="step-number">Etape 4</span>
-                <span class="step-title">Ajoute des caracteres speciaux</span>
+                <span class="step-number">Étape 4</span>
+                <span class="step-title">Ajoute des caractères spéciaux</span>
             </div>
             <div class="step-content">
                 <p class="step-explanation">
-                    Les caracteres speciaux rendent ton mot de passe encore plus fort !
-                    Ajoute-en au debut, a la fin, ou au milieu.
+                    Les caractères spéciaux rendent ton mot de passe encore plus fort !
+                    Ajoute-en au début, à la fin, ou au milieu.
                 </p>
                 <div class="transformation-display">
                     <div class="transform-from">
@@ -114,7 +114,7 @@
                         <span class="arrow-icon">&#8595;</span>
                     </div>
                     <div class="transform-to">
-                        <span class="label">Avec caracteres speciaux :</span>
+                        <span class="label">Avec caractères spéciaux :</span>
                         <span class="value password-preview" id="step4Result">-</span>
                     </div>
                 </div>
@@ -128,20 +128,20 @@
                     <span class="char-option" data-char="*">*</span>
                     <span class="char-option selected" data-char="!">!</span>
                 </div>
-                <button class="action-btn" id="step4Btn">Etape suivante</button>
+                <button class="action-btn" id="step4Btn">Étape suivante</button>
             </div>
         </div>
 
-        <!-- Etape 5: Melanger majuscules/minuscules -->
+        <!-- Étape 5: Mélanger majuscules/minuscules -->
         <div class="step-card" data-step="5">
             <div class="step-header">
-                <span class="step-number">Etape 5</span>
-                <span class="step-title">Melange majuscules et minuscules</span>
+                <span class="step-number">Étape 5</span>
+                <span class="step-title">Mélange majuscules et minuscules</span>
             </div>
             <div class="step-content">
                 <p class="step-explanation">
                     La touche finale : alterner entre MAJUSCULES et minuscules
-                    rend le mot de passe presque impossible a deviner !
+                    rend le mot de passe presque impossible à deviner !
                 </p>
                 <div class="transformation-display">
                     <div class="transform-from">
@@ -156,13 +156,13 @@
                         <span class="value password-preview final" id="step5Result">-</span>
                     </div>
                 </div>
-                <button class="action-btn" id="step5Btn">Voir mon resultat</button>
+                <button class="action-btn" id="step5Btn">Voir mon résultat</button>
             </div>
         </div>
 
-        <!-- Resultat final -->
+        <!-- Résultat final -->
         <div class="result-card" id="resultCard">
-            <h2>Ton mot de passe est pret !</h2>
+            <h2>Ton mot de passe est prêt !</h2>
 
             <div class="final-password-display">
                 <span class="final-password" id="finalPassword">-</span>
@@ -180,13 +180,13 @@
                 <div class="strength-text" id="strengthText">-</div>
             </div>
 
-            <!-- Score detaille -->
+            <!-- Score détaillé -->
             <div class="score-details">
                 <h3>Analyse de ton mot de passe</h3>
                 <div class="score-items">
                     <div class="score-item" id="lengthScore">
                         <span class="score-icon">-</span>
-                        <span class="score-label">Longueur (<span id="pwdLength">0</span> caracteres)</span>
+                        <span class="score-label">Longueur (<span id="pwdLength">0</span> caractères)</span>
                     </div>
                     <div class="score-item" id="upperScore">
                         <span class="score-icon">-</span>
@@ -202,7 +202,7 @@
                     </div>
                     <div class="score-item" id="specialScore">
                         <span class="score-icon">-</span>
-                        <span class="score-label">Caracteres speciaux</span>
+                        <span class="score-label">Caractères spéciaux</span>
                     </div>
                 </div>
             </div>
@@ -213,23 +213,23 @@
                 <span class="score-max">/ 100 points</span>
             </div>
 
-            <!-- Message de felicitations -->
+            <!-- Message de félicitations -->
             <div class="victory-message" id="victoryMessage">
                 <p id="victoryText">-</p>
             </div>
 
             <!-- Conseils -->
             <div class="tips-section">
-                <h3>A retenir</h3>
+                <h3>À retenir</h3>
                 <ul class="tips-list">
-                    <li>Utilise au moins 12 caracteres</li>
-                    <li>Melange majuscules, minuscules, chiffres et symboles</li>
-                    <li>N'utilise jamais d'informations personnelles (date de naissance, prenom...)</li>
-                    <li>Utilise un mot de passe different pour chaque compte</li>
+                    <li>Utilise au moins 12 caractères</li>
+                    <li>Mélange majuscules, minuscules, chiffres et symboles</li>
+                    <li>N'utilise jamais d'informations personnelles (date de naissance, prénom...)</li>
+                    <li>Utilise un mot de passe différent pour chaque compte</li>
                 </ul>
             </div>
 
-            <button class="restart-btn" id="restartBtn">Creer un nouveau mot de passe</button>
+            <button class="restart-btn" id="restartBtn">Créer un nouveau mot de passe</button>
         </div>
 
         <!-- Barre de progression -->

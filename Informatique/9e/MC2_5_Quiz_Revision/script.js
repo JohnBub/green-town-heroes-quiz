@@ -4,117 +4,117 @@ const questions = [
     {
         id: 1,
         category: "Histoire (MC2_1)",
-        question: "Qui a invente le code Cesar?",
-        options: ["Jules Cesar", "Napoleon", "Alexandre", "Marc-Aurele"],
+        question: "Qui a inventé le code César?",
+        options: ["Jules César", "Napoleon", "Alexandre", "Marc-Aurele"],
         correctIndex: 0,
-        explanation: "Le code Cesar tient son nom de Jules Cesar qui l'utilisait pour ses communications militaires secretes dans l'Antiquite romaine."
+        explanation: "Le code César tient son nom de Jules César qui l'utilisait pour ses communications militaires secrètes dans l'Antiquité romaine."
     },
     {
         id: 2,
         category: "Histoire (MC2_1)",
-        question: "En quelle periode la machine Enigma a-t-elle ete utilisee?",
-        options: ["Moyen Age", "Renaissance", "Seconde Guerre mondiale", "Antiquite"],
+        question: "En quelle période la machine Enigma a-t-elle été utilisée?",
+        options: ["Moyen Age", "Renaissance", "Seconde Guerre mondiale", "Antiquité"],
         correctIndex: 2,
-        explanation: "La machine Enigma a ete utilisee par l'Allemagne nazie pendant la Seconde Guerre mondiale (1939-1945) pour chiffrer leurs communications militaires."
+        explanation: "La machine Enigma a été utilisée par l'Allemagne nazie pendant la Seconde Guerre mondiale (1939-1945) pour chiffrer leurs communications militaires."
     },
     {
         id: 3,
         category: "Histoire (MC2_1)",
-        question: "Qui a reussi a casser le code Enigma?",
+        question: "Qui a réussi à casser le code Enigma?",
         options: ["Einstein", "Newton", "Alan Turing", "Da Vinci"],
         correctIndex: 2,
-        explanation: "Alan Turing, mathematicien britannique, a dirige l'equipe qui a casse le code Enigma a Bletchley Park, contribuant significativement a la victoire des Allies."
+        explanation: "Alan Turing, mathématicien britannique, a dirigé l'équipe qui a cassé le code Enigma à Bletchley Park, contribuant significativement à la victoire des Alliés."
     },
     // César Cipher (MC2_2 & MC2_3) - Questions 4-6
     {
         id: 4,
-        category: "Code Cesar (MC2_2)",
-        question: "Avec un decalage de +3, que devient la lettre A?",
+        category: "Code César (MC2_2)",
+        question: "Avec un décalage de +3, que devient la lettre A?",
         options: ["B", "C", "D", "E"],
         correctIndex: 2,
-        explanation: "Avec un decalage de +3, A devient D (A+1=B, B+1=C, C+1=D). C'est le decalage classique utilise par Jules Cesar."
+        explanation: "Avec un décalage de +3, A devient D (A+1=B, B+1=C, C+1=D). C'est le décalage classique utilisé par Jules César."
     },
     {
         id: 5,
-        category: "Code Cesar (MC2_3)",
-        question: "Que signifie 'ERQMRXU' decode avec un decalage de -3?",
+        category: "Code César (MC2_3)",
+        question: "Que signifie 'ERQMRXU' décodé avec un décalage de -3?",
         options: ["BONSOIR", "BONJOUR", "MERCI", "SALUT"],
         correctIndex: 1,
-        explanation: "En decalant chaque lettre de -3: E devient B, R devient O, Q devient N, M devient J, R devient O, X devient U, U devient R = BONJOUR"
+        explanation: "En décalant chaque lettre de -3: E devient B, R devient O, Q devient N, M devient J, R devient O, X devient U, U devient R = BONJOUR"
     },
     {
         id: 6,
-        category: "Code Cesar (MC2_2)",
-        question: "Combien y a-t-il de decalages possibles dans le code Cesar?",
+        category: "Code César (MC2_2)",
+        question: "Combien y a-t-il de décalages possibles dans le code César?",
         options: ["10", "26", "52", "100"],
         correctIndex: 1,
-        explanation: "Il y a 26 decalages possibles, correspondant aux 26 lettres de l'alphabet. Un decalage de 26 revient a la lettre d'origine."
+        explanation: "Il y a 26 décalages possibles, correspondant aux 26 lettres de l'alphabet. Un décalage de 26 revient à la lettre d'origine."
     },
     // Polybius Square (MC2_4) - Questions 7-8
     {
         id: 7,
-        category: "Carre de Polybe (MC2_4)",
-        question: "Dans le carre de Polybe standard, quelle lettre correspond a '23'?",
+        category: "Carré de Polybe (MC2_4)",
+        question: "Dans le carré de Polybe standard, quelle lettre correspond à '23'?",
         options: ["G", "H", "I", "J"],
         correctIndex: 1,
-        explanation: "Dans le carre de Polybe, '23' signifie ligne 2, colonne 3. En comptant: ligne 2 = F,G,H,I/J,K et colonne 3 = H."
+        explanation: "Dans le carré de Polybe, '23' signifie ligne 2, colonne 3. En comptant: ligne 2 = F,G,H,I/J,K et colonne 3 = H."
     },
     {
         id: 8,
-        category: "Carre de Polybe (MC2_4)",
-        question: "Pourquoi le carre de Polybe n'a que 25 cases?",
-        options: ["Erreur historique", "I et J sont combines", "Le Z n'existe pas", "Pour faire 5x5"],
+        category: "Carré de Polybe (MC2_4)",
+        question: "Pourquoi le carré de Polybe n'a que 25 cases?",
+        options: ["Erreur historique", "I et J sont combinés", "Le Z n'existe pas", "Pour faire 5x5"],
         correctIndex: 1,
-        explanation: "Le carre de Polybe combine I et J dans la meme case pour obtenir 25 lettres qui s'arrangent parfaitement dans une grille 5x5."
+        explanation: "Le carré de Polybe combine I et J dans la même case pour obtenir 25 lettres qui s'arrangent parfaitement dans une grille 5x5."
     },
     // Modern Encryption (MC2_5) - Questions 9-10
     {
         id: 9,
         category: "Chiffrement moderne (MC2_5)",
-        question: "Quel est l'equivalent moderne du code Cesar?",
+        question: "Quel est l'équivalent moderne du code César?",
         options: ["Email", "AES/chiffrement moderne", "SMS", "WiFi"],
         correctIndex: 1,
-        explanation: "L'AES (Advanced Encryption Standard) est l'equivalent moderne du code Cesar, utilisant des algorithmes mathematiques complexes au lieu de simples decalages."
+        explanation: "L'AES (Advanced Encryption Standard) est l'équivalent moderne du code César, utilisant des algorithmes mathématiques complexes au lieu de simples décalages."
     },
     {
         id: 10,
         category: "Chiffrement moderne (MC2_5)",
         question: "Que signifie 'chiffrement de bout en bout'?",
         options: [
-            "Chiffre du debut a la fin du message",
-            "Seuls expediteur et destinataire peuvent lire",
+            "Chiffre du début à la fin du message",
+            "Seuls expéditeur et destinataire peuvent lire",
             "Utilise les deux bouts du clavier",
             "Double chiffrement"
         ],
         correctIndex: 1,
-        explanation: "Le chiffrement de bout en bout (E2E) garantit que seuls l'expediteur et le destinataire peuvent lire les messages, meme le fournisseur de service ne peut pas y acceder."
+        explanation: "Le chiffrement de bout en bout (E2E) garantit que seuls l'expéditeur et le destinataire peuvent lire les messages, même le fournisseur de service ne peut pas y accéder."
     },
     // Additional Questions - 11-15
     {
         id: 11,
-        category: "Code Cesar (MC2_2)",
-        question: "Quel est le principal defaut du code Cesar?",
+        category: "Code César (MC2_2)",
+        question: "Quel est le principal défaut du code César?",
         options: [
             "Il est trop lent",
-            "Il n'y a que 26 possibilites a tester",
+            "Il n'y a que 26 possibilités à tester",
             "Il ne fonctionne pas avec les chiffres",
-            "Il necessite un ordinateur"
+            "Il nécessite un ordinateur"
         ],
         correctIndex: 1,
-        explanation: "Le code Cesar est facile a casser car il n'y a que 26 decalages possibles. On peut tous les tester rapidement (attaque par force brute)."
+        explanation: "Le code César est facile à casser car il n'y a que 26 décalages possibles. On peut tous les tester rapidement (attaque par force brute)."
     },
     {
         id: 12,
-        category: "Carre de Polybe (MC2_4)",
-        question: "Quel est l'avantage du carre de Polybe par rapport au code Cesar?",
+        category: "Carré de Polybe (MC2_4)",
+        question: "Quel est l'avantage du carré de Polybe par rapport au code César?",
         options: [
             "Il est plus rapide",
             "Chaque lettre devient deux chiffres",
             "Il utilise des couleurs",
-            "Il ne necessite pas de cle"
+            "Il ne nécessite pas de clé"
         ],
         correctIndex: 1,
-        explanation: "Le carre de Polybe transforme chaque lettre en deux chiffres (coordonnees), ce qui permet de transmettre des messages par des signaux simples (lumieres, sons)."
+        explanation: "Le carré de Polybe transforme chaque lettre en deux chiffres (coordonnées), ce qui permet de transmettre des messages par des signaux simples (lumières, sons)."
     },
     {
         id: 13,
@@ -122,28 +122,28 @@ const questions = [
         question: "Quelle application utilise le chiffrement de bout en bout?",
         options: ["SMS classique", "WhatsApp", "Email standard", "Page web HTTP"],
         correctIndex: 1,
-        explanation: "WhatsApp utilise le chiffrement de bout en bout par defaut pour proteger la confidentialite des messages entre utilisateurs."
+        explanation: "WhatsApp utilise le chiffrement de bout en bout par défaut pour protéger la confidentialité des messages entre utilisateurs."
     },
     {
         id: 14,
         category: "Histoire (MC2_1)",
-        question: "Quel etait l'objectif principal du chiffrement dans l'histoire?",
+        question: "Quel était l'objectif principal du chiffrement dans l'histoire?",
         options: [
             "Divertir les gens",
-            "Proteger les secrets militaires",
-            "Creer des puzzles",
-            "Decorer les documents"
+            "Protéger les secrets militaires",
+            "Créer des puzzles",
+            "Décorer les documents"
         ],
         correctIndex: 1,
-        explanation: "Historiquement, le chiffrement a ete developpe principalement pour proteger les communications militaires et les secrets d'Etat."
+        explanation: "Historiquement, le chiffrement a été développé principalement pour protéger les communications militaires et les secrets d'État."
     },
     {
         id: 15,
         category: "Chiffrement moderne (MC2_5)",
-        question: "Que represente le 'S' dans HTTPS?",
-        options: ["Speed (vitesse)", "Secure (securise)", "Simple", "Standard"],
+        question: "Que représente le 'S' dans HTTPS?",
+        options: ["Speed (vitesse)", "Secure (sécurisé)", "Simple", "Standard"],
         correctIndex: 1,
-        explanation: "HTTPS signifie 'HyperText Transfer Protocol Secure'. Le 'S' indique que la connexion est chiffree et securisee grace au protocole TLS/SSL."
+        explanation: "HTTPS signifie 'HyperText Transfer Protocol Secure'. Le 'S' indique que la connexion est chiffrée et sécurisée grâce au protocole TLS/SSL."
     }
 ];
 
@@ -291,7 +291,7 @@ function selectAnswer(selectedIndex) {
 
     // Change button text for last question
     if (currentQuestionIndex === questions.length - 1) {
-        nextBtn.textContent = 'Voir les Resultats';
+        nextBtn.textContent = 'Voir les Résultats';
     } else {
         nextBtn.textContent = 'Question Suivante';
     }
@@ -335,15 +335,15 @@ function showResults() {
     let grade, message, gradeClass;
     if (percentScore >= 90) {
         grade = 'A';
-        message = 'Excellent! Tu maitrises parfaitement le chiffrement!';
+        message = 'Excellent! Tu maîtrises parfaitement le chiffrement!';
         gradeClass = 'grade-a';
     } else if (percentScore >= 80) {
         grade = 'B';
-        message = 'Tres bien! Tu as une bonne comprehension du sujet.';
+        message = 'Très bien! Tu as une bonne compréhension du sujet.';
         gradeClass = 'grade-b';
     } else if (percentScore >= 70) {
         grade = 'C';
-        message = 'Bien! Continue a reviser pour t\'ameliorer.';
+        message = 'Bien! Continue à réviser pour t\'améliorer.';
         gradeClass = 'grade-c';
     } else if (percentScore >= 60) {
         grade = 'D';
@@ -351,7 +351,7 @@ function showResults() {
         gradeClass = 'grade-d';
     } else {
         grade = 'F';
-        message = 'A reviser. Reprends le module depuis le debut.';
+        message = 'À réviser. Reprends le module depuis le début.';
         gradeClass = 'grade-f';
     }
 

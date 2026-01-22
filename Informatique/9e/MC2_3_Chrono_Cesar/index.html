@@ -3,27 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chrono Cesar - Informatique 9e</title>
+    <title>Chrono César - Informatique 9e</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="game-container">
         <!-- Start Screen -->
         <div id="start-screen" class="screen">
-            <h1>Chrono Cesar</h1>
-            <div class="subtitle">Defi de Chiffrement</div>
+            <h1>Chrono César</h1>
+            <div class="subtitle">Défi de Chiffrement</div>
 
             <div class="instructions">
                 <h2>Comment jouer ?</h2>
-                <p>Tu as <strong>60 secondes</strong> pour encoder un maximum de mots avec le chiffre de Cesar !</p>
+                <p>Tu as <strong>60 secondes</strong> pour encoder un maximum de mots avec le chiffre de César !</p>
                 <ul>
-                    <li>Un mot et un decalage s'affichent</li>
-                    <li>Tape le mot encode et valide avec Entree</li>
-                    <li>Chaque bonne reponse = <span class="points">+10 points</span></li>
-                    <li>Mauvaise reponse = on passe au suivant</li>
+                    <li>Un mot et un décalage s'affichent</li>
+                    <li>Tape le mot encodé et valide avec Entrée</li>
+                    <li>Chaque bonne réponse = <span class="points">+10 points</span></li>
+                    <li>Mauvaise réponse = on passe au suivant</li>
                 </ul>
                 <div class="example">
-                    <strong>Exemple :</strong> CHAT avec decalage +1 = DIBU
+                    <strong>Exemple :</strong> CHAT avec décalage +1 = DIBU
                 </div>
             </div>
 
@@ -49,18 +49,18 @@
 
             <div class="game-content">
                 <div class="word-display">
-                    <div class="word-label">Mot a encoder :</div>
+                    <div class="word-label">Mot à encoder :</div>
                     <div id="current-word" class="current-word">CHAT</div>
                 </div>
 
                 <div class="shift-display">
-                    <span class="shift-label">Decalage :</span>
+                    <span class="shift-label">Décalage :</span>
                     <span id="shift-value" class="shift-value">+3</span>
                 </div>
 
                 <div class="input-section">
                     <input type="text" id="answer-input" class="answer-input"
-                           placeholder="Tape ta reponse..." autocomplete="off" autofocus>
+                           placeholder="Tape ta réponse..." autocomplete="off" autofocus>
                     <button id="submit-btn" class="btn-submit">Valider</button>
                 </div>
 
@@ -74,7 +74,7 @@
 
         <!-- End Screen -->
         <div id="end-screen" class="screen hidden">
-            <h1>Temps ecoule !</h1>
+            <h1>Temps écoulé !</h1>
 
             <div class="final-stats">
                 <div class="stat-item">
@@ -83,11 +83,11 @@
                 </div>
                 <div class="stat-item">
                     <div class="stat-value" id="words-encoded">0</div>
-                    <div class="stat-label">Mots encodes</div>
+                    <div class="stat-label">Mots encodés</div>
                 </div>
                 <div class="stat-item">
                     <div class="stat-value" id="accuracy">0%</div>
-                    <div class="stat-label">Precision</div>
+                    <div class="stat-label">Précision</div>
                 </div>
             </div>
 

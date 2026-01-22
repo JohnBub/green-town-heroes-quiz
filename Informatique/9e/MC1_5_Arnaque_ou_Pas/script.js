@@ -4,18 +4,18 @@ const messages = [
         type: "EMAIL",
         sender: "concours-gagnant@promo-iphone.xyz",
         contentParts: [
-            { type: "highlight", text: "FELICITATIONS !!!" },
-            { type: "text", text: " Vous avez ete selectionne pour gagner un " },
+            { type: "highlight", text: "FÉLICITATIONS !!!" },
+            { type: "text", text: " Vous avez été sélectionné pour gagner un " },
             { type: "highlight", text: "iPhone 15 Pro GRATUIT" },
-            { type: "text", text: " ! Cliquez vite sur le lien ci-dessous pour reclamer votre prix : " },
+            { type: "text", text: " ! Cliquez vite sur le lien ci-dessous pour réclamer votre prix : " },
             { type: "link", text: "http://bit.ly/gagnez-iphone-now" }
         ],
         isScam: true,
         explanation: "C'est une arnaque classique de type 'loterie'.",
         flags: [
-            "Vous n'avez participe a aucun concours",
+            "Vous n'avez participé à aucun concours",
             "Adresse email suspecte (@promo-iphone.xyz)",
-            "Trop beau pour etre vrai (iPhone gratuit)",
+            "Trop beau pour être vrai (iPhone gratuit)",
             "Lien raccourci suspect (bit.ly)",
             "Ponctuation excessive et urgence"
         ]
@@ -28,9 +28,9 @@ const messages = [
             { type: "link", text: "http://bit.ly/colis-ch-2024" }
         ],
         isScam: true,
-        explanation: "Arnaque au faux colis tres repandue en Suisse.",
+        explanation: "Arnaque au faux colis très répandue en Suisse.",
         flags: [
-            "Vous n'attendez peut-etre pas de colis",
+            "Vous n'attendez peut-être pas de colis",
             "Lien raccourci suspect (bit.ly)",
             "Demande de paiement inattendue",
             "La Poste ne demande jamais de frais par SMS"
@@ -54,12 +54,12 @@ const messages = [
             { type: "text", text: "Swisscom SA" }
         ],
         isScam: false,
-        explanation: "Ce message est legitime.",
+        explanation: "Ce message est légitime.",
         flags: [
             "Adresse officielle (@swisscom.ch)",
             "Lien vers le site officiel (swisscom.ch)",
-            "Pas de demande urgente ou menacante",
-            "Montant realiste pour une facture mobile"
+            "Pas de demande urgente ou menaçante",
+            "Montant réaliste pour une facture mobile"
         ]
     },
     {
@@ -70,11 +70,11 @@ const messages = [
             { type: "break" },
             { type: "break" },
             { type: "text", text: "Votre compte PostFinance sera " },
-            { type: "highlight", text: "BLOQUE dans 24 heures" },
-            { type: "text", text: " si vous ne verifiez pas vos informations immediatement !" },
+            { type: "highlight", text: "BLOQUÉ dans 24 heures" },
+            { type: "text", text: " si vous ne vérifiez pas vos informations immédiatement !" },
             { type: "break" },
             { type: "break" },
-            { type: "text", text: "Cliquez ici pour eviter la fermeture: " },
+            { type: "text", text: "Cliquez ici pour éviter la fermeture: " },
             { type: "link", text: "http://postfinance-verify.com/secure" }
         ],
         isScam: true,
@@ -91,16 +91,16 @@ const messages = [
         type: "SMS",
         sender: "Ami inconnu",
         contentParts: [
-            { type: "text", text: "Salut c'est moi ! J'ai perdu mon telephone et je suis bloque. Tu peux m'envoyer 100 CHF sur ce compte IBAN? C'est urgent, je te rembourse demain promis ! CH93 0076 2011 6238 5295 7" }
+            { type: "text", text: "Salut c'est moi ! J'ai perdu mon telephone et je suis bloqué. Tu peux m'envoyer 100 CHF sur ce compte IBAN? C'est urgent, je te rembourse demain promis ! CH93 0076 2011 6238 5295 7" }
         ],
         isScam: true,
-        explanation: "Arnaque a l'usurpation d'identite.",
+        explanation: "Arnaque à l'usurpation d'identité.",
         flags: [
-            "Pas de nom precis ('c'est moi')",
+            "Pas de nom précis ('c'est moi')",
             "Demande d'argent urgente",
             "IBAN inconnu",
-            "Histoire peu credible",
-            "Toujours verifier par un autre moyen (appel, autre reseau social)"
+            "Histoire peu crédible",
+            "Toujours vérifier par un autre moyen (appel, autre réseau social)"
         ]
     },
     {
@@ -110,7 +110,7 @@ const messages = [
             { type: "text", text: "Bonjour," },
             { type: "break" },
             { type: "break" },
-            { type: "text", text: "Votre envoi numero 99.12.345678.90123456 sera livre demain entre 10h et 12h." },
+            { type: "text", text: "Votre envoi numéro 99.12.345678.90123456 sera livré demain entre 10h et 12h." },
             { type: "break" },
             { type: "break" },
             { type: "text", text: "Suivez votre envoi sur " },
@@ -120,10 +120,10 @@ const messages = [
             { type: "text", text: "La Poste Suisse" }
         ],
         isScam: false,
-        explanation: "Ce message est legitime.",
+        explanation: "Ce message est légitime.",
         flags: [
             "Adresse officielle (@post.ch)",
-            "Numero de suivi au format standard",
+            "Numéro de suivi au format standard",
             "Lien vers le site officiel (post.ch)",
             "Pas de demande de paiement ou d'informations"
         ]
@@ -137,20 +137,20 @@ const messages = [
             { type: "break" },
             { type: "text", text: "Je suis le Prince Abubakar du Nigeria. J'ai " },
             { type: "highlight", text: "10 millions de dollars" },
-            { type: "text", text: " bloques et j'ai besoin de votre aide pour les transferer. En echange, vous recevrez " },
+            { type: "text", text: " bloqués et j'ai besoin de votre aide pour les transférer. En échange, vous recevrez " },
             { type: "highlight", text: "30% de la somme" },
             { type: "text", text: "." },
             { type: "break" },
             { type: "break" },
-            { type: "text", text: "Envoyez-moi vos coordonnees bancaires pour commencer." }
+            { type: "text", text: "Envoyez-moi vos coordonnées bancaires pour commencer." }
         ],
         isScam: true,
-        explanation: "Arnaque nigeriane (419 scam) - une des plus anciennes sur internet !",
+        explanation: "Arnaque nigériane (419 scam) - une des plus anciennes sur internet !",
         flags: [
-            "Offre d'argent trop belle pour etre vraie",
-            "Demande de coordonnees bancaires",
-            "Histoire de 'prince' ou heritage bloque",
-            "Contact d'un inconnu avec une offre financiere",
+            "Offre d'argent trop belle pour être vraie",
+            "Demande de coordonnées bancaires",
+            "Histoire de 'prince' ou héritage bloqué",
+            "Contact d'un inconnu avec une offre financière",
             "Adresse email non officielle"
         ]
     },
@@ -158,13 +158,13 @@ const messages = [
         type: "SMS",
         sender: "CFF",
         contentParts: [
-            { type: "text", text: "Info CFF: Retard de 15 min sur votre train IC 721 Geneve-Zurich de 14h32. Nouvelle arrivee prevue: 17h17. Infos: cff.ch" }
+            { type: "text", text: "Info CFF: Retard de 15 min sur votre train IC 721 Genève-Zurich de 14h32. Nouvelle arrivée prévue: 17h17. Infos: cff.ch" }
         ],
         isScam: false,
-        explanation: "Ce message est legitime.",
+        explanation: "Ce message est légitime.",
         flags: [
-            "Expediteur officiel (CFF)",
-            "Information precise (numero de train, horaire)",
+            "Expéditeur officiel (CFF)",
+            "Information précise (numéro de train, horaire)",
             "Pas de lien cliquable suspect",
             "Pas de demande d'action ou de paiement"
         ]
@@ -173,12 +173,12 @@ const messages = [
         type: "EMAIL",
         sender: "support@netflix-billing.com",
         contentParts: [
-            { type: "text", text: "Votre abonnement Netflix a ete " },
+            { type: "text", text: "Votre abonnement Netflix a été " },
             { type: "highlight", text: "suspendu" },
-            { type: "text", text: " car votre paiement a echoue." },
+            { type: "text", text: " car votre paiement a échoué." },
             { type: "break" },
             { type: "break" },
-            { type: "text", text: "Pour continuer a profiter de Netflix, mettez a jour vos informations de paiement dans les " },
+            { type: "text", text: "Pour continuer à profiter de Netflix, mettez à jour vos informations de paiement dans les " },
             { type: "highlight", text: "48 heures" },
             { type: "text", text: ":" },
             { type: "break" },
@@ -190,8 +190,8 @@ const messages = [
         flags: [
             "Fausse adresse (netflix-billing.com au lieu de netflix.com)",
             "Lien vers un faux site",
-            "Limite de temps pour creer l'urgence",
-            "Demande de donnees de paiement",
+            "Limite de temps pour créer l'urgence",
+            "Demande de données de paiement",
             "Netflix vous contacterait via l'application"
         ]
     },
@@ -210,16 +210,16 @@ const messages = [
             { type: "text", text: " avec votre compte EDUGE pour vous inscrire." },
             { type: "break" },
             { type: "break" },
-            { type: "text", text: "Secretariat du College" }
+            { type: "text", text: "Secrétariat du Collège" }
         ],
         isScam: false,
-        explanation: "Ce message est legitime.",
+        explanation: "Ce message est légitime.",
         flags: [
             "Adresse officielle (@admin.eduge.ch)",
             "Lien vers le site officiel (edu.ge.ch)",
-            "Contexte coherent (ecole, inscriptions)",
-            "Pas de demande de donnees sensibles",
-            "Delai raisonnable (pas d'urgence excessive)"
+            "Contexte cohérent (école, inscriptions)",
+            "Pas de demande de données sensibles",
+            "Délai raisonnable (pas d'urgence excessive)"
         ]
     }
 ];
@@ -363,16 +363,16 @@ function showFeedback(isCorrect, msg) {
     feedbackTitle.textContent = isCorrect ? 'Correct !' : 'Incorrect !';
     feedbackTitle.className = isCorrect ? 'correct' : 'incorrect';
 
-    const answerType = msg.isScam ? 'une ARNAQUE' : 'un message LEGITIME';
-    feedbackText.textContent = `${msg.explanation} C'etait ${answerType}.`;
+    const answerType = msg.isScam ? 'une ARNAQUE' : 'un message LÉGITIME';
+    feedbackText.textContent = `${msg.explanation} C'était ${answerType}.`;
 
     // Set flags style based on scam or legit
     if (msg.isScam) {
         redFlags.classList.remove('legit-flags');
-        redFlags.querySelector('h4').textContent = 'Indices a reperer :';
+        redFlags.querySelector('h4').textContent = 'Indices à repérer :';
     } else {
         redFlags.classList.add('legit-flags');
-        redFlags.querySelector('h4').textContent = 'Signes de legitimite :';
+        redFlags.querySelector('h4').textContent = 'Signes de légitimité :';
     }
 
     // Populate flags safely
@@ -407,15 +407,15 @@ function showResults() {
     const percentage = (score / messages.length) * 100;
 
     if (percentage === 100) {
-        message = "Parfait ! Vous etes un expert en detection d'arnaques !";
+        message = "Parfait ! Vous êtes un expert en détection d'arnaques !";
     } else if (percentage >= 80) {
-        message = "Excellent ! Vous savez bien reperer les arnaques.";
+        message = "Excellent ! Vous savez bien repérer les arnaques.";
     } else if (percentage >= 60) {
         message = "Bien ! Mais restez vigilant face aux arnaques.";
     } else if (percentage >= 40) {
         message = "Attention ! Revoyez les signes d'arnaque.";
     } else {
-        message = "Il faut etre plus prudent ! Relisez les conseils.";
+        message = "Il faut être plus prudent ! Relisez les conseils.";
     }
 
     scoreMessage.textContent = message;

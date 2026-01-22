@@ -168,7 +168,7 @@ function checkAnswer() {
         score += points;
         scoreValue.textContent = score;
 
-        feedback.textContent = `Excellent! Le decalage est bien +${challenge.shift}. +${points} points`;
+        feedback.textContent = `Excellent ! Le décalage est bien +${challenge.shift}. +${points} points`;
         feedback.className = 'feedback correct';
 
         // Show the comparison animation
@@ -207,7 +207,7 @@ function showHint() {
     const origPos = firstOriginal.charCodeAt(0) - 65;
     const encPos = firstEncoded.charCodeAt(0) - 65;
 
-    hintText.textContent = `Indice: Compare les premieres lettres. ${firstOriginal} (position ${origPos}) devient ${firstEncoded} (position ${encPos}). Quelle est la difference?`;
+    hintText.textContent = `Indice : Compare les premières lettres. ${firstOriginal} (position ${origPos}) devient ${firstEncoded} (position ${encPos}). Quelle est la différence ?`;
     hintUsed = true;
 
     // Highlight the first letters in alphabet
@@ -227,13 +227,13 @@ function showResults() {
 
     let message = '';
     if (percentage >= 90) {
-        message = "Agent d'elite! Tu as parfaitement maitrise le decryptage par decalage!";
+        message = "Agent d'élite ! Tu as parfaitement maîtrisé le décryptage par décalage !";
     } else if (percentage >= 70) {
-        message = "Excellent travail, agent! Tu comprends bien le chiffrement de Cesar.";
+        message = "Excellent travail, agent ! Tu comprends bien le chiffrement de César.";
     } else if (percentage >= 50) {
-        message = "Bon debut, agent. Continue a t'entrainer pour devenir un expert!";
+        message = "Bon début, agent. Continue à t'entraîner pour devenir un expert !";
     } else {
-        message = "Mission d'entrainement necessaire. Revois la logique du decalage et reessaie!";
+        message = "Mission d'entraînement nécessaire. Revois la logique du décalage et réessaie !";
     }
 
     resultsMessage.textContent = message;

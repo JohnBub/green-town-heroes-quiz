@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phrase Builder Challenge</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F4F6F8;
+            color: #1a1a1a;
+            line-height: 1.6;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #ff7200, #ff9500);
+            padding: 24px;
+            color: white;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .header p {
+            font-size: 16px;
+            opacity: 0.9;
+        }
+
+        .content {
+            padding: 24px;
+        }
+
+        .section {
+            margin-bottom: 32px;
+        }
+
+        .section h2 {
+            font-size: 24px;
+            color: #1a1a1a;
+            margin-bottom: 16px;
+        }
+
+        .section h3 {
+            font-size: 20px;
+            color: #ff7200;
+            margin-bottom: 12px;
+        }
+
+        .tab-container {
+            background: #f8f9fa;
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 24px;
+        }
+
+        .tab-headers {
+            display: flex;
+            background: #e9ecef;
+        }
+
+        .tab-header {
+            flex: 1;
+            background: none;
+            border: none;
+            padding: 16px;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
+            color: #6c757d;
+            transition: all 0.3s ease;
+        }
+
+        .tab-header.active {
+            background: #ff7200;
+            color: white;
+        }
+
+        .tab-content {
+            display: none;
+            padding: 24px;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .phrase-list {
+            list-style: none;
+            margin: 16px 0;
+        }
+
+        .phrase-list li {
+            background: white;
+            margin: 8px 0;
+            padding: 12px 16px;
+            border-radius: 8px;
+            border: 1px solid #e9ecef;
+            font-size: 16px;
+        }
+
+        .phrase-list strong {
+            color: #ff7200;
+        }
+
+        .writing-steps {
+            background: #f8f9fa;
+            padding: 24px;
+            border-radius: 12px;
+            margin: 24px 0;
+        }
+
+        .writing-steps ol {
+            list-style: none;
+            counter-reset: step-counter;
+        }
+
+        .writing-steps li {
+            counter-increment: step-counter;
+            margin: 16px 0;
+            padding: 16px;
+            background: white;
+            border-radius: 8px;
+            position: relative;
+            padding-left: 60px;
+        }
+
+        .writing-steps li::before {
+            content: counter(step-counter);
+            position: absolute;
+            left: 16px;
+            top: 16px;
+            background: #ff7200;
+            color: white;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+        }
+
+        .game-section {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 24px;
+            margin-top: 32px;
+        }
+
+        .phrase-bank {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 24px;
+            border: 2px dashed #dee2e6;
+        }
+
+        .phrase-bank h4 {
+            color: #ff7200;
+            margin-bottom: 16px;
+            font-size: 18px;
+        }
+
+        .draggable-phrases {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .phrase-chip {
+            background: #ff7200;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: grab;
+            user-select: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .phrase-chip:hover {
+            background: #e65a00;
+            transform: translateY(-2px);
+        }
+
+        .phrase-chip.dragging {
+            opacity: 0.5;
+            transform: rotate(5deg);
+        }
+
+        .phrase-chip.used {
+            background: #6c757d;
+            cursor: not-allowed;
+        }
+
+        .sentence-builder {
+            margin: 24px 0;
+        }
+
+        .sentence-prompt {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 16px;
+            border-left: 4px solid #ff7200;
+        }
+
+        .sentence-prompt h5 {
+            color: #ff7200;
+            font-size: 16px;
+            margin-bottom: 8px;
+        }
+
+        .drop-zone {
+            min-height: 60px;
+            border: 2px dashed #dee2e6;
+            border-radius: 8px;
+            padding: 16px;
+            margin: 8px 0;
+            display: flex;
+            align-items: center;
+            background: #f8f9fa;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .drop-zone.drag-over {
+            border-color: #ff7200;
+            background: #fff5ec;
+        }
+
+        .drop-zone.filled {
+            background: #d4edda;
+            border-color: #28a745;
+        }
+
+        .drop-zone::before {
+            content: 'Drop phrase here...';
+            color: #6c757d;
+            font-style: italic;
+        }
+
+        .drop-zone.filled::before {
+            content: '';
+        }
+
+        .completion-text {
+            color: #1a1a1a;
+            margin-left: 8px;
+        }
+
+        .check-button {
+            background: #ff7200;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
+            margin: 16px 0;
+            transition: all 0.3s ease;
+        }
+
+        .check-button:hover {
+            background: #e65a00;
+            transform: translateY(-1px);
+        }
+
+        .check-button:disabled {
+            background: #6c757d;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .feedback {
+            padding: 16px;
+            border-radius: 8px;
+            margin: 16px 0;
+            font-weight: 500;
+        }
+
+        .feedback.correct {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .feedback.incorrect {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .reset-button {
+            background: #6c757d;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+            margin-left: 12px;
+            transition: background 0.3s ease;
+        }
+
+        .reset-button:hover {
+            background: #545b62;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 12px;
+            }
+
+            .content {
+                padding: 16px;
+            }
+
+            .header {
+                padding: 20px 16px;
+            }
+
+            .header h1 {
+                font-size: 24px;
+            }
+
+            .tab-headers {
+                flex-direction: column;
+            }
+
+            .tab-header {
+                padding: 12px;
+                text-align: center;
+            }
+
+            .draggable-phrases {
+                justify-content: center;
+            }
+
+            .phrase-chip {
+                font-size: 14px;
+                padding: 6px 12px;
+            }
+
+            .writing-steps li {
+                padding-left: 50px;
+            }
+
+            .writing-steps li::before {
+                width: 28px;
+                height: 28px;
+                left: 12px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Phrase Builder Challenge</h1>
+            <p>Build complete sentences by selecting the correct opinion phrase starter and completing the town
+                improvement suggestion</p>
+        </div>
+
+        <div class="content">
+            <div class="section">
+                <h2>Making a Change</h2>
+                <p>How do we express our ideas for a better town? We often use specific phrases to introduce our
+                    opinions and organize our suggestions.</p>
+            </div>
+
+            <div class="section">
+                <h3>Useful Phrases for Writing</h3>
+                <div class="tab-container">
+                    <div class="tab-headers">
+                        <button class="tab-header active" onclick="switchTab(1)">Giving Opinions</button>
+                        <button class="tab-header" onclick="switchTab(2)">Organizing Ideas</button>
+                    </div>
+                    <div class="tab-content active" id="tab-1">
+                        <ul class="phrase-list">
+                            <li><strong>In my opinion...</strong> (Selon moi...)</li>
+                            <li><strong>I believe...</strong> (Je crois que...)</li>
+                            <li><strong>In my view...</strong> (De mon point de vue...)</li>
+                            <li><strong>If you ask me...</strong> (Si vous voulez mon avis...)</li>
+                        </ul>
+                    </div>
+                    <div class="tab-content" id="tab-2">
+                        <ul class="phrase-list">
+                            <li><strong>First of all...</strong> (Tout d'abord...)</li>
+                            <li><strong>Secondly...</strong> (Deuxiémement...)</li>
+                            <li><strong>In addition...</strong> (De plus...)</li>
+                            <li><strong>Finally...</strong> (Enfin...)</li>
+                            <li><strong>To sum up...</strong> (Pour résumer...)</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="writing-steps">
+                <h3>Writing a Proposal</h3>
+                <p>When you write a blog post or a letter about your town, follow this structure:</p>
+                <ol>
+                    <li><strong>Identify the Problem:</strong> "There is too much litter in the park."</li>
+                    <li><strong>Make a Suggestion:</strong> "I think we should have more rubbish bins."</li>
+                    <li><strong>Explain the Impact (First Conditional):</strong> "If we have more bins, people won't
+                        drop litter on the ground."</li>
+                    <li><strong>Positive Ending:</strong> "To sum up, our town will be a better place for everyone!"
+                    </li>
+                </ol>
+            </div>
+
+            <div class="game-section">
+                <h3>🎯 Sentence Building Challenge</h3>
+                <p>Drag the correct phrase starters to complete meaningful sentences about town improvements:</p>
+
+                <div class="phrase-bank">
+                    <h4>📝 Phrase Bank</h4>
+                    <div class="draggable-phrases" id="phraseBank">
+                        <div class="phrase-chip" data-phrase="In my opinion">In my opinion</div>
+                        <div class="phrase-chip" data-phrase="I believe">I believe</div>
+                        <div class="phrase-chip" data-phrase="First of all">First of all</div>
+                        <div class="phrase-chip" data-phrase="In addition">In addition</div>
+                        <div class="phrase-chip" data-phrase="Finally">Finally</div>
+                        <div class="phrase-chip" data-phrase="To sum up">To sum up</div>
+                    </div>
+                </div>
+
+                <div class="sentence-builder">
+                    <div class="sentence-prompt">
+                        <h5>Sentence 1:</h5>
+                        <div class="drop-zone" data-correct="In my opinion" data-sentence="1"></div>
+                        <span class="completion-text">, we need more bicycle lanes in our town center.</span>
+                    </div>
+
+                    <div class="sentence-prompt">
+                        <h5>Sentence 2:</h5>
+                        <div class="drop-zone" data-correct="First of all" data-sentence="2"></div>
+                        <span class="completion-text">, we should install better street lighting for safety.</span>
+                    </div>
+
+                    <div class="sentence-prompt">
+                        <h5>Sentence 3:</h5>
+                        <div class="drop-zone" data-correct="In addition" data-sentence="3"></div>
+                        <span class="completion-text">, we could create more green spaces for families.</span>
+                    </div>
+
+                    <div class="sentence-prompt">
+                        <h5>Sentence 4:</h5>
+                        <div class="drop-zone" data-correct="Finally" data-sentence="4"></div>
+                        <span class="completion-text">, we should improve public transportation options.</span>
+                    </div>
+
+                    <div class="sentence-prompt">
+                        <h5>Sentence 5:</h5>
+                        <div class="drop-zone" data-correct="To sum up" data-sentence="5"></div>
+                        <span class="completion-text">, these changes will make our town a better place to live.</span>
+                    </div>
+                </div>
+
+                <button class="check-button" onclick="checkAnswers()" id="checkBtn">Check Answers</button>
+                <button class="reset-button" onclick="resetGame()" id="resetBtn">Reset</button>
+
+                <div id="feedback" class="feedback" style="display: none;"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let draggedElement = null;
+        let completedSentences = 0;
+
+        function switchTab(tabIndex) {
+            // Hide all tab contents
+            const allContents = document.querySelectorAll('.tab-content');
+            const allHeaders = document.querySelectorAll('.tab-header');
+
+            allContents.forEach(content => content.classList.remove('active'));
+            allHeaders.forEach(header => header.classList.remove('active'));
+
+            // Show selected tab
+            document.getElementById(`tab-${tabIndex}`).classList.add('active');
+            document.querySelectorAll('.tab-header')[tabIndex - 1].classList.add('active');
+        }
+
+        // Drag and drop functionality
+        document.addEventListener('DOMContentLoaded', function () {
+            const phrases = document.querySelectorAll('.phrase-chip');
+            const dropZones = document.querySelectorAll('.drop-zone');
+
+            // Add drag functionality to phrases
+            phrases.forEach(phrase => {
+                phrase.draggable = true;
+
+                phrase.addEventListener('dragstart', function (e) {
+                    if (this.classList.contains('used')) return false;
+                    draggedElement = this;
+                    this.classList.add('dragging');
+                    e.dataTransfer.effectAllowed = 'move';
+                    e.dataTransfer.setData('text/html', this.outerHTML);
+                });
+
+                phrase.addEventListener('dragend', function (e) {
+                    this.classList.remove('dragging');
+                });
+
+                // Touch events for mobile
+                phrase.addEventListener('touchstart', function (e) {
+                    if (this.classList.contains('used')) return;
+                    draggedElement = this;
+                    this.style.position = 'fixed';
+                    this.style.zIndex = '1000';
+                    this.style.pointerEvents = 'none';
+                    this.classList.add('dragging');
+                });
+
+                phrase.addEventListener('touchmove', function (e) {
+                    if (!draggedElement) return;
+                    e.preventDefault();
+                    const touch = e.touches[0];
+                    this.style.left = touch.clientX - 50 + 'px';
+                    this.style.top = touch.clientY - 20 + 'px';
+                });
+
+                phrase.addEventListener('touchend', function (e) {
+                    if (!draggedElement) return;
+
+                    const touch = e.changedTouches[0];
+                    const elementBelow = document.elementFromPoint(touch.clientX, touch.clientY);
+                    const dropZone = elementBelow?.closest('.drop-zone');
+
+                    if (dropZone && !dropZone.classList.contains('filled')) {
+                        handleDrop(dropZone);
+                    }
+
+                    this.style.position = '';
+                    this.style.zIndex = '';
+                    this.style.left = '';
+                    this.style.top = '';
+                    this.style.pointerEvents = '';
+                    this.classList.remove('dragging');
+                    draggedElement = null;
+                });
+            });
+
+            // Add drop functionality to drop zones
+            dropZones.forEach(zone => {
+                zone.addEventListener('dragover', function (e) {
+                    e.preventDefault();
+                    if (!this.classList.contains('filled')) {
+                        this.classList.add('drag-over');
+                    }
+                });
+
+                zone.addEventListener('dragleave', function (e) {
+                    this.classList.remove('drag-over');
+                });
+
+                zone.addEventListener('drop', function (e) {
+                    e.preventDefault();
+                    this.classList.remove('drag-over');
+
+                    if (draggedElement && !this.classList.contains('filled')) {
+                        handleDrop(this);
+                    }
+                });
+            });
+        });
+
+        function handleDrop(dropZone) {
+            if (!draggedElement || dropZone.classList.contains('filled')) return;
+
+            const phraseText = draggedElement.getAttribute('data-phrase');
+
+            // Add the phrase to the drop zone
+            dropZone.innerHTML = `<span style="background: #ff7200; color: white; padding: 4px 8px; border-radius: 4px; font-weight: 500;">${phraseText}</span>`;
+            dropZone.classList.add('filled');
+            dropZone.setAttribute('data-dropped', phraseText);
+
+            // Mark the original phrase as used
+            draggedElement.classList.add('used');
+            draggedElement.draggable = false;
+
+            completedSentences++;
+
+            // Enable check button when all sentences are completed
+            if (completedSentences >= 5) {
+                document.getElementById('checkBtn').disabled = false;
+            }
+        }
+
+        function checkAnswers() {
+            const dropZones = document.querySelectorAll('.drop-zone');
+            let correct = 0;
+            let total = dropZones.length;
+
+            dropZones.forEach(zone => {
+                const correctAnswer = zone.getAttribute('data-correct');
+                const droppedAnswer = zone.getAttribute('data-dropped');
+
+                if (droppedAnswer === correctAnswer) {
+                    zone.style.border = '2px solid #28a745';
+                    correct++;
+                } else {
+                    zone.style.border = '2px solid #dc3545';
+                }
+            });
+
+            const feedback = document.getElementById('feedback');
+            feedback.style.display = 'block';
+
+            if (correct === total) {
+                feedback.className = 'feedback correct';
+                feedback.innerHTML = `🎉 Excellent! You got all ${correct} sentences correct! You've mastered the art of using opinion phrases and organizing ideas effectively.`;
+            } else {
+                feedback.className = 'feedback incorrect';
+                feedback.innerHTML = `Good effort! You got ${correct} out of ${total} sentences correct. Review the phrase types and try again.`;
+            }
+
+            document.getElementById('checkBtn').disabled = true;
+        }
+
+        function resetGame() {
+            // Reset drop zones
+            const dropZones = document.querySelectorAll('.drop-zone');
+            dropZones.forEach(zone => {
+                zone.innerHTML = '';
+                zone.classList.remove('filled');
+                zone.removeAttribute('data-dropped');
+                zone.style.border = '';
+            });
+
+            // Reset phrases
+            const phrases = document.querySelectorAll('.phrase-chip');
+            phrases.forEach(phrase => {
+                phrase.classList.remove('used');
+                phrase.draggable = true;
+            });
+
+            // Reset counters and buttons
+            completedSentences = 0;
+            document.getElementById('checkBtn').disabled = true;
+            document.getElementById('feedback').style.display = 'none';
+        }
+    </script>
+
+    <!-- Script for responsive iframe height -->
+    <script>
+        // Adjust iframe height when the content changes
+        function adjustIframeHeight() {
+            const height = document.body.scrollHeight;
+            const interactionCode = 'math_eq_uylvct0y';
+
+            // Send message to parent window
+            window.parent.postMessage(
+                {
+                    interactionCode: interactionCode,
+                    type: 'SET_INSTRUCTION_HEIGHT',
+                    value: height,
+                },
+                '*'
+            );
+        }
+
+        // Use ResizeObserver for stable monitoring (no crash)
+        if (window.ResizeObserver) {
+            const observer = new ResizeObserver(() => {
+                adjustIframeHeight();
+            });
+            observer.observe(document.body);
+        } else {
+            // Fallback for very old browsers, but safer polling
+            setInterval(adjustIframeHeight, 2000);
+        }
+
+        // Run on page load and window resize
+        window.addEventListener('load', adjustIframeHeight);
+        window.addEventListener('resize', adjustIframeHeight);
+    </script>
+</body>
+
+</html>

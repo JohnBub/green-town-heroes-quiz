@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<!-- 
+    CITY GAME RESPONSIVE TEMPLATE
+    
+    INSTRUCTIONS:
+    1. Copy your game HTML (everything inside <body>) into the #app-wrapper div below.
+    2. If your game uses a different main container ID than "app-wrapper", update the ID in the specific CSS and JS at the bottom.
+    3. This template uses CSS Transforms to scale the ORIGINAL fixed layout (e.g. 500x650) to fit ANY screen width.
+-->
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>City Game (Responsive)</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Nunito:wght@400;600;700;800;900&display=swap"
+        rel="stylesheet">
+    <style>
+        /* --- CORE RESPONSIVE STYLES START --- */
+        body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            /* Aligns to top for scrolling if needed */
+            background-color: transparent;
+            /* Allows embed background to show */
+            overflow-x: hidden;
+            /* Prevent horizontal scrollbars */
+            font-family: 'Nunito', sans-serif;
+        }
+
+        #responsive-container {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            position: relative;
+            /* The height will be set by JS to match the scaled content */
+        }
+
+        #app-wrapper {
+            /* YOUR ORIGINAL FIXED DIMENSIONS HERE */
+            width: 500px;
+            height: 650px;
+
+            /* Essential for scaling */
+            flex-shrink: 0;
+            transform-origin: top center;
+            position: relative;
+
+            /* Visual styling (Example from VerbRunner) */
+            background: linear-gradient(180deg, #1a1a3e 0%, #0d1b2a 100%);
+            border-radius: 24px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+            border: 4px solid #2d3748;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* --- CORE RESPONSIVE STYLES END --- */
+
+
+        /* --- PASTE YOUR GAME CSS BELOW THIS LINE --- */
+        /* Example styles: */
+        .game-title {
+            text-align: center;
+            margin-top: 50px;
+            color: white;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 24px;
+        }
+
+        .placeholder-content {
+            color: #87ceeb;
+            text-align: center;
+            padding: 40px;
+            font-size: 18px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- The Responsive Container handles the layout space -->
+    <div id="responsive-container">
+
+        <!-- The App Wrapper is your game "card" -->
+        <div id="app-wrapper">
+            <!-- PASTE YOUR GAME CONTENT HERE -->
+            <h1 class="game-title">CITY GAME</h1>
+            <div class="placeholder-content">
+                <p>Paste your original City.html content here.</p>
+                <p>(The content inside body)</p>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        /* --- RESPONSIVE SCALING SCRIPT --- */
+        function scaleGame() {
+            const wrapper = document.getElementById('app-wrapper');
+            const container = document.getElementById('responsive-container');
+
+            // The design width of your game (match CSS)
+            const baseWidth = 500;
+            // The design height of your game (match CSS)
+            const baseHeight = 650;
+
+            // Get available width from window or parent
+            const availableWidth = window.innerWidth;
+            const availableHeight = window.innerHeight;
+
+            // Calculate scale to fit width (with some padding margin if needed, e.g. -20)
+            // We clamp scale at 1.0 to prevent pixelation on huge screens, remove Math.min if you want upscaling
+            let scale = Math.min(1, (availableWidth - 20) / baseWidth);
+
+            // If you also want to ensure it fits vertically in viewport:
+            // scale = Math.min(scale, (availableHeight - 20) / baseHeight);
+
+            // Apply scale
+            wrapper.style.transform = `scale(${scale})`;
+
+            // Adjust the container height effectively so content below flows correctly
+            container.style.height = `${baseHeight * scale}px`;
+
+            // Inform parent frame if embedded
+            if (window.parent) {
+                /* Optional: postMessage height update */
+            }
+        }
+
+        // Listen for resize events
+        window.addEventListener('resize', scaleGame);
+        window.addEventListener('load', scaleGame);
+        // Initial call
+        scaleGame();
+    </script>
+
+    <!-- PASTE YOUR GAME LOGIC SCRIPT HERE -->
+
+</body>
+
+</html>

@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<!-- 
+    CITY GAME - RESPONSIVE FIX
+    
+    The file was empty on disk, so I have initialized it with this RESPONSIVE TEMPLATE.
+    
+    INSTRUCTIONS:
+    1.  Find the comment "<!-- PASTE YOUR GAME CONTENT HERE -->" below.
+2. Paste your original game HTML there.
+3. This template is already set up to scale automatically to any screen width.
+-->
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>City Game (Responsive)</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Nunito:wght@400;600;700;800;900&display=swap"
+        rel="stylesheet">
+    <style>
+        /* --- CORE RESPONSIVE STYLES START --- */
+        body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            /* Aligns to top for scrolling if needed */
+            background-color: transparent;
+            /* Allows embed background to show */
+            overflow-x: hidden;
+            /* Prevent horizontal scrollbars */
+            font-family: 'Nunito', sans-serif;
+        }
+
+        #responsive-container {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            position: relative;
+        }
+
+        #app-wrapper {
+            /* YOUR ORIGINAL FIXED DIMENSIONS */
+            width: 500px;
+            height: 650px;
+
+            /* Essential for scaling */
+            flex-shrink: 0;
+            transform-origin: top center;
+            position: relative;
+
+            /* Default Styling (Matches VerbRunner style as placeholder) */
+            background: linear-gradient(180deg, #1a1a3e 0%, #0d1b2a 100%);
+            border-radius: 24px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+            border: 4px solid #2d3748;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* --- CORE RESPONSIVE STYLES END --- */
+
+
+        /* --- PASTE YOUR GAME CSS BELOW THIS LINE --- */
+        /* (If you have specific styles, add them here) */
+        .game-placeholder {
+            color: white;
+            text-align: center;
+            margin-top: 100px;
+            font-family: 'Press Start 2P', cursive;
+            line-height: 2;
+            padding: 20px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- The Responsive Container handles the layout space -->
+    <div id="responsive-container">
+
+        <!-- The App Wrapper is your game "card" -->
+        <div id="app-wrapper">
+
+            <!-- PASTE YOUR GAME CONTENT HERE -->
+            <!-- Replace this placeholder content with your actual game code -->
+            <div class="game-placeholder">
+                <h1>CITY GAME</h1>
+                <p>Paste your game code here!</p>
+                <p style="font-size: 12px; margin-top:20px; color: #87ceeb;">(I verified the file was empty, so I added
+                    this responsive wrapper for you)</p>
+            </div>
+
+        </div>
+
+    </div>
+
+    <script>
+        /* --- RESPONSIVE SCALING SCRIPT --- */
+        function scaleGame() {
+            const wrapper = document.getElementById('app-wrapper');
+            const container = document.getElementById('responsive-container');
+
+            // The design width of your game (Update if different)
+            const baseWidth = 500;
+            const baseHeight = 650;
+
+            // Get available width
+            const availableWidth = window.innerWidth;
+
+            // Calculate scale to fit width (with margin)
+            let scale = Math.min(1, (availableWidth - 20) / baseWidth);
+
+            // Apply scale
+            wrapper.style.transform = `scale(${scale})`;
+
+            // Adjust the container height so content flows correctly
+            container.style.height = `${baseHeight * scale}px`;
+
+            // Post message for iframe resizing if needed
+            if (window.parent) {
+                const height = document.body.scrollHeight;
+                // Choose a generic interaction code or make it dynamic
+                const interactionCode = 'responsive_resize';
+                window.parent.postMessage(
+                    {
+                        interactionCode: interactionCode,
+                        type: 'SET_INSTRUCTION_HEIGHT',
+                        value: height,
+                    },
+                    '*'
+                );
+            }
+        }
+
+        // Listen for resize events
+        window.addEventListener('resize', scaleGame);
+        window.addEventListener('load', scaleGame);
+        // Initial call
+        scaleGame();
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,1431 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>City Transport Planner</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F4F6F8;
+            color: #2D3748;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 100%;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #ff7200;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1rem;
+            color: #718096;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .tabs {
+            display: flex;
+            background: white;
+            border-radius: 12px;
+            padding: 4px;
+            margin-bottom: 25px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .tab {
+            flex: 1;
+            min-width: 120px;
+            padding: 12px 16px;
+            text-align: center;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+
+        .tab.active {
+            background: #ff7200;
+            color: white;
+            box-shadow: 0 2px 8px rgba(255, 114, 0, 0.3);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .planning-area {
+            background: white;
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            margin-bottom: 25px;
+        }
+
+        .city-map {
+            width: 100%;
+            height: 400px;
+            background-image: url("data:image/svg+xml,%3Csvg width='800' height='600' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='100%25' height='100%25' fill='%23e0e0e0'/%3E%3Cdefs%3E%3Cpattern id='smallGrid' width='20' height='20' patternUnits='userSpaceOnUse'%3E%3Cpath d='M 20 0 L 0 0 0 20' fill='none' stroke='white' stroke-width='1'/%3E%3C/pattern%3E%3Cpattern id='grid' width='100' height='100' patternUnits='userSpaceOnUse'%3E%3Crect width='100' height='100' fill='url(%23smallGrid)'/%3E%3Cpath d='M 100 0 L 0 0 0 100' fill='none' stroke='white' stroke-width='10'/%3E%3C/pattern%3E%3C/defs%3E%3Crect width='100%25' height='100%25' fill='url(%23grid)'/%3E%3Crect x='50' y='50' width='180' height='180' fill='%23bfffbf' stroke='white' stroke-width='5'/%3E%3Crect x='450' y='250' width='250' height='150' fill='%23bfdfff' stroke='white' stroke-width='5'/%3E%3Crect x='300' y='50' width='100' height='100' fill='%23e0e0e0' stroke='white' stroke-width='5'/%3E%3C/svg%3E");
+            background-size: cover;
+            background-position: center;
+            border-radius: 12px;
+            position: relative;
+            overflow: hidden;
+            border: 2px solid #A0AEC0;
+            margin-bottom: 20px;
+            box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .grid-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image:
+                linear-gradient(rgba(255, 255, 255, 0.3) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.3) 1px, transparent 1px);
+            background-size: 50px 50px;
+            pointer-events: none;
+        }
+
+        .drop-zone {
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            background: rgba(255, 114, 0, 0.1);
+            border: 2px dashed #ff7200;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            color: #ff7200;
+            transition: all 0.3s ease;
+        }
+
+        .drop-zone.highlight {
+            background: rgba(255, 114, 0, 0.2);
+            border-color: #ff7200;
+            transform: scale(1.05);
+        }
+
+        .transport-palette {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .transport-item {
+            background: white;
+            border: 2px solid #E2E8F0;
+            border-radius: 12px;
+            padding: 15px;
+            text-align: center;
+            cursor: grab;
+            transition: all 0.3s ease;
+            position: relative;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .transport-item:active {
+            cursor: grabbing;
+        }
+
+        .transport-item:hover {
+            border-color: #ff7200;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(255, 114, 0, 0.1);
+        }
+
+        .transport-item.dragging {
+            opacity: 0.5;
+            transform: rotate(5deg);
+        }
+
+        .transport-icon {
+            font-size: 2rem;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .transport-label {
+            font-size: 0.8rem;
+            font-weight: 500;
+            color: #4A5568;
+        }
+
+        .transport-cost {
+            font-size: 0.7rem;
+            color: #ff7200;
+            font-weight: 600;
+            margin-top: 4px;
+        }
+
+        .feedback-panel {
+            background: white;
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .metric {
+            background: #F7FAFC;
+            border-radius: 12px;
+            padding: 15px;
+            text-align: center;
+        }
+
+        .metric-label {
+            font-size: 0.8rem;
+            color: #718096;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .metric-bar {
+            width: 100%;
+            height: 8px;
+            background: #E2E8F0;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 8px;
+        }
+
+        .metric-fill {
+            height: 100%;
+            border-radius: 4px;
+            transition: width 0.6s ease;
+        }
+
+        .sustainability .metric-fill {
+            background: linear-gradient(90deg, #48BB78, #38A169);
+        }
+
+        .efficiency .metric-fill {
+            background: linear-gradient(90deg, #4299E1, #3182CE);
+        }
+
+        .cost-display {
+            background: #FFF5F5;
+            border: 2px solid #FEB2B2;
+            border-radius: 12px;
+            padding: 15px;
+            text-align: center;
+        }
+
+        .cost-amount {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #E53E3E;
+        }
+
+        .reset-btn {
+            width: 100%;
+            padding: 12px;
+            background: #ff7200;
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 15px;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .reset-btn:hover {
+            background: #e6660a;
+            transform: translateY(-1px);
+        }
+
+        .info-section {
+            background: white;
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+        .info-section h3 {
+            color: #ff7200;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 12px;
+        }
+
+        .feature-item {
+            background: #F7FAFC;
+            border-radius: 8px;
+            padding: 15px;
+            border-left: 4px solid #ff7200;
+        }
+
+        .feature-item h4 {
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #2D3748;
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+
+        .comparison-table th,
+        .comparison-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #E2E8F0;
+        }
+
+        .comparison-table th {
+            background: #F7FAFC;
+            font-weight: 600;
+            color: #ff7200;
+        }
+
+        .placed-item {
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            background: white;
+            border: 2px solid #ff7200;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(255, 114, 0, 0.2);
+            animation: placeItem 0.3s ease;
+            z-index: 10;
+        }
+
+        @keyframes placeItem {
+            0% {
+                transform: scale(0);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        .image-section {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .image-section img {
+            width: 100%;
+            max-width: 300px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .lesson-content {
+            background: white;
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+        .lesson-content h2 {
+            color: #ff7200;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .lesson-content h3 {
+            color: #2D3748;
+            margin: 20px 0 10px 0;
+            font-weight: 600;
+        }
+
+        .lesson-content p {
+            margin-bottom: 15px;
+            line-height: 1.7;
+        }
+
+        .lesson-content strong {
+            color: #ff7200;
+            font-weight: 600;
+        }
+
+        .lesson-content i {
+            color: #718096;
+        }
+
+        .vocab-popup {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .vocab-content {
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            text-align: center;
+            max-width: 90%;
+            width: 350px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            position: relative;
+            transform: scale(0.8);
+            animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+            border: 4px solid #ff7200;
+        }
+
+        .vocab-icon {
+            font-size: 4rem;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .vocab-content h2 {
+            color: #2D3748;
+            font-size: 2rem;
+            margin-bottom: 10px;
+            text-transform: capitalize;
+        }
+
+        .vocab-content p {
+            font-size: 1.2rem;
+            color: #4A5568;
+            line-height: 1.4;
+        }
+
+        .vocab-content strong {
+            color: #ff7200;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 2rem;
+            cursor: pointer;
+            color: #A0AEC0;
+            transition: color 0.2s;
+        }
+
+        .close-btn:hover {
+            color: #ff7200;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes popIn {
+            from {
+                transform: scale(0.8);
+            }
+
+            to {
+                transform: scale(1);
+            }
+        }
+
+        .challenge-panel {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 16px;
+            padding: 25px;
+            color: white;
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+            margin-bottom: 25px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .challenge-panel::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+            animation: shimmer 3s ease-in-out infinite;
+        }
+
+        @keyframes shimmer {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
+        }
+
+        .challenge-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .challenge-icon {
+            font-size: 2.5rem;
+            margin-right: 15px;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-10px); }
+            60% { transform: translateY(-5px); }
+        }
+
+        .challenge-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin: 0;
+        }
+
+        .challenge-description {
+            font-size: 1rem;
+            line-height: 1.6;
+            margin-bottom: 20px;
+            opacity: 0.9;
+            position: relative;
+            z-index: 2;
+        }
+
+        .scenario-cards {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .scenario-card {
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 12px;
+            padding: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 2;
+        }
+
+        .scenario-card:hover {
+            background: rgba(255, 255, 255, 0.25);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .scenario-card.selected {
+            background: rgba(255, 114, 0, 0.3);
+            border-color: #ff7200;
+            box-shadow: 0 0 20px rgba(255, 114, 0, 0.4);
+        }
+
+        .scenario-title {
+            font-weight: 600;
+            font-size: 1.1rem;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+        }
+
+        .scenario-emoji {
+            font-size: 1.5rem;
+            margin-right: 10px;
+        }
+
+        .scenario-details {
+            font-size: 0.9rem;
+            opacity: 0.9;
+            margin-bottom: 10px;
+        }
+
+        .scenario-requirements {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 10px;
+            font-size: 0.8rem;
+            border-left: 3px solid #ff7200;
+        }
+
+        .challenge-progress {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 20px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .progress-title {
+            font-weight: 600;
+            margin-bottom: 10px;
+            font-size: 0.9rem;
+        }
+
+        .progress-checklist {
+            list-style: none;
+            padding: 0;
+        }
+
+        .progress-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 8px;
+            font-size: 0.85rem;
+        }
+
+        .progress-item.completed {
+            opacity: 0.7;
+        }
+
+        .progress-item.completed .progress-checkbox {
+            background: #48BB78;
+            color: white;
+        }
+
+        .progress-checkbox {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 10px;
+            font-size: 0.7rem;
+            transition: all 0.3s ease;
+        }
+
+        .complete-challenge-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #ff7200, #e6660a);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 15px;
+            font-family: 'Inter', sans-serif;
+            font-size: 1rem;
+            position: relative;
+            z-index: 2;
+            opacity: 0.7;
+            pointer-events: none;
+        }
+
+        .complete-challenge-btn.enabled {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .complete-challenge-btn.enabled:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 114, 0, 0.4);
+        }
+
+        .success-message {
+            background: linear-gradient(135deg, #48BB78, #38A169);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            color: white;
+            margin-top: 15px;
+            display: none;
+            animation: slideIn 0.5s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .success-icon {
+            font-size: 3rem;
+            margin-bottom: 10px;
+            animation: celebration 0.6s ease;
+        }
+
+        @keyframes celebration {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+
+            .header h1 {
+                font-size: 1.6rem;
+            }
+
+            .city-map {
+                height: 250px;
+            }
+
+            .transport-palette {
+                grid-template-columns: repeat(4, 1fr);
+            }
+
+            .metrics-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .tabs {
+                flex-wrap: nowrap;
+                overflow-x: auto;
+            }
+
+            .tab {
+                flex-shrink: 0;
+                min-width: 100px;
+            }
+
+            .challenge-header {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .challenge-icon {
+                margin-right: 0;
+                margin-bottom: 10px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .transport-palette {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .header h1 {
+                font-size: 1.4rem;
+            }
+
+            .city-map {
+                height: 200px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>City Transport Planner</h1>
+            <p>Design your ideal city transport system by selecting and placing different transport options on a virtual
+                city map</p>
+        </div>
+
+        <div class="tabs">
+            <div class="tab active" onclick="switchTab('planner')">Planner</div>
+            <div class="tab" onclick="switchTab('challenge')">Challenge</div>
+            <div class="tab" onclick="switchTab('lesson')">Lesson</div>
+            <div class="tab" onclick="switchTab('compare')">Compare</div>
+        </div>
+
+        <div id="planner" class="tab-content active">
+            <div class="planning-area">
+                <h3>Your City Map</h3>
+                <div class="city-map" id="cityMap">
+                    <div class="grid-overlay"></div>
+                </div>
+
+                <h3>Transport Options</h3>
+                <div class="transport-palette" id="transportPalette">
+                    <div class="transport-item" draggable="true" data-type="bus" data-cost="50000"
+                        data-sustainability="70" data-efficiency="80">
+                        <span class="transport-icon">🚌</span>
+                        <div class="transport-label">Bus</div>
+                        <div class="transport-cost">$50k</div>
+                    </div>
+                    <div class="transport-item" draggable="true" data-type="bike" data-cost="10000"
+                        data-sustainability="95" data-efficiency="60">
+                        <span class="transport-icon">🚲</span>
+                        <div class="transport-label">Bike Share</div>
+                        <div class="transport-cost">$10k</div>
+                    </div>
+                    <div class="transport-item" draggable="true" data-type="metro" data-cost="100000"
+                        data-sustainability="85" data-efficiency="95">
+                        <span class="transport-icon">🚇</span>
+                        <div class="transport-label">Metro</div>
+                        <div class="transport-cost">$100k</div>
+                    </div>
+                    <div class="transport-item" draggable="true" data-type="tram" data-cost="75000"
+                        data-sustainability="80" data-efficiency="75">
+                        <span class="transport-icon">🚋</span>
+                        <div class="transport-label">Tram</div>
+                        <div class="transport-cost">$75k</div>
+                    </div>
+                    <div class="transport-item" draggable="true" data-type="taxi" data-cost="30000"
+                        data-sustainability="40" data-efficiency="70">
+                        <span class="transport-icon">🚕</span>
+                        <div class="transport-label">Taxi Hub</div>
+                        <div class="transport-cost">$30k</div>
+                    </div>
+                    <div class="transport-item" draggable="true" data-type="ferry" data-cost="80000"
+                        data-sustainability="60" data-efficiency="50">
+                        <span class="transport-icon">⛴️</span>
+                        <div class="transport-label">Ferry</div>
+                        <div class="transport-cost">$80k</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="feedback-panel">
+                <h3>City Performance</h3>
+                <div class="metrics-grid">
+                    <div class="metric sustainability">
+                        <div class="metric-label">Sustainability</div>
+                        <div class="metric-bar">
+                            <div class="metric-fill" id="sustainabilityBar" style="width: 0%"></div>
+                        </div>
+                        <span id="sustainabilityScore">0%</span>
+                    </div>
+                    <div class="metric efficiency">
+                        <div class="metric-label">Efficiency</div>
+                        <div class="metric-bar">
+                            <div class="metric-fill" id="efficiencyBar" style="width: 0%"></div>
+                        </div>
+                        <span id="efficiencyScore">0%</span>
+                    </div>
+                </div>
+                <div class="cost-display">
+                    <div class="metric-label">Total Cost</div>
+                    <div class="cost-amount" id="totalCost">$0</div>
+                </div>
+                <button class="reset-btn" onclick="resetCity()">Reset City</button>
+            </div>
+        </div>
+
+        <div id="challenge" class="tab-content">
+            <div class="challenge-panel">
+                <div class="challenge-header">
+                    <div class="challenge-icon">🎯</div>
+                    <div>
+                        <h2 class="challenge-title">Design Challenge</h2>
+                    </div>
+                </div>
+                <p class="challenge-description">
+                    Choose a city scenario and design the perfect transport system! Each scenario has different needs, budgets, and environmental goals. Can you create a solution that works?
+                </p>
+
+                <div class="scenario-cards">
+                    <div class="scenario-card" onclick="selectScenario('coastal')" data-scenario="coastal">
+                        <div class="scenario-title">
+                            <span class="scenario-emoji">🏖️</span>
+                            Coastal Tourist City
+                        </div>
+                        <div class="scenario-details">
+                            A beautiful seaside city with many tourists visiting beaches and attractions.
+                        </div>
+                        <div class="scenario-requirements">
+                            <strong>Goals:</strong> High efficiency (80%+), Budget: $300k, Must include ferry
+                        </div>
+                    </div>
+
+                    <div class="scenario-card" onclick="selectScenario('green')" data-scenario="green">
+                        <div class="scenario-title">
+                            <span class="scenario-emoji">🌱</span>
+                            Eco-Friendly City
+                        </div>
+                        <div class="scenario-details">
+                            A city focused on protecting the environment and reducing pollution.
+                        </div>
+                        <div class="scenario-requirements">
+                            <strong>Goals:</strong> High sustainability (85%+), Budget: $250k, No taxis allowed
+                        </div>
+                    </div>
+
+                    <div class="scenario-card" onclick="selectScenario('budget')" data-scenario="budget">
+                        <div class="scenario-title">
+                            <span class="scenario-emoji">💰</span>
+                            Budget-Conscious City
+                        </div>
+                        <div class="scenario-details">
+                            A growing city that needs good transport but has limited money to spend.
+                        </div>
+                        <div class="scenario-requirements">
+                            <strong>Goals:</strong> Stay under $200k, Efficiency 70%+, At least 4 transport types
+                        </div>
+                    </div>
+                </div>
+
+                <div class="challenge-progress">
+                    <div class="progress-title">Challenge Progress</div>
+                    <ul class="progress-checklist" id="progressList">
+                        <li class="progress-item">
+                            <div class="progress-checkbox"></div>
+                            Select a city scenario
+                        </li>
+                        <li class="progress-item">
+                            <div class="progress-checkbox"></div>
+                            Place transport options on the map
+                        </li>
+                        <li class="progress-item">
+                            <div class="progress-checkbox"></div>
+                            Meet the scenario requirements
+                        </li>
+                    </ul>
+                </div>
+
+                <button class="complete-challenge-btn" id="completeChallengeBtn" onclick="completeChallenge()">
+                    Complete Challenge
+                </button>
+
+                <div class="success-message" id="successMessage">
+                    <div class="success-icon">🎉</div>
+                    <h3>Congratulations!</h3>
+                    <p>You've successfully designed a transport system that meets all the requirements!</p>
+                </div>
+            </div>
+        </div>
+
+        <div id="lesson" class="tab-content">
+            <div class="lesson-content">
+                <div class="image-section">
+                    <img src="https://cdn.minicoursegenerator.com/production/images/ackley639028105188459076/ai_c3facf29-4dac-4f0c-bcfe-d829006675fb.jpg"
+                        alt="London bike sharing system">
+                </div>
+
+                <h2>Tour London on Wheels</h2>
+                <p>London is a huge city with a lot of traffic. To solve this, they introduced a public bike-sharing
+                    system often called "Boris Bikes" (now Santander Cycles). It's a great example of
+                    <strong>sustainable transport</strong>.
+                </p>
+
+                <h3>How It Works</h3>
+                <div class="feature-grid">
+                    <div class="feature-item">
+                        <h4>Docking Stations</h4>
+                        <p>There are hundreds of <strong>docking stations</strong> across the city where you can pick up
+                            or leave a bike.</p>
+                    </div>
+                    <div class="feature-item">
+                        <h4>The Commute</h4>
+                        <p>Many people use these bikes for their daily <strong>commute</strong> (the journey to work or
+                            school) because it's faster than sitting in a traffic jam.</p>
+                    </div>
+                    <div class="feature-item">
+                        <h4>Cost</h4>
+                        <p>It costs a small amount for access, but the first 30 minutes of every journey are usually
+                            free!</p>
+                    </div>
+                </div>
+
+                <p><i>Note: Sustainable transport (transport durable) means ways of traveling that don't hurt the
+                        environment.</i></p>
+            </div>
+        </div>
+
+        <div id="compare" class="tab-content">
+            <div class="info-section">
+                <h3>Comparison: London vs. Your City</h3>
+                <p>Think about how people get around where you live. Does your city have a bike scheme? Let's compare:
+                </p>
+
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>Feature</th>
+                            <th>London Bike Scheme</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Main Transport</strong></td>
+                            <td>Bikes, Underground, Buses</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Traffic Problems</strong></td>
+                            <td>Heavy traffic jams</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Green Options</strong></td>
+                            <td>Cycle lanes and bike sharing</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="feature-grid">
+                    <div class="feature-item">
+                        <h4>Practice with Challenges</h4>
+                        <p>Try the Challenge tab to practice designing transport systems for different types of cities. Each scenario will test your planning skills!</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="vocabPopup" class="vocab-popup">
+        <div class="vocab-content">
+            <span class="close-btn" onclick="closeVocabPopup()">&times;</span>
+            <div id="vocabIcon" class="vocab-icon"></div>
+            <h2 id="vocabWord"></h2>
+            <p id="vocabSentence"></p>
+        </div>
+    </div>
+
+    <script>
+        let placedItems = [];
+        let draggedItem = null;
+        let totalCost = 0;
+        let totalSustainability = 0;
+        let totalEfficiency = 0;
+        let selectedScenario = null;
+
+        const transportIcons = {
+            bus: '🚌',
+            bike: '🚲',
+            metro: '🚇',
+            tram: '🚋',
+            taxi: '🚕',
+            ferry: '⛴️'
+        };
+
+        const vocabSentences = {
+            bus: ["I take the <strong>bus</strong> to school.", "The <strong>bus</strong> is big and red.", "Wait for the <strong>bus</strong> at the stop!"],
+            bike: ["I ride my <strong>bike</strong> in the park.", "My <strong>bike</strong> has two wheels.", "Wear a helmet on your <strong>bike</strong>!"],
+            metro: ["The <strong>metro</strong> goes underground.", "The <strong>metro</strong> is very fast!", "Let's catch the <strong>metro</strong>."],
+            tram: ["The <strong>tram</strong> runs on tracks.", "Ding ding! Here comes the <strong>tram</strong>.", "The <strong>tram</strong> is engaging!"],
+            taxi: ["I hail a <strong>taxi</strong> in the street.", "The <strong>taxi</strong> is yellow.", "The driver drives the <strong>taxi</strong>."],
+            ferry: ["The <strong>ferry</strong> goes on the water.", "We cross the river on a <strong>ferry</strong>.", "The <strong>ferry</strong> carries cars too."]
+        };
+
+        const scenarios = {
+            coastal: {
+                name: "Coastal Tourist City",
+                requirements: {
+                    maxBudget: 300000,
+                    minEfficiency: 80,
+                    requiredTransport: ['ferry'],
+                    forbiddenTransport: []
+                }
+            },
+            green: {
+                name: "Eco-Friendly City",
+                requirements: {
+                    maxBudget: 250000,
+                    minSustainability: 85,
+                    requiredTransport: [],
+                    forbiddenTransport: ['taxi']
+                }
+            },
+            budget: {
+                name: "Budget-Conscious City",
+                requirements: {
+                    maxBudget: 200000,
+                    minEfficiency: 70,
+                    minTransportTypes: 4,
+                    requiredTransport: [],
+                    forbiddenTransport: []
+                }
+            }
+        };
+
+        function switchTab(tabName) {
+            const tabs = document.querySelectorAll('.tab');
+            const contents = document.querySelectorAll('.tab-content');
+
+            tabs.forEach(tab => tab.classList.remove('active'));
+            contents.forEach(content => content.classList.remove('active'));
+
+            if (event && event.target) {
+                event.target.classList.add('active');
+            } else {
+                const activeTab = Array.from(tabs).find(t => t.innerText.toLowerCase().includes(tabName) || (tabName === 'planner' && t.innerText === 'Planner'));
+                if (activeTab) activeTab.classList.add('active');
+            }
+            document.getElementById(tabName).classList.add('active');
+        }
+
+        function selectScenario(scenarioType) {
+            selectedScenario = scenarioType;
+            
+            document.querySelectorAll('.scenario-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+            
+            document.querySelector(`[data-scenario="${scenarioType}"]`).classList.add('selected');
+            
+            updateChallengeProgress();
+        }
+
+        function updateChallengeProgress() {
+            const progressItems = document.querySelectorAll('.progress-item');
+            const completeChallengeBtn = document.getElementById('completeChallengeBtn');
+            
+            // Check scenario selection
+            if (selectedScenario) {
+                progressItems[0].classList.add('completed');
+                progressItems[0].querySelector('.progress-checkbox').innerHTML = '✓';
+            }
+            
+            // Check if transport items are placed
+            if (placedItems.length > 0) {
+                progressItems[1].classList.add('completed');
+                progressItems[1].querySelector('.progress-checkbox').innerHTML = '✓';
+            }
+            
+            // Check if requirements are met
+            if (selectedScenario && checkScenarioRequirements()) {
+                progressItems[2].classList.add('completed');
+                progressItems[2].querySelector('.progress-checkbox').innerHTML = '✓';
+                completeChallengeBtn.classList.add('enabled');
+            } else {
+                progressItems[2].classList.remove('completed');
+                progressItems[2].querySelector('.progress-checkbox').innerHTML = '';
+                completeChallengeBtn.classList.remove('enabled');
+            }
+        }
+
+        function checkScenarioRequirements() {
+            if (!selectedScenario) return false;
+            
+            const requirements = scenarios[selectedScenario].requirements;
+            const placedTypes = placedItems.map(item => item.data.type);
+            
+            // Check budget
+            if (totalCost > requirements.maxBudget) return false;
+            
+            // Check efficiency
+            if (requirements.minEfficiency && totalEfficiency < requirements.minEfficiency) return false;
+            
+            // Check sustainability
+            if (requirements.minSustainability && totalSustainability < requirements.minSustainability) return false;
+            
+            // Check minimum transport types
+            if (requirements.minTransportTypes && new Set(placedTypes).size < requirements.minTransportTypes) return false;
+            
+            // Check required transport
+            if (requirements.requiredTransport) {
+                for (let required of requirements.requiredTransport) {
+                    if (!placedTypes.includes(required)) return false;
+                }
+            }
+            
+            // Check forbidden transport
+            if (requirements.forbiddenTransport) {
+                for (let forbidden of requirements.forbiddenTransport) {
+                    if (placedTypes.includes(forbidden)) return false;
+                }
+            }
+            
+            return true;
+        }
+
+        function completeChallenge() {
+            if (!checkScenarioRequirements()) return;
+            
+            const successMessage = document.getElementById('successMessage');
+            successMessage.style.display = 'block';
+            
+            setTimeout(() => {
+                successMessage.style.display = 'none';
+                resetCity();
+                selectedScenario = null;
+                document.querySelectorAll('.scenario-card').forEach(card => {
+                    card.classList.remove('selected');
+                });
+                updateChallengeProgress();
+            }, 3000);
+        }
+
+        function initializeDragAndDrop() {
+            const transportItems = document.querySelectorAll('.transport-item');
+            const cityMap = document.getElementById('cityMap');
+
+            transportItems.forEach(item => {
+                item.addEventListener('dragstart', handleDragStart);
+                item.addEventListener('dragend', handleDragEnd);
+                item.addEventListener('click', handleItemClick);
+            });
+
+            cityMap.addEventListener('dragover', handleDragOver);
+            cityMap.addEventListener('drop', handleDrop);
+            cityMap.addEventListener('dragenter', handleDragEnter);
+            cityMap.addEventListener('dragleave', handleDragLeave);
+
+            transportItems.forEach(item => {
+                item.addEventListener('touchstart', handleTouchStart, { passive: false });
+                item.addEventListener('touchmove', handleTouchMove, { passive: false });
+                item.addEventListener('touchend', handleTouchEnd, { passive: false });
+            });
+        }
+
+        function handleItemClick(e) {
+            if (draggedItem || document.querySelector('.transport-item.dragging')) return;
+
+            const item = e.currentTarget;
+            const data = {
+                type: item.dataset.type,
+                cost: parseInt(item.dataset.cost),
+                sustainability: parseInt(item.dataset.sustainability),
+                efficiency: parseInt(item.dataset.efficiency),
+                icon: transportIcons[item.dataset.type]
+            };
+
+            const cityMap = document.getElementById('cityMap');
+            const rect = cityMap.getBoundingClientRect();
+            const width = rect.width || 300;
+            const height = rect.height || 300;
+
+            const x = Math.random() * (width - 60);
+            const y = Math.random() * (height - 60);
+
+            placeTransportItem(x, y, data);
+            showVocabPopup(data.type, data.icon);
+        }
+
+        function showVocabPopup(type, icon) {
+            const sentences = vocabSentences[type];
+            const sentence = sentences[Math.floor(Math.random() * sentences.length)];
+
+            document.getElementById('vocabIcon').innerHTML = icon;
+            document.getElementById('vocabWord').innerText = type;
+            document.getElementById('vocabSentence').innerHTML = sentence;
+
+            const popup = document.getElementById('vocabPopup');
+            popup.style.display = 'flex';
+        }
+
+        function closeVocabPopup() {
+            document.getElementById('vocabPopup').style.display = 'none';
+        }
+
+        function handleDragStart(e) {
+            draggedItem = {
+                type: e.target.dataset.type,
+                cost: parseInt(e.target.dataset.cost),
+                sustainability: parseInt(e.target.dataset.sustainability),
+                efficiency: parseInt(e.target.dataset.efficiency),
+                icon: transportIcons[e.target.dataset.type]
+            };
+            e.target.classList.add('dragging');
+        }
+
+        function handleDragEnd(e) {
+            e.target.classList.remove('dragging');
+            draggedItem = null;
+        }
+
+        function handleDragOver(e) {
+            e.preventDefault();
+        }
+
+        function handleDragEnter(e) {
+            e.preventDefault();
+            if (draggedItem) {
+                e.target.classList.add('highlight');
+            }
+        }
+
+        function handleDragLeave(e) {
+            e.target.classList.remove('highlight');
+        }
+
+        function handleDrop(e) {
+            e.preventDefault();
+            e.target.classList.remove('highlight');
+
+            if (draggedItem) {
+                const rect = e.target.getBoundingClientRect();
+                const x = e.clientX - rect.left - 25;
+                const y = e.clientY - rect.top - 25;
+
+                placeTransportItem(x, y, draggedItem);
+            }
+        }
+
+        let touchItem = null;
+        let touchOffset = { x: 0, y: 0 };
+
+        function handleTouchStart(e) {
+            e.preventDefault();
+            const touch = e.touches[0];
+            const item = e.target.closest('.transport-item');
+
+            touchItem = {
+                element: item,
+                type: item.dataset.type,
+                cost: parseInt(item.dataset.cost),
+                sustainability: parseInt(item.dataset.sustainability),
+                efficiency: parseInt(item.dataset.efficiency),
+                icon: transportIcons[item.dataset.type]
+            };
+
+            item.classList.add('dragging');
+        }
+
+        function handleTouchMove(e) {
+            e.preventDefault();
+            if (!touchItem) return;
+
+            const touch = e.touches[0];
+            const cityMap = document.getElementById('cityMap');
+            const mapRect = cityMap.getBoundingClientRect();
+
+            if (touch.clientX >= mapRect.left && touch.clientX <= mapRect.right &&
+                touch.clientY >= mapRect.top && touch.clientY <= mapRect.bottom) {
+                cityMap.classList.add('highlight');
+            } else {
+                cityMap.classList.remove('highlight');
+            }
+        }
+
+        function handleTouchEnd(e) {
+            e.preventDefault();
+            if (!touchItem) return;
+
+            const touch = e.changedTouches[0];
+            const cityMap = document.getElementById('cityMap');
+            const mapRect = cityMap.getBoundingClientRect();
+
+            touchItem.element.classList.remove('dragging');
+            cityMap.classList.remove('highlight');
+
+            if (touch.clientX >= mapRect.left && touch.clientX <= mapRect.right &&
+                touch.clientY >= mapRect.top && touch.clientY <= mapRect.bottom) {
+                const x = touch.clientX - mapRect.left - 25;
+                const y = touch.clientY - mapRect.top - 25;
+
+                placeTransportItem(x, y, touchItem);
+            }
+
+            touchItem = null;
+        }
+
+        function placeTransportItem(x, y, item) {
+            const cityMap = document.getElementById('cityMap');
+            const mapRect = cityMap.getBoundingClientRect();
+
+            x = Math.max(0, Math.min(x, mapRect.width - 50));
+            y = Math.max(0, Math.min(y, mapRect.height - 50));
+
+            const placedItem = document.createElement('div');
+            placedItem.className = 'placed-item';
+            placedItem.style.left = x + 'px';
+            placedItem.style.top = y + 'px';
+            placedItem.innerHTML = item.icon;
+            placedItem.title = `${item.type.charAt(0).toUpperCase() + item.type.slice(1)} - Click to remove`;
+
+            placedItem.addEventListener('click', () => removeTransportItem(placedItem, item));
+
+            cityMap.appendChild(placedItem);
+            placedItems.push({ element: placedItem, data: item });
+
+            updateMetrics();
+            updateChallengeProgress();
+        }
+
+        function removeTransportItem(element, data) {
+            element.remove();
+            placedItems = placedItems.filter(item => item.element !== element);
+            updateMetrics();
+            updateChallengeProgress();
+        }
+
+        function updateMetrics() {
+            totalCost = placedItems.reduce((sum, item) => sum + item.data.cost, 0);
+            totalSustainability = placedItems.length > 0 ?
+                placedItems.reduce((sum, item) => sum + item.data.sustainability, 0) / placedItems.length : 0;
+            totalEfficiency = placedItems.length > 0 ?
+                placedItems.reduce((sum, item) => sum + item.data.efficiency, 0) / placedItems.length : 0;
+
+            document.getElementById('totalCost').textContent = '$' + (totalCost / 1000).toFixed(0) + 'k';
+            document.getElementById('sustainabilityScore').textContent = Math.round(totalSustainability) + '%';
+            document.getElementById('efficiencyScore').textContent = Math.round(totalEfficiency) + '%';
+
+            document.getElementById('sustainabilityBar').style.width = totalSustainability + '%';
+            document.getElementById('efficiencyBar').style.width = totalEfficiency + '%';
+        }
+
+        function resetCity() {
+            const cityMap = document.getElementById('cityMap');
+            const placedElements = cityMap.querySelectorAll('.placed-item');
+            placedElements.forEach(element => element.remove());
+
+            placedItems = [];
+            totalCost = 0;
+            totalSustainability = 0;
+            totalEfficiency = 0;
+
+            updateMetrics();
+            updateChallengeProgress();
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            initializeDragAndDrop();
+            updateMetrics();
+            updateChallengeProgress();
+        });
+    </script>
+</body>
+
+</html>

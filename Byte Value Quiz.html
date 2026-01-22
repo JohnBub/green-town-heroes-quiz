@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz sur la Valeur des Octets</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F4F6F8;
+            line-height: 1.6;
+            color: #333;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 100%;
+            margin: 0 auto;
+            padding: 20px 16px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .header h1 {
+            font-size: 28px;
+            font-weight: 700;
+            color: #ff7200;
+            margin-bottom: 12px;
+        }
+
+        .header p {
+            font-size: 16px;
+            color: #666;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .tabs {
+            display: flex;
+            background: white;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .tab {
+            flex: 1;
+            background: white;
+            border: none;
+            padding: 16px 12px;
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
+            font-weight: 600;
+            color: #666;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .tab.active {
+            background: #ff7200;
+            color: white;
+        }
+
+        .tab-content {
+            display: none;
+            background: white;
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            margin-bottom: 20px;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .question-card {
+            margin-bottom: 30px;
+        }
+
+        .question {
+            font-size: 18px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+
+        .options {
+            margin-bottom: 20px;
+        }
+
+        .option {
+            display: flex;
+            align-items: center;
+            margin-bottom: 12px;
+            padding: 16px;
+            background: #f8f9fa;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .option:hover {
+            background: #e9ecef;
+        }
+
+        .option.selected {
+            background: #fff5f0;
+            border-color: #ff7200;
+        }
+
+        .option input[type="radio"] {
+            margin-right: 12px;
+            transform: scale(1.2);
+            accent-color: #ff7200;
+        }
+
+        .option label {
+            font-size: 16px;
+            color: #333;
+            cursor: pointer;
+            font-weight: 500;
+        }
+
+        .check-button {
+            background: #ff7200;
+            color: white;
+            border: none;
+            padding: 16px 32px;
+            border-radius: 12px;
+            font-family: 'Inter', sans-serif;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            margin-bottom: 20px;
+        }
+
+        .check-button:hover:not(:disabled) {
+            background: #e6660a;
+            transform: translateY(-2px);
+        }
+
+        .check-button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .feedback {
+            padding: 20px;
+            border-radius: 12px;
+            margin-top: 20px;
+            font-size: 16px;
+            line-height: 1.6;
+            display: none;
+        }
+
+        .feedback.correct {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .feedback.incorrect {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .feedback.show {
+            display: block;
+        }
+
+        .feedback strong {
+            font-weight: 700;
+        }
+
+        .next-button {
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 16px 32px;
+            border-radius: 12px;
+            font-family: 'Inter', sans-serif;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            margin-top: 15px;
+            display: none;
+        }
+
+        .next-button:hover {
+            background: #218838;
+            transform: translateY(-2px);
+        }
+
+        .next-button.show {
+            display: block;
+        }
+
+        .progress-bar {
+            background: #e9ecef;
+            border-radius: 10px;
+            height: 8px;
+            margin-bottom: 30px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            background: #ff7200;
+            height: 100%;
+            border-radius: 10px;
+            transition: width 0.3s ease;
+        }
+
+        .progress-text {
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 14px;
+            color: #666;
+            font-weight: 500;
+        }
+
+        .results {
+            text-align: center;
+            padding: 30px;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .results h2 {
+            font-size: 24px;
+            color: #ff7200;
+            margin-bottom: 20px;
+        }
+
+        .score {
+            font-size: 48px;
+            font-weight: 700;
+            color: #ff7200;
+            margin-bottom: 20px;
+        }
+
+        .restart-button {
+            background: #ff7200;
+            color: white;
+            border: none;
+            padding: 16px 32px;
+            border-radius: 12px;
+            font-family: 'Inter', sans-serif;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+        }
+
+        .restart-button:hover {
+            background: #e6660a;
+            transform: translateY(-2px);
+        }
+
+        .code {
+            background: #f1f3f4;
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            color: #333;
+        }
+
+        @media (min-width: 768px) {
+            .container {
+                max-width: 800px;
+                padding: 40px 20px;
+            }
+
+            .tab {
+                padding: 20px 24px;
+                font-size: 16px;
+            }
+
+            .tab-content {
+                padding: 40px;
+            }
+
+            .question {
+                font-size: 20px;
+            }
+
+            .option {
+                padding: 20px;
+            }
+
+            .option label {
+                font-size: 18px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Quiz sur la Valeur des Octets</h1>
+            <p>Questions à choix multiples sur les limites des octets et les conversions binaires avec feedback immédiat
+                et explications</p>
+        </div>
+
+        <div class="tabs">
+            <button class="tab active" onclick="showTab('quiz')">Quiz</button>
+            <button class="tab" onclick="showTab('practice')">Entraînement</button>
+            <button class="tab" onclick="showTab('reference')">Référence</button>
+        </div>
+
+        <div id="quiz" class="tab-content active">
+            <div class="progress-text">Question <span id="current-question">1</span> sur <span
+                    id="total-questions">5</span></div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progress-fill" style="width: 20%;"></div>
+            </div>
+
+            <div id="quiz-container"></div>
+
+            <div id="results" class="results" style="display: none;">
+                <h2>Quiz Terminé !</h2>
+                <div class="score" id="final-score">0%</div>
+                <p id="score-text">Vous avez eu 0 sur 5 questions correctes.</p>
+                <button class="restart-button" onclick="restartQuiz()">Recommencer le Quiz</button>
+            </div>
+        </div>
+
+        <div id="practice" class="tab-content">
+            <h2 style="margin-bottom: 20px; color: #ff7200;">Exercices d'Entraînement</h2>
+            <div class="question-card">
+                <div class="question">Exercice 1 : Quel est le plus petit nombre sur un octet ?</div>
+                <div class="feedback correct show">
+                    <strong>Réponse :</strong> Le plus petit nombre est <strong>0</strong>. En binaire, cela s'écrit
+                    <span class="code">0000 0000</span>. Tous les transistors sont "éteints".
+                </div>
+            </div>
+
+            <div class="question-card">
+                <div class="question">Exercice 2 : Quel est le plus grand nombre sur un octet ?</div>
+                <div class="feedback correct show">
+                    <strong>Réponse :</strong> Le plus grand nombre est <strong>255</strong>. En binaire, cela s'écrit
+                    <span class="code">1111 1111</span>.<br>
+                    Calcul : 128 + 64 + 32 + 16 + 8 + 4 + 2 + 1 = 255.
+                </div>
+            </div>
+
+            <div class="question-card">
+                <div class="question">Exercice 3 : Convertir <span class="code">1010 1010</span> en décimal</div>
+                <div class="feedback correct show">
+                    <strong>Réponse :</strong> Calcul : 128 + 32 + 8 + 2 = <strong>170</strong>.
+                </div>
+            </div>
+        </div>
+
+        <div id="reference" class="tab-content">
+            <h2 style="margin-bottom: 20px; color: #ff7200;">Référence Binaire</h2>
+
+            <div class="question-card">
+                <div class="question">Table des Puissances de 2</div>
+                <div class="feedback correct show">
+                    <strong>Positions 8-bits :</strong> 128, 64, 32, 16, 8, 4, 2, 1<br><br>
+                    <strong>Méthode :</strong> Utilisez toujours la table des puissances de 2 pour les conversions.<br>
+                    Placez un 1 sous chaque puissance qui s'additionne pour obtenir votre nombre cible.
+                </div>
+            </div>
+
+            <div class="question-card">
+                <div class="question">Conversion Binaire vers Décimal</div>
+                <div class="feedback correct show">
+                    <strong>Étape 1 :</strong> Écrivez les puissances de 2 : 128, 64, 32, 16, 8, 4, 2, 1<br>
+                    <strong>Étape 2 :</strong> Pour chaque 1 dans le nombre binaire, ajoutez la puissance de 2
+                    correspondante<br>
+                    <strong>Étape 3 :</strong> Sommez toutes les valeurs où il y a un 1<br><br>
+                    <strong>Exemple :</strong> <span class="code">1100 1001</span> = 128 + 64 + 8 + 1 = 201
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const quizData = [
+            {
+                question: "Quel est le plus petit nombre qui peut être représenté sur un octet ?",
+                options: ["0", "1", "-1", "-128"],
+                correct: 0,
+                explanation: "Le plus petit nombre sur un octet (non signé) est 0, représenté par 00000000 en binaire. Tous les bits sont à 0."
+            },
+            {
+                question: "Quel est le plus grand nombre qui peut être représenté sur un octet ?",
+                options: ["256", "255", "128", "127"],
+                correct: 1,
+                explanation: "Le plus grand nombre sur un octet (non signé) est 255, représenté par 11111111 en binaire. Cela équivaut à 128+64+32+16+8+4+2+1 = 255."
+            },
+            {
+                question: "Convertir le nombre binaire 10101010 en décimal :",
+                options: ["170", "171", "168", "172"],
+                correct: 0,
+                explanation: "10101010 = 128 + 32 + 8 + 2 = 170. On additionne les puissances de 2 là où il y a des 1."
+            },
+            {
+                question: "Combien de valeurs différentes peuvent être représentées avec 8 bits ?",
+                options: ["255", "256", "128", "512"],
+                correct: 1,
+                explanation: "Avec 8 bits, on peut représenter 2^8 = 256 valeurs différentes (de 0 à 255)."
+            },
+            {
+                question: "Convertir le nombre décimal 75 en binaire :",
+                options: ["01001011", "01000011", "01001111", "01010011"],
+                correct: 0,
+                explanation: "75 = 64 + 8 + 2 + 1, donc le binaire est 01001011. On place des 1 aux positions 64, 8, 2 et 1."
+            }
+        ];
+
+        let currentQuestionIndex = 0;
+        let score = 0;
+        let selectedAnswer = null;
+        let quizCompleted = false;
+
+        function showTab(tabName) {
+            // Hide all tab contents
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+
+            // Remove active class from all tabs
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+
+            // Show selected tab content
+            document.getElementById(tabName).classList.add('active');
+
+            // Add active class to clicked tab
+            event.target.classList.add('active');
+        }
+
+        function loadQuestion() {
+            if (currentQuestionIndex >= quizData.length) {
+                showResults();
+                return;
+            }
+
+            const question = quizData[currentQuestionIndex];
+            const quizContainer = document.getElementById('quiz-container');
+
+            quizContainer.innerHTML = `
+                <div class="question-card">
+                    <div class="question">${question.question}</div>
+                    <div class="options">
+                        ${question.options.map((option, index) => `
+                            <div class="option" onclick="selectOption(${index})">
+                                <input type="radio" name="answer" value="${index}" id="option${index}">
+                                <label for="option${index}">${option}</label>
+                            </div>
+                        `).join('')}
+                    </div>
+                    <button class="check-button" id="check-btn" onclick="checkAnswer()" disabled>Vérifier la réponse</button>
+                    <div class="feedback" id="feedback"></div>
+                    <button class="next-button" id="next-btn" onclick="nextQuestion()">Question suivante</button>
+                </div>
+            `;
+
+            updateProgress();
+            selectedAnswer = null;
+        }
+
+        function selectOption(index) {
+            selectedAnswer = index;
+
+            // Remove selected class from all options
+            document.querySelectorAll('.option').forEach(option => {
+                option.classList.remove('selected');
+            });
+
+            // Add selected class to clicked option
+            document.querySelectorAll('.option')[index].classList.add('selected');
+            document.getElementById(`option${index}`).checked = true;
+
+            // Enable check button
+            document.getElementById('check-btn').disabled = false;
+        }
+
+        function checkAnswer() {
+            const question = quizData[currentQuestionIndex];
+            const feedback = document.getElementById('feedback');
+            const checkBtn = document.getElementById('check-btn');
+            const nextBtn = document.getElementById('next-btn');
+
+            checkBtn.style.display = 'none';
+
+            if (selectedAnswer === question.correct) {
+                score++;
+                feedback.className = 'feedback correct show';
+                feedback.innerHTML = `<strong>Correct !</strong> ${question.explanation}`;
+            } else {
+                feedback.className = 'feedback incorrect show';
+                feedback.innerHTML = `<strong>Incorrect.</strong> La bonne réponse est : ${question.options[question.correct]}. ${question.explanation}`;
+            }
+
+            // Disable all options
+            document.querySelectorAll('.option').forEach(option => {
+                option.style.pointerEvents = 'none';
+            });
+
+            if (currentQuestionIndex < quizData.length - 1) {
+                nextBtn.classList.add('show');
+                nextBtn.textContent = 'Question suivante';
+            } else {
+                nextBtn.classList.add('show');
+                nextBtn.textContent = 'Voir les résultats';
+            }
+        }
+
+        function nextQuestion() {
+            currentQuestionIndex++;
+            loadQuestion();
+        }
+
+        function updateProgress() {
+            const current = currentQuestionIndex + 1;
+            const total = quizData.length;
+            const percentage = (current / total) * 100;
+
+            document.getElementById('current-question').textContent = current;
+            document.getElementById('total-questions').textContent = total;
+            document.getElementById('progress-fill').style.width = percentage + '%';
+        }
+
+        function showResults() {
+            const quizContainer = document.getElementById('quiz-container');
+            const results = document.getElementById('results');
+            const scorePercentage = Math.round((score / quizData.length) * 100);
+
+            quizContainer.style.display = 'none';
+            results.style.display = 'block';
+
+            document.getElementById('final-score').textContent = scorePercentage + '%';
+            document.getElementById('score-text').textContent = `Vous avez eu ${score} sur ${quizData.length} questions correctes.`;
+
+            // Hide progress bar
+            document.querySelector('.progress-bar').style.display = 'none';
+            document.querySelector('.progress-text').style.display = 'none';
+        }
+
+        function restartQuiz() {
+            currentQuestionIndex = 0;
+            score = 0;
+            selectedAnswer = null;
+
+            document.getElementById('quiz-container').style.display = 'block';
+            document.getElementById('results').style.display = 'none';
+            document.querySelector('.progress-bar').style.display = 'block';
+            document.querySelector('.progress-text').style.display = 'block';
+
+            loadQuestion();
+        }
+
+        // Initialize quiz
+        document.addEventListener('DOMContentLoaded', function () {
+            loadQuestion();
+        });
+    </script>
+
+    <!-- Script for responsive iframe height -->
+    <script>
+        // Adjust iframe height when the content changes
+        function adjustIframeHeight() {
+            const height = document.body.scrollHeight;
+            const interactionCode = 'math_eq_qbjcklum';
+
+            // Send message to parent window
+            window.parent.postMessage(
+                {
+                    interactionCode: interactionCode,
+                    type: 'SET_INSTRUCTION_HEIGHT',
+                    value: height,
+                },
+                '*'
+            );
+        }
+
+        // Run on page load
+        window.addEventListener('load', adjustIframeHeight);
+        // Run on window resize
+        window.addEventListener('resize', adjustIframeHeight);
+
+        // Also run periodically to catch any dynamic content changes
+        setInterval(adjustIframeHeight, 1000);
+    </script>
+</body>
+
+</html>

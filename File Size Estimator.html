@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Estimateur de taille de fichier</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F4F6F8;
+            color: #2c3e50;
+            line-height: 1.6;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 480px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #ff7200 0%, #ff8533 100%);
+            color: white;
+            padding: 24px 20px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .header p {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .progress-container {
+            padding: 20px;
+            background: white;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #e0e6ed;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #ff7200, #ff8533);
+            width: 0%;
+            transition: width 0.3s ease;
+            border-radius: 4px;
+        }
+
+        .progress-text {
+            text-align: center;
+            margin-top: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            color: #64748b;
+        }
+
+        .question-container {
+            padding: 24px 20px;
+        }
+
+        .file-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 20px;
+            background: linear-gradient(135deg, #ff7200, #ff8533);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+            color: white;
+        }
+
+        .question-title {
+            text-align: center;
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #1e293b;
+        }
+
+        .question-subtitle {
+            text-align: center;
+            font-size: 16px;
+            color: #64748b;
+            margin-bottom: 24px;
+        }
+
+        .options-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .option-button {
+            background: white;
+            border: 2px solid #e0e6ed;
+            border-radius: 12px;
+            padding: 16px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-family: 'Inter', sans-serif;
+            font-size: 16px;
+            font-weight: 500;
+            color: #1e293b;
+        }
+
+        .option-button:hover {
+            border-color: #ff7200;
+            background: #fff7f2;
+        }
+
+        .option-button.correct {
+            background: #ecfdf5;
+            border-color: #10b981;
+            color: #047857;
+        }
+
+        .option-button.incorrect {
+            background: #fef2f2;
+            border-color: #ef4444;
+            color: #dc2626;
+        }
+
+        .option-button:disabled {
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+
+        .feedback {
+            margin-top: 20px;
+            padding: 16px;
+            border-radius: 12px;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .feedback.correct {
+            background: #ecfdf5;
+            border: 1px solid #10b981;
+            color: #047857;
+        }
+
+        .feedback.incorrect {
+            background: #fef2f2;
+            border: 1px solid #ef4444;
+            color: #dc2626;
+        }
+
+        .next-button {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, #ff7200, #ff8533);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: transform 0.2s ease;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .next-button:hover {
+            transform: translateY(-2px);
+        }
+
+        .next-button:disabled {
+            background: #94a3b8;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .score-container {
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        .score-title {
+            font-size: 24px;
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 12px;
+        }
+
+        .score-value {
+            font-size: 48px;
+            font-weight: 700;
+            color: #ff7200;
+            margin-bottom: 20px;
+        }
+
+        .restart-button {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, #ff7200, #ff8533);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .tabs {
+            display: flex;
+            background: #f8fafc;
+            border-bottom: 1px solid #e0e6ed;
+        }
+
+        .tab {
+            flex: 1;
+            padding: 16px;
+            text-align: center;
+            background: none;
+            border: none;
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
+            font-weight: 500;
+            color: #64748b;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .tab.active {
+            color: #ff7200;
+            background: white;
+            border-bottom: 2px solid #ff7200;
+        }
+
+        .tab-content {
+            padding: 20px;
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .info-card {
+            background: white;
+            border: 1px solid #e0e6ed;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 16px;
+        }
+
+        .info-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 12px;
+        }
+
+        .info-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 16px;
+        }
+
+        .info-table th,
+        .info-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #e0e6ed;
+            font-size: 14px;
+        }
+
+        .info-table th {
+            background: #f8fafc;
+            font-weight: 600;
+            color: #1e293b;
+        }
+
+        .info-table td {
+            color: #64748b;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Estimateur de taille de fichier</h1>
+            <p>Decouvre les tailles de fichiers et les unites d'octet</p>
+        </div>
+
+        <div class="tabs">
+            <button class="tab active" onclick="showTab('game')">Jeu</button>
+            <button class="tab" onclick="showTab('info')">Infos</button>
+        </div>
+
+        <div id="game-tab" class="tab-content active">
+            <div class="progress-container">
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progress"></div>
+                </div>
+                <div class="progress-text" id="progress-text">Question 1 sur 5</div>
+            </div>
+
+            <div class="question-container" id="question-container">
+                <!-- Les questions seront inserees ici -->
+            </div>
+
+            <div class="score-container" id="score-container" style="display: none;">
+                <div class="score-title">Quiz termine !</div>
+                <div class="score-value" id="final-score">0/5</div>
+                <div id="score-message"></div>
+                <button class="restart-button" onclick="restartGame()">Recommencer</button>
+            </div>
+        </div>
+
+        <div id="info-tab" class="tab-content">
+            <div class="info-card">
+                <div class="info-title">Le groupe d'octets</div>
+                <p>Un seul bit est tres limite. C'est pourquoi les ordinateurs regroupent les bits par paquets de 8. Ce
+                    groupe s'appelle un <strong>octet</strong>.</p>
+                <ul style="margin-top: 12px; padding-left: 20px;">
+                    <li><strong>Definition :</strong> 1 octet = 8 bits</li>
+                    <li><strong>Notation :</strong> On utilise <strong>B</strong> (exemple : 1 B = 8 bits)</li>
+                    <li><strong>Capacite :</strong> Avec 8 bits, on peut representer 256 valeurs differentes (0 a 255)
+                    </li>
+                </ul>
+            </div>
+
+            <div class="info-card">
+                <div class="info-title">Multiples de l'octet</div>
+                <p>Comme les fichiers sont souvent tres grands, on utilise des prefixes :</p>
+                <table class="info-table">
+                    <thead>
+                        <tr>
+                            <th>Unite</th>
+                            <th>Symbole</th>
+                            <th>Valeur approximative</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Octet</td>
+                            <td>B</td>
+                            <td>1 octet</td>
+                        </tr>
+                        <tr>
+                            <td>Kilooctet</td>
+                            <td>KB</td>
+                            <td>1 000 octets (petit texte)</td>
+                        </tr>
+                        <tr>
+                            <td>Megaoctet</td>
+                            <td>MB</td>
+                            <td>1 million d'octets (photo)</td>
+                        </tr>
+                        <tr>
+                            <td>Gigaoctet</td>
+                            <td>GB</td>
+                            <td>1 milliard d'octets (film HD)</td>
+                        </tr>
+                        <tr>
+                            <td>Teraoctet</td>
+                            <td>TB</td>
+                            <td>1 000 milliards d'octets (disque dur)</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const questions = [
+            {
+                type: 'Fichier texte',
+                icon: '📄',
+                description: 'Un document texte simple',
+                options: ['B', 'KB', 'MB', 'GB'],
+                correct: 1,
+                explanation: 'Les fichiers texte sont tres petits, souvent mesures en kilooctets (KB). Quelques pages peuvent faire 1 a 10 KB.'
+            },
+            {
+                type: 'Photo',
+                icon: '🖼️',
+                description: 'Une photo numerique haute resolution',
+                options: ['KB', 'MB', 'GB', 'TB'],
+                correct: 1,
+                explanation: 'Les photos numeriques se mesurent en megaoctets (MB). Une photo de smartphone fait souvent 2 a 8 MB.'
+            },
+            {
+                type: 'Film HD',
+                icon: '🎬',
+                description: 'Un film HD en duree complete',
+                options: ['MB', 'GB', 'TB', 'PB'],
+                correct: 1,
+                explanation: 'Les films HD demandent des gigaoctets (GB). Un film de 2 heures fait souvent 4 a 8 GB.'
+            },
+            {
+                type: 'Disque dur',
+                icon: '💾',
+                description: 'Un disque dur moderne',
+                options: ['GB', 'TB', 'PB', 'EB'],
+                correct: 1,
+                explanation: 'Les disques durs modernes se mesurent en teraoctets (TB). Les disques grand public vont de 500 GB a 8 TB ou plus.'
+            },
+            {
+                type: 'Fichier audio',
+                icon: '🎵',
+                description: 'Un fichier MP3 de 3 minutes',
+                options: ['KB', 'MB', 'GB', 'TB'],
+                correct: 1,
+                explanation: 'Les fichiers audio se mesurent en megaoctets (MB). Un MP3 de 3 minutes fait souvent 3 a 5 MB.'
+            }
+        ];
+
+        let currentQuestion = 0;
+        let score = 0;
+        let answered = false;
+
+        function showTab(tabName) {
+            // Hide all tab contents
+            document.getElementById('game-tab').classList.remove('active');
+            document.getElementById('info-tab').classList.remove('active');
+
+            // Remove active class from all tabs
+            document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+
+            // Show selected tab
+            document.getElementById(tabName + '-tab').classList.add('active');
+
+            // Add active class to clicked tab
+            event.target.classList.add('active');
+        }
+
+        function loadQuestion() {
+            if (currentQuestion >= questions.length) {
+                showScore();
+                return;
+            }
+
+            const question = questions[currentQuestion];
+            const container = document.getElementById('question-container');
+
+            container.innerHTML = `
+                <div class="file-icon">${question.icon}</div>
+                <div class="question-title">${question.type}</div>
+                <div class="question-subtitle">${question.description}</div>
+                <div class="question-subtitle">Quelle unite d'octet represente le mieux sa taille typique ?</div>
+                <div class="options-grid">
+                    ${question.options.map((option, index) => `
+                        <button class="option-button" onclick="selectAnswer(${index})">${option}</button>
+                    `).join('')}
+                </div>
+                <div id="feedback" style="display: none;"></div>
+                <button class="next-button" id="next-btn" onclick="nextQuestion()" style="display: none;">Question suivante</button>
+            `;
+
+            answered = false;
+            updateProgress();
+        }
+
+        function selectAnswer(selectedIndex) {
+            if (answered) return;
+
+            answered = true;
+            const question = questions[currentQuestion];
+            const buttons = document.querySelectorAll('.option-button');
+            const feedback = document.getElementById('feedback');
+            const nextBtn = document.getElementById('next-btn');
+
+            buttons.forEach((btn, index) => {
+                btn.disabled = true;
+                if (index === question.correct) {
+                    btn.classList.add('correct');
+                } else if (index === selectedIndex && selectedIndex !== question.correct) {
+                    btn.classList.add('incorrect');
+                }
+            });
+
+            const isCorrect = selectedIndex === question.correct;
+
+            if (isCorrect) {
+                score++;
+                feedback.className = 'feedback correct';
+                feedback.innerHTML = `✅ Correct ! ${question.explanation}`;
+            } else {
+                feedback.className = 'feedback incorrect';
+                feedback.innerHTML = `❌ Incorrect. ${question.explanation}`;
+            }
+
+            feedback.style.display = 'block';
+            nextBtn.style.display = 'block';
+
+            if (currentQuestion === questions.length - 1) {
+                nextBtn.textContent = 'Voir les resultats';
+            }
+        }
+
+        function nextQuestion() {
+            currentQuestion++;
+            loadQuestion();
+        }
+
+        function updateProgress() {
+            const progress = ((currentQuestion) / questions.length) * 100;
+            document.getElementById('progress').style.width = progress + '%';
+            document.getElementById('progress-text').textContent = `Question ${currentQuestion + 1} sur ${questions.length}`;
+        }
+
+        function showScore() {
+            document.getElementById('question-container').style.display = 'none';
+            document.getElementById('score-container').style.display = 'block';
+            document.getElementById('final-score').textContent = `${score}/${questions.length}`;
+
+            const progress = document.getElementById('progress');
+            progress.style.width = '100%';
+            document.getElementById('progress-text').textContent = 'Termine !';
+
+            let message = '';
+            if (score === questions.length) {
+                message = '🎉 Parfait ! Tu comprends tres bien les tailles de fichiers !';
+            } else if (score >= questions.length * 0.7) {
+                message = '👍 Bravo ! Tu comprends bien les tailles de fichiers.';
+            } else if (score >= questions.length * 0.5) {
+                message = '👌 Pas mal ! Regarde l\'onglet infos pour progresser.';
+            } else {
+                message = '📚 Continue ! Consulte l\'onglet infos pour plus de details.';
+            }
+
+            document.getElementById('score-message').textContent = message;
+        }
+
+        function restartGame() {
+            currentQuestion = 0;
+            score = 0;
+            answered = false;
+            document.getElementById('question-container').style.display = 'block';
+            document.getElementById('score-container').style.display = 'none';
+            loadQuestion();
+        }
+
+        // Initialize the game
+        loadQuestion();
+    </script>
+
+    <!-- Script for responsive iframe height -->
+    <script>
+        // Adjust iframe height when the content changes
+        function adjustIframeHeight() {
+            const height = document.body.scrollHeight;
+            const interactionCode = 'math_eq_mokfm2ht';
+
+            // Send message to parent window
+            window.parent.postMessage(
+                {
+                    interactionCode: interactionCode,
+                    type: 'SET_INSTRUCTION_HEIGHT',
+                    value: height,
+                },
+                '*'
+            );
+        }
+
+        // Run on page load
+        window.addEventListener('load', adjustIframeHeight);
+        // Run on window resize
+        window.addEventListener('resize', adjustIframeHeight);
+
+        // Also run periodically to catch any dynamic content changes
+        setInterval(adjustIframeHeight, 1000);
+    </script>
+</body>
+
+</html>

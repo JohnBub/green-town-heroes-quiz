@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculateur binaire vers decimal</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F4F6F8;
+            color: #2d3748;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 100%;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            background: white;
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .header h1 {
+            font-size: clamp(24px, 5vw, 32px);
+            font-weight: 700;
+            color: #1a202c;
+            margin-bottom: 8px;
+        }
+
+        .header p {
+            font-size: 16px;
+            color: #718096;
+        }
+
+        .tabs {
+            display: flex;
+            background: white;
+            border-radius: 12px;
+            padding: 4px;
+            margin-bottom: 24px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .tab-button {
+            flex: 1;
+            padding: 12px 16px;
+            background: none;
+            border: none;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: #718096;
+        }
+
+        .tab-button.active {
+            background: #ff7200;
+            color: white;
+            box-shadow: 0 2px 8px rgba(255, 114, 0, 0.3);
+        }
+
+        .tab-content {
+            display: none;
+            background: white;
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .calculator {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .input-section {
+            margin-bottom: 24px;
+        }
+
+        .input-label {
+            display: block;
+            font-size: 16px;
+            font-weight: 600;
+            color: #2d3748;
+            margin-bottom: 8px;
+        }
+
+        .binary-input {
+            width: 100%;
+            padding: 16px;
+            font-size: 18px;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            font-family: 'Courier New', monospace;
+            letter-spacing: 2px;
+            text-align: center;
+            transition: border-color 0.3s ease;
+        }
+
+        .binary-input:focus {
+            outline: none;
+            border-color: #ff7200;
+            box-shadow: 0 0 0 3px rgba(255, 114, 0, 0.1);
+        }
+
+        .binary-input.error {
+            border-color: #e53e3e;
+            box-shadow: 0 0 0 3px rgba(229, 62, 62, 0.1);
+        }
+
+        .input-hint {
+            font-size: 12px;
+            color: #718096;
+            margin-top: 4px;
+            text-align: center;
+        }
+
+        .error-message {
+            color: #e53e3e;
+            font-size: 14px;
+            margin-top: 8px;
+            text-align: center;
+            display: none;
+        }
+
+        .calculate-btn {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, #ff7200, #ff8533);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 24px;
+        }
+
+        .calculate-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(255, 114, 0, 0.3);
+        }
+
+        .calculate-btn:active {
+            transform: translateY(0);
+        }
+
+        .results {
+            background: #f7fafc;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 24px;
+            display: none;
+        }
+
+        .results.show {
+            display: block;
+        }
+
+        .decimal-result {
+            text-align: center;
+            font-size: 32px;
+            font-weight: 700;
+            color: #ff7200;
+            margin-bottom: 20px;
+        }
+
+        .breakdown-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #2d3748;
+            margin-bottom: 16px;
+        }
+
+        .powers-table {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(60px, 1fr));
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+
+        .power-cell {
+            background: white;
+            padding: 12px 8px;
+            text-align: center;
+            border-radius: 8px;
+            border: 2px solid #e2e8f0;
+        }
+
+        .power-cell.active {
+            border-color: #ff7200;
+            background: rgba(255, 114, 0, 0.1);
+        }
+
+        .power-value {
+            font-size: 14px;
+            font-weight: 600;
+            color: #2d3748;
+        }
+
+        .binary-bit {
+            font-size: 16px;
+            font-family: 'Courier New', monospace;
+            color: #ff7200;
+            margin-top: 4px;
+        }
+
+        .calculation-steps {
+            font-size: 14px;
+            color: #4a5568;
+            line-height: 1.5;
+        }
+
+        .practice-section {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .practice-item {
+            background: #f7fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 16px;
+        }
+
+        .practice-question {
+            font-size: 16px;
+            font-weight: 600;
+            color: #2d3748;
+            margin-bottom: 12px;
+        }
+
+        .practice-binary {
+            font-family: 'Courier New', monospace;
+            font-size: 18px;
+            color: #ff7200;
+            background: white;
+            padding: 12px;
+            border-radius: 8px;
+            text-align: center;
+            margin-bottom: 16px;
+            letter-spacing: 2px;
+        }
+
+        .practice-input {
+            width: 100%;
+            padding: 12px;
+            font-size: 16px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            margin-bottom: 12px;
+            text-align: center;
+        }
+
+        .check-btn {
+            background: #38a169;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+            margin-right: 8px;
+        }
+
+        .show-answer-btn {
+            background: #718096;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+        }
+
+        .practice-feedback {
+            margin-top: 12px;
+            padding: 12px;
+            border-radius: 8px;
+            display: none;
+        }
+
+        .feedback-correct {
+            background: #c6f6d5;
+            color: #22543d;
+        }
+
+        .feedback-incorrect {
+            background: #fed7d7;
+            color: #742a2a;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 16px;
+            }
+
+            .header {
+                padding: 20px;
+                margin-bottom: 20px;
+            }
+
+            .tab-content {
+                padding: 20px;
+            }
+
+            .powers-table {
+                grid-template-columns: repeat(4, 1fr);
+                gap: 6px;
+            }
+
+            .power-cell {
+                padding: 8px 4px;
+            }
+
+            .power-value {
+                font-size: 12px;
+            }
+
+            .decimal-result {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Calculateur binaire vers decimal</h1>
+            <p>Calculatrice interactive pour convertir des nombres binaires sur 8 bits en decimal, avec detail pas a
+                pas</p>
+        </div>
+
+        <div class="tabs">
+            <button class="tab-button active" onclick="switchTab('calculator')">Calculatrice</button>
+            <button class="tab-button" onclick="switchTab('practice')">Exercices</button>
+            <button class="tab-button" onclick="switchTab('guide')">Guide</button>
+        </div>
+
+        <div id="calculator-tab" class="tab-content active">
+            <div class="calculator">
+                <div class="input-section">
+                    <label class="input-label">Entrez un nombre binaire sur 8 bits :</label>
+                    <input type="text" id="binaryInput" class="binary-input" placeholder="10101010" maxlength="8">
+                    <div class="input-hint">Entrez exactement 8 chiffres en utilisant uniquement 0 et 1</div>
+                    <div id="errorMessage" class="error-message">Veuillez entrer un nombre binaire valide sur 8 bits
+                        (uniquement 0 et 1)</div>
+                </div>
+
+                <button class="calculate-btn" onclick="calculateDecimal()">Convertir en decimal</button>
+
+                <div id="results" class="results">
+                    <div id="decimalResult" class="decimal-result">170</div>
+                    <div class="breakdown-title">Detail pas a pas :</div>
+                    <div id="powersTable" class="powers-table"></div>
+                    <div id="calculationSteps" class="calculation-steps"></div>
+                </div>
+            </div>
+        </div>
+
+        <div id="practice-tab" class="tab-content">
+            <div class="practice-section">
+                <h2 style="text-align: center; margin-bottom: 24px; color: #2d3748;">Exercices d'entrainement</h2>
+
+                <div class="practice-item">
+                    <div class="practice-question">Exercice 1 : Convertissez ce nombre binaire en decimal</div>
+                    <div class="practice-binary">11010010</div>
+                    <input type="number" class="practice-input" id="practice1" placeholder="Entrez la valeur decimale">
+                    <button class="check-btn" onclick="checkAnswer(1, 210)">Verifier</button>
+                    <button class="show-answer-btn" onclick="showAnswer(1, 210, '128 + 64 + 16 + 2')">Afficher la
+                        reponse</button>
+                    <div id="feedback1" class="practice-feedback"></div>
+                </div>
+
+                <div class="practice-item">
+                    <div class="practice-question">Exercice 2 : Convertissez ce nombre binaire en decimal</div>
+                    <div class="practice-binary">01101101</div>
+                    <input type="number" class="practice-input" id="practice2" placeholder="Entrez la valeur decimale">
+                    <button class="check-btn" onclick="checkAnswer(2, 109)">Verifier</button>
+                    <button class="show-answer-btn" onclick="showAnswer(2, 109, '64 + 32 + 8 + 4 + 1')">Afficher la
+                        reponse</button>
+                    <div id="feedback2" class="practice-feedback"></div>
+                </div>
+
+                <div class="practice-item">
+                    <div class="practice-question">Exercice 3 : Convertissez ce nombre binaire en decimal</div>
+                    <div class="practice-binary">10011110</div>
+                    <input type="number" class="practice-input" id="practice3" placeholder="Entrez la valeur decimale">
+                    <button class="check-btn" onclick="checkAnswer(3, 158)">Verifier</button>
+                    <button class="show-answer-btn" onclick="showAnswer(3, 158, '128 + 16 + 8 + 4 + 2')">Afficher la
+                        reponse</button>
+                    <div id="feedback3" class="practice-feedback"></div>
+                </div>
+            </div>
+        </div>
+
+        <div id="guide-tab" class="tab-content">
+            <div style="max-width: 600px; margin: 0 auto;">
+                <h2 style="text-align: center; margin-bottom: 24px; color: #2d3748;">Guide de conversion binaire vers
+                    decimal
+                </h2>
+
+                <div style="background: #f7fafc; padding: 20px; border-radius: 12px; margin-bottom: 20px;">
+                    <h3 style="color: #ff7200; margin-bottom: 12px;">Table des puissances de 2</h3>
+                    <div class="powers-table">
+                        <div class="power-cell">
+                            <div class="power-value">128</div>
+                            <div style="font-size: 12px; color: #718096;">2⁷</div>
+                        </div>
+                        <div class="power-cell">
+                            <div class="power-value">64</div>
+                            <div style="font-size: 12px; color: #718096;">2⁶</div>
+                        </div>
+                        <div class="power-cell">
+                            <div class="power-value">32</div>
+                            <div style="font-size: 12px; color: #718096;">2⁵</div>
+                        </div>
+                        <div class="power-cell">
+                            <div class="power-value">16</div>
+                            <div style="font-size: 12px; color: #718096;">2⁴</div>
+                        </div>
+                        <div class="power-cell">
+                            <div class="power-value">8</div>
+                            <div style="font-size: 12px; color: #718096;">2³</div>
+                        </div>
+                        <div class="power-cell">
+                            <div class="power-value">4</div>
+                            <div style="font-size: 12px; color: #718096;">2²</div>
+                        </div>
+                        <div class="power-cell">
+                            <div class="power-value">2</div>
+                            <div style="font-size: 12px; color: #718096;">2¹</div>
+                        </div>
+                        <div class="power-cell">
+                            <div class="power-value">1</div>
+                            <div style="font-size: 12px; color: #718096;">2⁰</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div
+                    style="background: white; padding: 20px; border-radius: 12px; margin-bottom: 20px; border: 1px solid #e2e8f0;">
+                    <h3 style="color: #2d3748; margin-bottom: 12px;">Comment convertir :</h3>
+                    <ol style="color: #4a5568; line-height: 1.8;">
+                        <li>Ecrivez votre nombre binaire sur 8 bits</li>
+                        <li>Placez chaque bit sous la puissance de 2 correspondante</li>
+                        <li>Pour chaque position avec un '1', ajoutez cette puissance de 2 a la somme</li>
+                        <li>Pour chaque position avec un '0', ignorez cette puissance de 2</li>
+                        <li>La somme est la valeur decimale</li>
+                    </ol>
+                </div>
+
+                <div
+                    style="background: rgba(255, 114, 0, 0.1); padding: 20px; border-radius: 12px; border: 1px solid #ff7200;">
+                    <h3 style="color: #ff7200; margin-bottom: 12px;">A retenir :</h3>
+                    <ul style="color: #4a5568; line-height: 1.8;">
+                        <li>Les nombres sur 8 bits vont de 0 (00000000) a 255 (11111111)</li>
+                        <li>Chaque position represente une puissance de 2</li>
+                        <li>Travaillez toujours de droite a gauche (2⁰ a 2⁷)</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function switchTab(tabName) {
+            // Hide all tab contents
+            const tabs = document.querySelectorAll('.tab-content');
+            tabs.forEach(tab => tab.classList.remove('active'));
+
+            // Remove active class from all buttons
+            const buttons = document.querySelectorAll('.tab-button');
+            buttons.forEach(button => button.classList.remove('active'));
+
+            // Show selected tab and mark button as active
+            document.getElementById(tabName + '-tab').classList.add('active');
+            event.target.classList.add('active');
+        }
+
+        function validateBinary(input) {
+            return /^[01]{8}$/.test(input);
+        }
+
+        function calculateDecimal() {
+            const input = document.getElementById('binaryInput');
+            const errorMessage = document.getElementById('errorMessage');
+            const results = document.getElementById('results');
+
+            const binaryValue = input.value.trim();
+
+            if (!validateBinary(binaryValue)) {
+                input.classList.add('error');
+                errorMessage.style.display = 'block';
+                results.classList.remove('show');
+                return;
+            }
+
+            input.classList.remove('error');
+            errorMessage.style.display = 'none';
+
+            const powers = [128, 64, 32, 16, 8, 4, 2, 1];
+            let decimal = 0;
+            let calculation = [];
+            let activePowers = [];
+
+            // Calculate decimal value
+            for (let i = 0; i < 8; i++) {
+                if (binaryValue[i] === '1') {
+                    decimal += powers[i];
+                    calculation.push(powers[i]);
+                    activePowers.push(i);
+                }
+            }
+
+            // Display result
+            document.getElementById('decimalResult').textContent = decimal;
+
+            // Create powers table
+            const powersTable = document.getElementById('powersTable');
+            powersTable.innerHTML = '';
+
+            for (let i = 0; i < 8; i++) {
+                const cell = document.createElement('div');
+                cell.className = 'power-cell';
+                if (activePowers.includes(i)) {
+                    cell.classList.add('active');
+                }
+
+                cell.innerHTML = `
+                    <div class="power-value">${powers[i]}</div>
+                    <div class="binary-bit">${binaryValue[i]}</div>
+                `;
+                powersTable.appendChild(cell);
+            }
+
+            // Create calculation steps
+            const stepsElement = document.getElementById('calculationSteps');
+            if (calculation.length > 0) {
+                stepsElement.innerHTML = `
+                    <strong>Calcul :</strong> ${calculation.join(' + ')} = ${decimal}
+                `;
+            } else {
+                stepsElement.innerHTML = '<strong>Tous les bits sont a 0, donc la valeur decimale est 0</strong>';
+            }
+
+            results.classList.add('show');
+        }
+
+        function checkAnswer(exerciseNum, correctAnswer) {
+            const userAnswer = parseInt(document.getElementById('practice' + exerciseNum).value);
+            const feedback = document.getElementById('feedback' + exerciseNum);
+
+            feedback.style.display = 'block';
+
+            if (userAnswer === correctAnswer) {
+                feedback.className = 'practice-feedback feedback-correct';
+                feedback.textContent = 'Correct ! Bien joue !';
+            } else {
+                feedback.className = 'practice-feedback feedback-incorrect';
+                feedback.textContent = `Incorrect. Votre reponse : ${userAnswer || 'aucune'}, Bonne reponse : ${correctAnswer}`;
+            }
+        }
+
+        function showAnswer(exerciseNum, answer, breakdown) {
+            const feedback = document.getElementById('feedback' + exerciseNum);
+            feedback.style.display = 'block';
+            feedback.className = 'practice-feedback';
+            feedback.style.background = '#e6f3ff';
+            feedback.style.color = '#1a365d';
+            feedback.innerHTML = `<strong>Reponse : ${answer}</strong><br>Detail : ${breakdown} = ${answer}`;
+        }
+
+        // Auto-format binary input
+        document.getElementById('binaryInput').addEventListener('input', function (e) {
+            let value = e.target.value.replace(/[^01]/g, '');
+            if (value.length > 8) {
+                value = value.substring(0, 8);
+            }
+            e.target.value = value;
+
+            if (value.length > 0 && !validateBinary(value.padEnd(8, '0'))) {
+                e.target.classList.add('error');
+            } else {
+                e.target.classList.remove('error');
+                document.getElementById('errorMessage').style.display = 'none';
+            }
+        });
+
+        // Enter key support for calculator
+        document.getElementById('binaryInput').addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                calculateDecimal();
+            }
+        });
+    </script>
+
+    <!-- Script for responsive iframe height -->
+    <script>
+        // Adjust iframe height when the content changes
+        function adjustIframeHeight() {
+            const height = document.body.scrollHeight;
+            const interactionCode = 'math_eq_y3ow0uw3';
+
+            // Send message to parent window
+            window.parent.postMessage(
+                {
+                    interactionCode: interactionCode,
+                    type: 'SET_INSTRUCTION_HEIGHT',
+                    value: height,
+                },
+                '*'
+            );
+        }
+
+        // Run on page load
+        window.addEventListener('load', adjustIframeHeight);
+        // Run on window resize
+        window.addEventListener('resize', adjustIframeHeight);
+
+        // Also run periodically to catch any dynamic content changes
+        setInterval(adjustIframeHeight, 1000);
+    </script>
+</body>
+
+</html>

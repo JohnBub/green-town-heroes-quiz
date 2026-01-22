@@ -1,0 +1,1566 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Environment Vocabulary Matching</title>
+    <link href="https://fonts.googleapis.com/css2?family=Bungee&family=Space+Grotesk:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --bg-deep: #0f172a;
+            --bg-warm: #ff7a18;
+            --bg-warm-2: #ffb454;
+            --accent: #ff7200;
+            --accent-2: #22c55e;
+            --text: #0f172a;
+            --muted: #5b6475;
+            --card: #ffffff;
+            --shadow: 0 10px 25px rgba(15, 23, 42, 0.12);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Space Grotesk', sans-serif;
+            background:
+                radial-gradient(circle at top right, rgba(255, 122, 24, 0.25), transparent 45%),
+                radial-gradient(circle at 20% 20%, rgba(34, 197, 94, 0.18), transparent 40%),
+                linear-gradient(135deg, #fef3c7 0%, #e2e8f0 100%);
+            color: var(--text);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            background:
+                repeating-linear-gradient(120deg, rgba(15, 23, 42, 0.06) 0 2px, transparent 2px 10px);
+            opacity: 0.5;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 12px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .header {
+            text-align: center;
+            padding: 26px 16px;
+            background: linear-gradient(135deg, #ff7a18 0%, #ffb454 50%, #22c55e 100%);
+            color: white;
+            margin-bottom: 20px;
+            border-radius: 18px;
+            box-shadow: var(--shadow);
+            border: 2px solid rgba(255, 255, 255, 0.5);
+        }
+
+        .header h1 {
+            font-family: 'Bungee', cursive;
+            font-size: 1.9rem;
+            letter-spacing: 0.5px;
+            margin-bottom: 6px;
+            text-transform: uppercase;
+        }
+
+        .header p {
+            font-size: 0.95rem;
+            opacity: 0.95;
+        }
+
+        .tabs {
+            display: flex;
+            background: rgba(255, 255, 255, 0.85);
+            border-radius: 16px;
+            margin-bottom: 20px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            border: 1px solid rgba(15, 23, 42, 0.08);
+        }
+
+        .tab {
+            flex: 1;
+            padding: 14px 10px;
+            text-align: center;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--muted);
+            transition: all 0.3s ease;
+        }
+
+        .tab.active {
+            background: linear-gradient(135deg, #111827, #0f172a);
+            color: white;
+            transform: translateY(-1px);
+            box-shadow: inset 0 -3px 0 rgba(255, 255, 255, 0.2);
+        }
+
+        .tab:hover {
+            background: rgba(15, 23, 42, 0.06);
+            color: #0f172a;
+        }
+
+        .tab.active:hover {
+            background: linear-gradient(135deg, #111827, #0f172a);
+            color: white;
+        }
+
+        .game-area {
+            display: none;
+            min-height: 60vh;
+        }
+
+        .game-area.active {
+            display: block;
+            animation: pop-in 0.35s ease;
+        }
+
+        @keyframes pop-in {
+            0% {
+                opacity: 0;
+                transform: translateY(8px) scale(0.98);
+            }
+
+            100% {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .progress-container {
+            background: var(--card);
+            padding: 20px;
+            border-radius: 16px;
+            margin-bottom: 20px;
+            box-shadow: var(--shadow);
+            border: 1px solid rgba(15, 23, 42, 0.08);
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #e0e0e0;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 10px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #ff7a18, #ffb454);
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+
+        .progress-text {
+            text-align: center;
+            font-size: 0.9rem;
+            color: #666;
+            font-weight: 500;
+        }
+
+        .level-info {
+            text-align: center;
+            background: var(--card);
+            padding: 15px;
+            border-radius: 16px;
+            margin-bottom: 20px;
+            box-shadow: var(--shadow);
+            border: 1px solid rgba(15, 23, 42, 0.08);
+        }
+
+        .level-info .level-number {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #ff7a18;
+            margin-bottom: 5px;
+        }
+
+        .level-info .level-description {
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .perfect-round-indicator {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(255, 245, 232, 0.95));
+            padding: 15px;
+            border-radius: 16px;
+            margin-bottom: 20px;
+            box-shadow: var(--shadow);
+            text-align: center;
+            border: 1px solid rgba(15, 23, 42, 0.08);
+        }
+
+        .perfect-round-indicator .indicator-title {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #666;
+            margin-bottom: 5px;
+        }
+
+        .perfect-round-indicator .indicator-status {
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .perfect-round-indicator .status-needed {
+            color: #ef4444;
+        }
+
+        .perfect-round-indicator .status-achieved {
+            color: #22c55e;
+        }
+
+        .timer-container {
+            background: var(--card);
+            padding: 15px;
+            border-radius: 16px;
+            margin-bottom: 20px;
+            box-shadow: var(--shadow);
+            text-align: center;
+            border: 1px solid rgba(15, 23, 42, 0.08);
+        }
+
+        .timer-display {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #ff7a18;
+            margin-bottom: 5px;
+        }
+
+        .timer-display.warning {
+            color: #ef4444;
+            animation: pulse 1s infinite;
+        }
+
+        .timer-display.bonus {
+            color: #22c55e;
+            animation: bounce 0.5s ease;
+        }
+
+        .timer-label {
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.05);
+            }
+        }
+
+        @keyframes bounce {
+
+            0%,
+            100% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.1);
+            }
+        }
+
+        .matching-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .word-column {
+            background: var(--card);
+            border-radius: 16px;
+            padding: 15px;
+            box-shadow: var(--shadow);
+            border: 1px solid rgba(15, 23, 42, 0.08);
+        }
+
+        .column-title {
+            text-align: center;
+            font-weight: 600;
+            color: #ff7a18;
+            margin-bottom: 15px;
+            font-size: 1rem;
+            letter-spacing: 0.2px;
+        }
+
+        .word-card {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 8px;
+            background: rgba(248, 250, 252, 0.9);
+            border: 2px solid transparent;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            text-align: left;
+            box-shadow: 0 6px 12px rgba(15, 23, 42, 0.08);
+        }
+
+        .word-card:hover {
+            transform: translateY(-2px) scale(1.01);
+            box-shadow: 0 10px 16px rgba(15, 23, 42, 0.16);
+        }
+
+        .word-card.selected {
+            border-color: #ff7a18;
+            background: rgba(255, 122, 24, 0.12);
+            color: #ff7a18;
+            font-weight: 500;
+        }
+
+        .word-card.matched {
+            cursor: default;
+            opacity: 0.7;
+            font-weight: 500;
+        }
+
+        .word-card.wrong {
+            background: rgba(239, 68, 68, 0.1);
+            border-color: #ef4444;
+            animation: shake 0.5s ease-in-out;
+        }
+
+        .word-card.mastered {
+            cursor: default;
+            opacity: 0.8;
+            font-weight: 500;
+        }
+
+        @keyframes shake {
+
+            0%,
+            100% {
+                transform: translateX(0);
+            }
+
+            25% {
+                transform: translateX(-5px);
+            }
+
+            75% {
+                transform: translateX(5px);
+            }
+        }
+
+        .feedback {
+            position: fixed;
+            top: 18px;
+            right: 18px;
+            left: auto;
+            transform: none;
+            padding: 20px 30px;
+            border-radius: 16px;
+            color: white;
+            font-weight: 600;
+            font-size: 1.1rem;
+            z-index: 1000;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            box-shadow: 0 20px 40px rgba(15, 23, 42, 0.25);
+            max-width: min(320px, 90vw);
+        }
+
+        .feedback.success {
+            background: linear-gradient(135deg, #22c55e, #16a34a);
+        }
+
+        .feedback.error {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+        }
+
+        .feedback.mastery {
+            background: linear-gradient(135deg, #9333ea, #7c3aed);
+        }
+
+        .feedback.time-bonus {
+            background: linear-gradient(135deg, #22c55e, #16a34a);
+        }
+
+        .feedback.perfect-round {
+            background: linear-gradient(135deg, #22c55e, #16a34a);
+        }
+
+        .feedback.show {
+            opacity: 1;
+        }
+
+        .completion-message {
+            background: linear-gradient(135deg, #0f172a, #1f2937);
+            color: white;
+            padding: 30px;
+            border-radius: 20px;
+            text-align: center;
+            margin-top: 20px;
+            display: none;
+            box-shadow: var(--shadow);
+        }
+
+        .completion-message h2 {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+
+        .completion-message p {
+            font-size: 1rem;
+            opacity: 0.9;
+            margin-bottom: 20px;
+        }
+
+        .restart-btn {
+            background: white;
+            color: #0f172a;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: 'Space Grotesk', sans-serif;
+            transition: transform 0.2s ease;
+            margin: 5px;
+        }
+
+        .restart-btn:hover {
+            transform: scale(1.05);
+        }
+
+        .score-display {
+            text-align: center;
+            background: white;
+            padding: 15px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .score-display .score {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #ff7200;
+        }
+
+        .mastery-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .mastery-stat {
+            background: var(--card);
+            padding: 15px;
+            border-radius: 16px;
+            text-align: center;
+            box-shadow: var(--shadow);
+            border: 1px solid rgba(15, 23, 42, 0.08);
+        }
+
+        .mastery-stat .stat-number {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #0f172a;
+        }
+
+        .mastery-stat .stat-label {
+            font-size: 0.8rem;
+            color: var(--muted);
+            margin-top: 5px;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+        }
+
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            background: #ff7200;
+            z-index: 9999;
+            pointer-events: none;
+        }
+
+        .confetti:nth-child(odd) {
+            background: #22c55e;
+        }
+
+        .confetti:nth-child(3n) {
+            background: #3b82f6;
+        }
+
+        .confetti:nth-child(4n) {
+            background: #9333ea;
+        }
+
+        .confetti:nth-child(5n) {
+            background: #ec4899;
+        }
+
+        @keyframes confetti-fall {
+            0% {
+                transform: translateY(-100vh) rotate(0deg);
+                opacity: 1;
+            }
+
+            100% {
+                transform: translateY(100vh) rotate(720deg);
+                opacity: 0;
+            }
+        }
+
+        .color-pair-0 {
+            background: rgba(255, 114, 0, 0.1);
+            border-color: #ff7200;
+            color: #ff7200;
+        }
+
+        .color-pair-1 {
+            background: rgba(34, 197, 94, 0.1);
+            border-color: #22c55e;
+            color: #22c55e;
+        }
+
+        .color-pair-2 {
+            background: rgba(59, 130, 246, 0.1);
+            border-color: #3b82f6;
+            color: #3b82f6;
+        }
+
+        .color-pair-3 {
+            background: rgba(147, 51, 234, 0.1);
+            border-color: #9333ea;
+            color: #9333ea;
+        }
+
+        .color-pair-4 {
+            background: rgba(236, 72, 153, 0.1);
+            border-color: #ec4899;
+            color: #ec4899;
+        }
+
+        .color-pair-5 {
+            background: rgba(245, 158, 11, 0.1);
+            border-color: #f59e0b;
+            color: #f59e0b;
+        }
+
+        .color-pair-6 {
+            background: rgba(239, 68, 68, 0.1);
+            border-color: #ef4444;
+            color: #ef4444;
+        }
+
+        .color-pair-7 {
+            background: rgba(20, 184, 166, 0.1);
+            border-color: #14b8a6;
+            color: #14b8a6;
+        }
+
+        .color-pair-8 {
+            background: rgba(168, 85, 247, 0.1);
+            border-color: #a855f7;
+            color: #a855f7;
+        }
+
+        .color-pair-9 {
+            background: rgba(6, 182, 212, 0.1);
+            border-color: #06b6d4;
+            color: #06b6d4;
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 5px;
+            }
+
+            .header h1 {
+                font-size: 1.5rem;
+            }
+
+            .matching-container {
+                grid-template-columns: 1fr;
+                gap: 10px;
+            }
+
+            .word-card {
+                font-size: 0.8rem;
+                padding: 10px;
+            }
+
+            .tab {
+                font-size: 0.75rem;
+                padding: 12px 8px;
+            }
+
+            .mastery-stats {
+                grid-template-columns: 1fr;
+                gap: 10px;
+            }
+
+            .timer-display {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Environment Vocabulary Mastery</h1>
+            <p>Match all pairs to level up. Perfect rounds give bonus XP!</p>
+        </div>
+
+        <div class="tabs">
+            <button class="tab active" onclick="switchTab(0)">Climate & Weather</button>
+            <button class="tab" onclick="switchTab(1)">Pollution & Environment</button>
+            <button class="tab" onclick="switchTab(2)">Town & Transport</button>
+            <button class="tab" onclick="switchTab(3)">Energy & Technology</button>
+        </div>
+
+        <div class="game-area active" id="game-0">
+            <div class="mastery-stats">
+                <div class="mastery-stat">
+                    <div class="stat-number" id="mastered-0">0</div>
+                    <div class="stat-label">Mastered</div>
+                </div>
+                <div class="mastery-stat">
+                    <div class="stat-number" id="level-0">1</div>
+                    <div class="stat-label">Level</div>
+                </div>
+                <div class="mastery-stat">
+                    <div class="stat-number" id="score-0">0</div>
+                    <div class="stat-label">XP</div>
+                </div>
+            </div>
+
+            <div class="perfect-round-indicator">
+                <div class="indicator-title">Perfect Round Bonus</div>
+                <div class="indicator-status status-needed" id="perfect-status-0">Zero mistakes = bonus points
+                </div>
+            </div>
+
+            <div class="timer-container">
+                <div class="timer-display" id="timer-0">60</div>
+                <div class="timer-label">seconds remaining</div>
+            </div>
+
+            <div class="level-info">
+                <div class="level-number" id="level-title-0">Level 1</div>
+                <div class="level-description" id="level-desc-0">Match all pairs to level up. Time gets faster each
+                    level.</div>
+            </div>
+
+            <div class="progress-container">
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progress-0"></div>
+                </div>
+                <div class="progress-text" id="progress-text-0">0 / 10 matched this level</div>
+            </div>
+
+            <div class="matching-container">
+                <div class="word-column">
+                    <div class="column-title">English</div>
+                    <div id="english-words-0"></div>
+                </div>
+                <div class="word-column">
+                    <div class="column-title">Français</div>
+                    <div id="french-words-0"></div>
+                </div>
+            </div>
+
+            <div class="completion-message" id="completion-0">
+                <h2>🎉 Vocabulary Mastered!</h2>
+                <p>You've successfully completed all levels and mastered the vocabulary!</p>
+                <div id="final-stats-0"></div>
+                <button class="restart-btn" onclick="restartGame(0)">Start New Session</button>
+            </div>
+        </div>
+
+        <div class="game-area" id="game-1">
+            <div class="mastery-stats">
+                <div class="mastery-stat">
+                    <div class="stat-number" id="mastered-1">0</div>
+                    <div class="stat-label">Mastered</div>
+                </div>
+                <div class="mastery-stat">
+                    <div class="stat-number" id="level-1">1</div>
+                    <div class="stat-label">Level</div>
+                </div>
+                <div class="mastery-stat">
+                    <div class="stat-number" id="score-1">0</div>
+                    <div class="stat-label">XP</div>
+                </div>
+            </div>
+
+            <div class="perfect-round-indicator">
+                <div class="indicator-title">Perfect Round Bonus</div>
+                <div class="indicator-status status-needed" id="perfect-status-1">Zero mistakes = bonus points
+                </div>
+            </div>
+
+            <div class="timer-container">
+                <div class="timer-display" id="timer-1">60</div>
+                <div class="timer-label">seconds remaining</div>
+            </div>
+
+            <div class="level-info">
+                <div class="level-number" id="level-title-1">Level 1</div>
+                <div class="level-description" id="level-desc-1">Match all pairs to level up. Time gets faster each
+                    level.</div>
+            </div>
+
+            <div class="progress-container">
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progress-1"></div>
+                </div>
+                <div class="progress-text" id="progress-text-1">0 / 10 matched this level</div>
+            </div>
+
+            <div class="matching-container">
+                <div class="word-column">
+                    <div class="column-title">English</div>
+                    <div id="english-words-1"></div>
+                </div>
+                <div class="word-column">
+                    <div class="column-title">Français</div>
+                    <div id="french-words-1"></div>
+                </div>
+            </div>
+
+            <div class="completion-message" id="completion-1">
+                <h2>🎉 Vocabulary Mastered!</h2>
+                <p>You've successfully completed all levels and mastered the vocabulary!</p>
+                <div id="final-stats-1"></div>
+                <button class="restart-btn" onclick="restartGame(1)">Start New Session</button>
+            </div>
+        </div>
+
+        <div class="game-area" id="game-2">
+            <div class="mastery-stats">
+                <div class="mastery-stat">
+                    <div class="stat-number" id="mastered-2">0</div>
+                    <div class="stat-label">Mastered</div>
+                </div>
+                <div class="mastery-stat">
+                    <div class="stat-number" id="level-2">1</div>
+                    <div class="stat-label">Level</div>
+                </div>
+                <div class="mastery-stat">
+                    <div class="stat-number" id="score-2">0</div>
+                    <div class="stat-label">XP</div>
+                </div>
+            </div>
+
+            <div class="perfect-round-indicator">
+                <div class="indicator-title">Perfect Round Bonus</div>
+                <div class="indicator-status status-needed" id="perfect-status-2">Zero mistakes = bonus points
+                </div>
+            </div>
+
+            <div class="timer-container">
+                <div class="timer-display" id="timer-2">60</div>
+                <div class="timer-label">seconds remaining</div>
+            </div>
+
+            <div class="level-info">
+                <div class="level-number" id="level-title-2">Level 1</div>
+                <div class="level-description" id="level-desc-2">Match all pairs to level up. Time gets faster each
+                    level.</div>
+            </div>
+
+            <div class="progress-container">
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progress-2"></div>
+                </div>
+                <div class="progress-text" id="progress-text-2">0 / 10 matched this level</div>
+            </div>
+
+            <div class="matching-container">
+                <div class="word-column">
+                    <div class="column-title">English</div>
+                    <div id="english-words-2"></div>
+                </div>
+                <div class="word-column">
+                    <div class="column-title">Français</div>
+                    <div id="french-words-2"></div>
+                </div>
+            </div>
+
+            <div class="completion-message" id="completion-2">
+                <h2>🎉 Vocabulary Mastered!</h2>
+                <p>You've successfully completed all levels and mastered the vocabulary!</p>
+                <div id="final-stats-2"></div>
+                <button class="restart-btn" onclick="restartGame(2)">Start New Session</button>
+            </div>
+        </div>
+
+        <div class="game-area" id="game-3">
+            <div class="mastery-stats">
+                <div class="mastery-stat">
+                    <div class="stat-number" id="mastered-3">0</div>
+                    <div class="stat-label">Mastered</div>
+                </div>
+                <div class="mastery-stat">
+                    <div class="stat-number" id="level-3">1</div>
+                    <div class="stat-label">Level</div>
+                </div>
+                <div class="mastery-stat">
+                    <div class="stat-number" id="score-3">0</div>
+                    <div class="stat-label">XP</div>
+                </div>
+            </div>
+
+            <div class="perfect-round-indicator">
+                <div class="indicator-title">Perfect Round Bonus</div>
+                <div class="indicator-status status-needed" id="perfect-status-3">Zero mistakes = bonus points
+                </div>
+            </div>
+
+            <div class="timer-container">
+                <div class="timer-display" id="timer-3">60</div>
+                <div class="timer-label">seconds remaining</div>
+            </div>
+
+            <div class="level-info">
+                <div class="level-number" id="level-title-3">Level 1</div>
+                <div class="level-description" id="level-desc-3">Match all pairs to level up. Time gets faster each
+                    level.</div>
+            </div>
+
+            <div class="progress-container">
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progress-3"></div>
+                </div>
+                <div class="progress-text" id="progress-text-3">0 / 10 matched this level</div>
+            </div>
+
+            <div class="matching-container">
+                <div class="word-column">
+                    <div class="column-title">English</div>
+                    <div id="english-words-3"></div>
+                </div>
+                <div class="word-column">
+                    <div class="column-title">Français</div>
+                    <div id="french-words-3"></div>
+                </div>
+            </div>
+
+            <div class="completion-message" id="completion-3">
+                <h2>🎉 Vocabulary Mastered!</h2>
+                <p>You've successfully completed all levels and mastered the vocabulary!</p>
+                <div id="final-stats-3"></div>
+                <button class="restart-btn" onclick="restartGame(3)">Start New Session</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="feedback" id="feedback"></div>
+
+    <script>
+        const vocabularyData = [
+            {
+                category: "Climate & Weather",
+                pairs: [
+                    { english: "climate change", french: "changement climatique" },
+                    { english: "environment", french: "environnement" },
+                    { english: "flood", french: "inondation" },
+                    { english: "hurricane", french: "ouragan" },
+                    { english: "natural", french: "naturel" },
+                    { english: "temperature", french: "température" },
+                    { english: "thunderstorm", french: "orage" },
+                    { english: "tornado", french: "tornade" },
+                    { english: "frequent", french: "fréquent" },
+                    { english: "international", french: "international" }
+                ]
+            },
+            {
+                category: "Pollution & Environment",
+                pairs: [
+                    { english: "exhaust fumes", french: "gaz d'échappement" },
+                    { english: "litter", french: "détritus" },
+                    { english: "pollution", french: "pollution" },
+                    { english: "recycling", french: "recyclage" },
+                    { english: "rubbish", french: "ordures" },
+                    { english: "smog", french: "nuage de pollution" },
+                    { english: "clean up", french: "nettoyer" },
+                    { english: "destroy", french: "détruire" },
+                    { english: "protect", french: "protéger" },
+                    { english: "recycle", french: "recycler" }
+                ]
+            },
+            {
+                category: "Town & Transport",
+                pairs: [
+                    { english: "block of flats", french: "immeuble" },
+                    { english: "bottle bank", french: "conteneur de récupération" },
+                    { english: "car park", french: "parking" },
+                    { english: "cycle lane", french: "bande cyclable" },
+                    { english: "pavement", french: "trottoir" },
+                    { english: "petrol station", french: "station-service" },
+                    { english: "public transport", french: "transports en commun" },
+                    { english: "traffic jam", french: "embouteillage" },
+                    { english: "sports facilities", french: "installations sportives" },
+                    { english: "get around", french: "se déplacer" }
+                ]
+            },
+            {
+                category: "Energy & Technology",
+                pairs: [
+                    { english: "coal", french: "charbon" },
+                    { english: "gas", french: "gaz" },
+                    { english: "nuclear energy", french: "énergie nucléaire" },
+                    { english: "oil", french: "pétrole" },
+                    { english: "renewable energy", french: "énergie renouvelable" },
+                    { english: "solar energy", french: "énergie solaire" },
+                    { english: "wind power", french: "énergie éolienne" },
+                    { english: "waves", french: "vagues" },
+                    { english: "hydroelectric dam", french: "barrage hydroélectrique" },
+                    { english: "non-renewable energy", french: "énergie non renouvelable" }
+                ]
+            }
+        ];
+
+        let gameStates = [
+            {
+                selectedEnglish: null,
+                selectedFrench: null,
+                matches: 0,
+                score: 0,
+                level: 1,
+                masteredWords: new Set(),
+                wordStats: new Map(),
+                currentLevelPairs: [],
+                pairColorMap: new Map(),
+                timeLeft: 60,
+                timerInterval: null,
+                gameActive: false,
+                isLastLevel: false,
+                currentRoundErrors: 0,
+                perfectRoundAchieved: false
+            },
+            {
+                selectedEnglish: null,
+                selectedFrench: null,
+                matches: 0,
+                score: 0,
+                level: 1,
+                masteredWords: new Set(),
+                wordStats: new Map(),
+                currentLevelPairs: [],
+                pairColorMap: new Map(),
+                timeLeft: 60,
+                timerInterval: null,
+                gameActive: false,
+                isLastLevel: false,
+                currentRoundErrors: 0,
+                perfectRoundAchieved: false
+            },
+            {
+                selectedEnglish: null,
+                selectedFrench: null,
+                matches: 0,
+                score: 0,
+                level: 1,
+                masteredWords: new Set(),
+                wordStats: new Map(),
+                currentLevelPairs: [],
+                pairColorMap: new Map(),
+                timeLeft: 60,
+                timerInterval: null,
+                gameActive: false,
+                isLastLevel: false,
+                currentRoundErrors: 0,
+                perfectRoundAchieved: false
+            },
+            {
+                selectedEnglish: null,
+                selectedFrench: null,
+                matches: 0,
+                score: 0,
+                level: 1,
+                masteredWords: new Set(),
+                wordStats: new Map(),
+                currentLevelPairs: [],
+                pairColorMap: new Map(),
+                timeLeft: 60,
+                timerInterval: null,
+                gameActive: false,
+                isLastLevel: false,
+                currentRoundErrors: 0,
+                perfectRoundAchieved: false
+            }
+        ];
+
+        let currentTab = 0;
+        const MASTERY_THRESHOLD = 3;
+        const LEVEL_TIMES = [60, 45, 30, 20, 15];
+        const TIME_BONUS_LAST_LEVEL = 5;
+        const WORDS_PER_LEVEL = 10;
+
+        function switchTab(tabIndex) {
+            if (gameStates[currentTab].timerInterval) {
+                clearInterval(gameStates[currentTab].timerInterval);
+            }
+
+            document.querySelectorAll('.tab').forEach((tab, index) => {
+                tab.classList.toggle('active', index === tabIndex);
+            });
+
+            document.querySelectorAll('.game-area').forEach((area, index) => {
+                area.classList.toggle('active', index === tabIndex);
+            });
+
+            currentTab = tabIndex;
+
+            const completion = document.getElementById(`completion-${currentTab}`);
+            if (completion && completion.style.display === 'block') {
+                return;
+            }
+
+            if (gameStates[currentTab].timeLeft <= 0) {
+                gameStates[currentTab].timeLeft = getLevelTime(gameStates[currentTab].level);
+            }
+
+            startTimer(currentTab);
+        }
+
+        function getLevelTime(level) {
+            const index = Math.min(level - 1, LEVEL_TIMES.length - 1);
+            return LEVEL_TIMES[index];
+        }
+
+        function startTimer(gameIndex) {
+            const state = gameStates[gameIndex];
+            if (state.timerInterval) {
+                clearInterval(state.timerInterval);
+            }
+
+            state.gameActive = true;
+            state.timerInterval = setInterval(() => {
+                state.timeLeft--;
+                updateTimer(gameIndex);
+
+                if (state.timeLeft <= 0) {
+                    handleTimeUp(gameIndex);
+                }
+            }, 1000);
+        }
+
+        function updateTimer(gameIndex) {
+            const state = gameStates[gameIndex];
+            const timerDisplay = document.getElementById(`timer-${gameIndex}`);
+            timerDisplay.textContent = state.timeLeft;
+
+            if (state.timeLeft <= 10) {
+                timerDisplay.classList.add('warning');
+            } else {
+                timerDisplay.classList.remove('warning');
+            }
+        }
+
+        function addTimeBonus(gameIndex) {
+            const state = gameStates[gameIndex];
+            if (state.isLastLevel) {
+                state.timeLeft += TIME_BONUS_LAST_LEVEL;
+                const timerDisplay = document.getElementById(`timer-${gameIndex}`);
+                timerDisplay.classList.add('bonus');
+                setTimeout(() => {
+                    timerDisplay.classList.remove('bonus');
+                }, 500);
+                showFeedback(`+${TIME_BONUS_LAST_LEVEL} seconds! ⏰`, 'time-bonus');
+            }
+        }
+
+        function updatePerfectRoundIndicator(gameIndex) {
+            const state = gameStates[gameIndex];
+            const indicator = document.getElementById(`perfect-status-${gameIndex}`);
+
+            if (state.currentRoundErrors === 0 && state.matches === state.currentLevelPairs.length) {
+                indicator.textContent = "Perfect round! Bonus unlocked";
+                indicator.className = "indicator-status status-achieved";
+                state.perfectRoundAchieved = true;
+            } else if (state.currentRoundErrors > 0) {
+                indicator.textContent = "Bonus missed this round";
+                indicator.className = "indicator-status status-needed";
+                state.perfectRoundAchieved = false;
+            } else {
+                indicator.textContent = "Zero mistakes = bonus points";
+                indicator.className = "indicator-status status-needed";
+                state.perfectRoundAchieved = false;
+            }
+        }
+
+        function handleTimeUp(gameIndex) {
+            const state = gameStates[gameIndex];
+            clearInterval(state.timerInterval);
+            state.gameActive = false;
+
+            const allCards = document.querySelectorAll(`#game-${gameIndex} .word-card`);
+            allCards.forEach(card => {
+                if (!card.classList.contains('matched') && !card.classList.contains('mastered')) {
+                    card.style.pointerEvents = 'none';
+                    card.style.opacity = '0.5';
+                }
+            });
+
+            if (state.perfectRoundAchieved) {
+                showFeedback('Time\'s up! Perfect round bonus secured. Leveling up!', 'success');
+                setTimeout(() => {
+                    advanceToNextLevel(gameIndex);
+                }, 2000);
+            } else {
+                showFeedback('Time\'s up! Restarting this level...', 'error');
+                setTimeout(() => {
+                    restartCurrentLevel(gameIndex);
+                }, 2000);
+            }
+        }
+
+        function restartCurrentLevel(gameIndex) {
+            const state = gameStates[gameIndex];
+            state.matches = 0;
+            state.currentRoundErrors = 0;
+            state.perfectRoundAchieved = false;
+            state.selectedEnglish = null;
+            state.selectedFrench = null;
+            state.timeLeft = getLevelTime(state.level);
+
+            initializeGame(gameIndex);
+        }
+
+        function createConfetti() {
+            const colors = ['#ff7200', '#22c55e', '#3b82f6', '#9333ea', '#ec4899', '#f59e0b'];
+
+            for (let i = 0; i < 50; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.left = Math.random() * 100 + 'vw';
+                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.animationDuration = (Math.random() * 3 + 2) + 's';
+                confetti.style.animationDelay = Math.random() * 2 + 's';
+                confetti.style.animation = `confetti-fall ${confetti.style.animationDuration} ${confetti.style.animationDelay} ease-out forwards`;
+
+                document.body.appendChild(confetti);
+
+                setTimeout(() => {
+                    confetti.remove();
+                }, 5000);
+            }
+        }
+
+        function shuffle(array) {
+            const shuffled = [...array];
+            for (let i = shuffled.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+            }
+            return shuffled;
+        }
+
+        function initializeWordStats(gameIndex) {
+            const state = gameStates[gameIndex];
+            const data = vocabularyData[gameIndex];
+
+            if (state.wordStats.size === 0) {
+                data.pairs.forEach(pair => {
+                    state.wordStats.set(pair.english, {
+                        correctCount: 0,
+                        incorrectCount: 0,
+                        isMastered: false
+                    });
+                });
+            }
+        }
+
+        function assignPairColors(gameIndex) {
+            const state = gameStates[gameIndex];
+            state.pairColorMap.clear();
+
+            state.currentLevelPairs.forEach((pair, index) => {
+                const colorIndex = index % 10;
+                state.pairColorMap.set(pair.english, colorIndex);
+                state.pairColorMap.set(pair.french, colorIndex);
+            });
+        }
+
+        function getWordsForLevel(gameIndex) {
+            const state = gameStates[gameIndex];
+            const data = vocabularyData[gameIndex];
+
+            const unmasteredPairs = data.pairs.filter(pair =>
+                !state.masteredWords.has(pair.english)
+            );
+
+            if (unmasteredPairs.length === 0) {
+                return [];
+            }
+
+            const wordsToShow = Math.min(WORDS_PER_LEVEL, unmasteredPairs.length);
+            return unmasteredPairs.slice(0, wordsToShow);
+        }
+
+        function initializeGame(gameIndex) {
+            const state = gameStates[gameIndex];
+            initializeWordStats(gameIndex);
+
+            const wordsForLevel = getWordsForLevel(gameIndex);
+
+            if (wordsForLevel.length === 0) {
+                showFinalCompletion(gameIndex);
+                return;
+            }
+
+            state.currentLevelPairs = wordsForLevel;
+            state.matches = 0;
+            state.currentRoundErrors = 0;
+            state.perfectRoundAchieved = false;
+            state.timeLeft = getLevelTime(state.level);
+            state.gameActive = false;
+            state.isLastLevel = state.level >= LEVEL_TIMES.length;
+            assignPairColors(gameIndex);
+
+            const shuffledEnglish = shuffle(wordsForLevel);
+            const shuffledFrench = shuffle(wordsForLevel);
+
+            const englishContainer = document.getElementById(`english-words-${gameIndex}`);
+            const frenchContainer = document.getElementById(`french-words-${gameIndex}`);
+
+            englishContainer.innerHTML = '';
+            frenchContainer.innerHTML = '';
+
+            shuffledEnglish.forEach((pair, index) => {
+                const card = document.createElement('div');
+                card.className = 'word-card';
+                card.textContent = pair.english;
+                card.dataset.word = pair.english;
+                card.dataset.match = pair.french;
+                card.onclick = () => selectEnglish(gameIndex, card);
+                englishContainer.appendChild(card);
+            });
+
+            shuffledFrench.forEach((pair, index) => {
+                const card = document.createElement('div');
+                card.className = 'word-card';
+                card.textContent = pair.french;
+                card.dataset.word = pair.french;
+                card.dataset.match = pair.english;
+                card.onclick = () => selectFrench(gameIndex, card);
+                frenchContainer.appendChild(card);
+            });
+
+            updateAllDisplays(gameIndex);
+
+            if (gameIndex === currentTab) {
+                startTimer(gameIndex);
+            }
+        }
+
+        function selectEnglish(gameIndex, card) {
+            if (card.classList.contains('matched') || card.classList.contains('mastered') || !gameStates[gameIndex].gameActive) return;
+
+            const state = gameStates[gameIndex];
+
+            if (state.selectedEnglish) {
+                state.selectedEnglish.classList.remove('selected');
+            }
+
+            state.selectedEnglish = card;
+            card.classList.add('selected');
+
+            checkMatch(gameIndex);
+        }
+
+        function selectFrench(gameIndex, card) {
+            if (card.classList.contains('matched') || card.classList.contains('mastered') || !gameStates[gameIndex].gameActive) return;
+
+            const state = gameStates[gameIndex];
+
+            if (state.selectedFrench) {
+                state.selectedFrench.classList.remove('selected');
+            }
+
+            state.selectedFrench = card;
+            card.classList.add('selected');
+
+            checkMatch(gameIndex);
+        }
+
+        function checkMatch(gameIndex) {
+            const state = gameStates[gameIndex];
+
+            if (state.selectedEnglish && state.selectedFrench) {
+                const englishWord = state.selectedEnglish.dataset.word;
+                const frenchWord = state.selectedFrench.dataset.word;
+                const expectedFrench = state.selectedEnglish.dataset.match;
+
+                if (frenchWord === expectedFrench) {
+                    handleCorrectMatch(gameIndex, englishWord);
+                } else {
+                    handleIncorrectMatch(gameIndex, englishWord);
+                }
+            }
+        }
+
+        function handleCorrectMatch(gameIndex, englishWord) {
+            const state = gameStates[gameIndex];
+            const wordStat = state.wordStats.get(englishWord);
+            const colorIndex = state.pairColorMap.get(englishWord);
+
+            wordStat.correctCount++;
+            state.matches++;
+
+            const timeBonus = Math.max(0, Math.floor(state.timeLeft / 10));
+            state.score += 10 + timeBonus;
+
+            state.selectedEnglish.classList.remove('selected');
+            state.selectedFrench.classList.remove('selected');
+            state.selectedEnglish.classList.add('matched', `color-pair-${colorIndex}`);
+            state.selectedFrench.classList.add('matched', `color-pair-${colorIndex}`);
+
+            if (state.isLastLevel) {
+                addTimeBonus(gameIndex);
+            }
+
+            if (wordStat.correctCount >= MASTERY_THRESHOLD && !wordStat.isMastered) {
+                wordStat.isMastered = true;
+                state.masteredWords.add(englishWord);
+                state.score += 20;
+
+                state.selectedEnglish.classList.add('mastered');
+                state.selectedFrench.classList.add('mastered');
+
+                createConfetti();
+                showFeedback(`🎯 "${englishWord}" MASTERED! +${30 + timeBonus} points`, 'mastery');
+            } else {
+                createConfetti();
+                showFeedback(`Correct! +${10 + timeBonus} points 🎉`, 'success');
+            }
+
+            state.selectedEnglish = null;
+            state.selectedFrench = null;
+            updateAllDisplays(gameIndex);
+
+            if (state.matches === state.currentLevelPairs.length) {
+                clearInterval(state.timerInterval);
+                state.gameActive = false;
+
+                if (state.currentRoundErrors === 0) {
+                    state.perfectRoundAchieved = true;
+                    updatePerfectRoundIndicator(gameIndex);
+                    state.score += 50;
+                    createConfetti();
+                    showFeedback('Perfect Round! +50 XP bonus 🎉', 'perfect-round');
+                    setTimeout(() => {
+                        advanceToNextLevel(gameIndex);
+                    }, 2000);
+                } else {
+                    showFeedback('Round complete! Leveling up...', 'success');
+                    setTimeout(() => {
+                        advanceToNextLevel(gameIndex);
+                    }, 2000);
+                }
+            }
+        }
+
+        function handleIncorrectMatch(gameIndex, englishWord) {
+            const state = gameStates[gameIndex];
+            const wordStat = state.wordStats.get(englishWord);
+
+            wordStat.incorrectCount++;
+            state.currentRoundErrors++;
+
+            state.selectedEnglish.classList.add('wrong');
+            state.selectedFrench.classList.add('wrong');
+
+            showFeedback('Try again! 🤔', 'error');
+            updatePerfectRoundIndicator(gameIndex);
+
+            setTimeout(() => {
+                state.selectedEnglish.classList.remove('wrong', 'selected');
+                state.selectedFrench.classList.remove('wrong', 'selected');
+                state.selectedEnglish = null;
+                state.selectedFrench = null;
+            }, 500);
+        }
+
+        function advanceToNextLevel(gameIndex) {
+            const state = gameStates[gameIndex];
+            const remainingWords = getWordsForLevel(gameIndex);
+
+            if (remainingWords.length === 0) {
+                showFinalCompletion(gameIndex);
+                return;
+            }
+
+            state.level++;
+            createConfetti();
+            showFeedback(`Level ${state.level} starting! 🚀`, 'success');
+
+            setTimeout(() => {
+                initializeGame(gameIndex);
+            }, 1000);
+        }
+
+        function updateAllDisplays(gameIndex) {
+            updateProgress(gameIndex);
+            updateMasteryStats(gameIndex);
+            updateLevelInfo(gameIndex);
+            updateTimer(gameIndex);
+            updatePerfectRoundIndicator(gameIndex);
+        }
+
+        function updateProgress(gameIndex) {
+            const state = gameStates[gameIndex];
+            const totalPairs = state.currentLevelPairs.length;
+            const percentage = totalPairs > 0 ? (state.matches / totalPairs) * 100 : 0;
+
+            document.getElementById(`progress-${gameIndex}`).style.width = `${percentage}%`;
+            document.getElementById(`progress-text-${gameIndex}`).textContent =
+                `${state.matches} / ${totalPairs} matched this level`;
+        }
+
+        function updateMasteryStats(gameIndex) {
+            const state = gameStates[gameIndex];
+            document.getElementById(`mastered-${gameIndex}`).textContent = state.masteredWords.size;
+            document.getElementById(`level-${gameIndex}`).textContent = state.level;
+            document.getElementById(`score-${gameIndex}`).textContent = state.score;
+        }
+
+        function updateLevelInfo(gameIndex) {
+            const state = gameStates[gameIndex];
+            const remainingWords = vocabularyData[gameIndex].pairs.length - state.masteredWords.size;
+
+            document.getElementById(`level-title-${gameIndex}`).textContent = `Level ${state.level}`;
+
+            if (remainingWords > 0) {
+                let description = `${remainingWords} words remaining. Time: ${getLevelTime(state.level)}s`;
+                if (state.isLastLevel) {
+                    description += ` (+${TIME_BONUS_LAST_LEVEL}s per match)`;
+                }
+                document.getElementById(`level-desc-${gameIndex}`).textContent = description;
+            } else {
+                document.getElementById(`level-desc-${gameIndex}`).textContent =
+                    "All vocabulary mastered!";
+            }
+        }
+
+        function showFeedback(message, type) {
+            const feedback = document.getElementById('feedback');
+            feedback.textContent = message;
+            feedback.className = `feedback ${type}`;
+            feedback.classList.add('show');
+
+            setTimeout(() => {
+                feedback.classList.remove('show');
+            }, 2000);
+        }
+
+        function showFinalCompletion(gameIndex) {
+            const state = gameStates[gameIndex];
+            clearInterval(state.timerInterval);
+            state.gameActive = false;
+
+            const completionDiv = document.getElementById(`completion-${gameIndex}`);
+            const finalStatsDiv = document.getElementById(`final-stats-${gameIndex}`);
+
+            const totalWords = vocabularyData[gameIndex].pairs.length;
+            const totalCorrect = Array.from(state.wordStats.values())
+                .reduce((sum, stat) => sum + stat.correctCount, 0);
+            const totalIncorrect = Array.from(state.wordStats.values())
+                .reduce((sum, stat) => sum + stat.incorrectCount, 0);
+            const accuracy = totalCorrect + totalIncorrect > 0 ?
+                Math.round((totalCorrect / (totalCorrect + totalIncorrect)) * 100) : 0;
+
+            finalStatsDiv.innerHTML = `
+                <p><strong>Final Statistics:</strong></p>
+                <p>📚 Words Mastered: ${totalWords}/${totalWords}</p>
+                <p>🎯 Total XP: ${state.score}</p>
+                <p>🏆 Levels Completed: ${state.level}</p>
+                <p>✅ Accuracy: ${accuracy}%</p>
+                <p>🎉 Correct Answers: ${totalCorrect}</p>
+            `;
+
+            createConfetti();
+            completionDiv.style.display = 'block';
+        }
+
+        function restartGame(gameIndex) {
+            const state = gameStates[gameIndex];
+            if (state.timerInterval) {
+                clearInterval(state.timerInterval);
+            }
+
+            gameStates[gameIndex] = {
+                selectedEnglish: null,
+                selectedFrench: null,
+                matches: 0,
+                score: 0,
+                level: 1,
+                masteredWords: new Set(),
+                wordStats: new Map(),
+                currentLevelPairs: [],
+                pairColorMap: new Map(),
+                timeLeft: 60,
+                timerInterval: null,
+                gameActive: false,
+                isLastLevel: false,
+                currentRoundErrors: 0,
+                perfectRoundAchieved: false
+            };
+
+            document.getElementById(`completion-${gameIndex}`).style.display = 'none';
+            initializeGame(gameIndex);
+        }
+
+        for (let i = 0; i < vocabularyData.length; i++) {
+            initializeGame(i);
+        }
+    </script>
+
+    <script>
+        function adjustIframeHeight() {
+            const height = document.body.scrollHeight;
+            const interactionCode = 'math_eq_y3kdzhbf';
+
+            window.parent.postMessage(
+                {
+                    interactionCode: interactionCode,
+                    type: 'SET_INSTRUCTION_HEIGHT',
+                    value: height,
+                },
+                '*'
+            );
+        }
+
+        window.addEventListener('load', adjustIframeHeight);
+        window.addEventListener('resize', adjustIframeHeight);
+        setInterval(adjustIframeHeight, 1000);
+    </script>
+</body>
+
+</html>

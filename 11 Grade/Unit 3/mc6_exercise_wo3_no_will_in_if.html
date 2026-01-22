@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MC6 - Watch Out 3: No WILL in IF Clause</title>
+    <style>
+        /* ============================================
+           ALL STYLES SCOPED TO #mc6c-game-container
+           ============================================ */
+        
+        #mc6c-game-container {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 850px;
+            margin: 0 auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #fbe9e7 0%, #ffccbc 100%);
+            border-radius: 16px;
+            box-sizing: border-box;
+        }
+        
+        #mc6c-game-container * {
+            box-sizing: border-box;
+        }
+        
+        #mc6c-game-container .mc6c-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        #mc6c-game-container .mc6c-title {
+            font-size: 1.5em;
+            color: #bf360c;
+            margin: 0 0 8px 0;
+            font-weight: 700;
+        }
+        
+        #mc6c-game-container .mc6c-subtitle {
+            font-size: 0.95em;
+            color: #666;
+            margin: 0;
+        }
+        
+        #mc6c-game-container .mc6c-instructions {
+            background: #fff;
+            border-left: 4px solid #e64a19;
+            padding: 12px 16px;
+            margin-bottom: 20px;
+            border-radius: 0 8px 8px 0;
+            font-size: 0.95em;
+            color: #333;
+        }
+        
+        #mc6c-game-container .mc6c-instructions-fr {
+            color: #e65100;
+            font-style: italic;
+            margin-top: 8px;
+            font-size: 0.9em;
+        }
+        
+        #mc6c-game-container .mc6c-rule-box {
+            background: #fff;
+            border: 2px solid #e64a19;
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        #mc6c-game-container .mc6c-rule-title {
+            font-weight: 600;
+            color: #bf360c;
+            margin-bottom: 12px;
+            font-size: 1.1em;
+        }
+        
+        #mc6c-game-container .mc6c-rule-examples {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+        
+        #mc6c-game-container .mc6c-example {
+            padding: 10px 16px;
+            border-radius: 8px;
+            font-size: 0.95em;
+        }
+        
+        #mc6c-game-container .mc6c-example.mc6c-wrong {
+            background: #ffebee;
+            border: 2px solid #c62828;
+            color: #c62828;
+        }
+        
+        #mc6c-game-container .mc6c-example.mc6c-right {
+            background: #e8f5e9;
+            border: 2px solid #2e7d32;
+            color: #2e7d32;
+        }
+        
+        #mc6c-game-container .mc6c-example .mc6c-strike {
+            text-decoration: line-through;
+        }
+        
+        #mc6c-game-container .mc6c-rule-french {
+            margin-top: 12px;
+            font-size: 0.9em;
+            color: #666;
+            font-style: italic;
+        }
+        
+        #mc6c-game-container .mc6c-progress-bar {
+            background: #ddd;
+            border-radius: 10px;
+            height: 8px;
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+        
+        #mc6c-game-container .mc6c-progress-fill {
+            background: linear-gradient(90deg, #bf360c, #ff7043);
+            height: 100%;
+            width: 0%;
+            transition: width 0.3s ease;
+            border-radius: 10px;
+        }
+        
+        #mc6c-game-container .mc6c-questions {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        
+        #mc6c-game-container .mc6c-question-card {
+            background: #fff;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            padding: 16px;
+            transition: all 0.3s ease;
+        }
+        
+        #mc6c-game-container .mc6c-question-card.mc6c-correct-card {
+            border-color: #2e7d32;
+            background: #e8f5e9;
+        }
+        
+        #mc6c-game-container .mc6c-question-card.mc6c-incorrect-card {
+            border-color: #c62828;
+            background: #ffebee;
+        }
+        
+        #mc6c-game-container .mc6c-question-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+        
+        #mc6c-game-container .mc6c-question-number {
+            background: #bf360c;
+            color: #fff;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 0.85em;
+            flex-shrink: 0;
+        }
+        
+        #mc6c-game-container .mc6c-sentence {
+            font-size: 1em;
+            color: #333;
+            line-height: 1.6;
+            padding: 10px 14px;
+            background: #fbe9e7;
+            border-radius: 8px;
+            border-left: 4px solid #ff7043;
+        }
+        
+        #mc6c-game-container .mc6c-error-word {
+            color: #c62828;
+            font-weight: 600;
+            text-decoration: underline wavy #c62828;
+        }
+        
+        #mc6c-game-container .mc6c-input-area {
+            margin-top: 12px;
+        }
+        
+        #mc6c-game-container .mc6c-input-label {
+            font-size: 0.85em;
+            color: #666;
+            margin-bottom: 6px;
+        }
+        
+        #mc6c-game-container .mc6c-input {
+            width: 100%;
+            padding: 12px 14px;
+            font-size: 1em;
+            border: 2px solid #e64a19;
+            border-radius: 8px;
+            background: #fff;
+            color: #333;
+            transition: all 0.2s ease;
+        }
+        
+        #mc6c-game-container .mc6c-input:focus {
+            outline: none;
+            border-color: #bf360c;
+            box-shadow: 0 0 0 3px rgba(230, 74, 25, 0.2);
+        }
+        
+        #mc6c-game-container .mc6c-input.mc6c-correct-input {
+            border-color: #2e7d32;
+            background: #e8f5e9;
+            color: #1b5e20;
+        }
+        
+        #mc6c-game-container .mc6c-input.mc6c-incorrect-input {
+            border-color: #c62828;
+            background: #ffebee;
+            color: #b71c1c;
+        }
+        
+        #mc6c-game-container .mc6c-feedback-inline {
+            margin-top: 10px;
+            padding: 10px 12px;
+            border-radius: 8px;
+            font-size: 0.9em;
+            line-height: 1.5;
+            display: none;
+        }
+        
+        #mc6c-game-container .mc6c-feedback-inline.mc6c-show {
+            display: block;
+        }
+        
+        #mc6c-game-container .mc6c-feedback-inline.mc6c-success {
+            background: #e8f5e9;
+            border: 1px solid #a5d6a7;
+            color: #1b5e20;
+        }
+        
+        #mc6c-game-container .mc6c-feedback-inline.mc6c-error {
+            background: #fff3e0;
+            border: 1px solid #ffcc80;
+            color: #e65100;
+        }
+        
+        #mc6c-game-container .mc6c-controls {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            margin-top: 24px;
+            flex-wrap: wrap;
+        }
+        
+        #mc6c-game-container .mc6c-btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        #mc6c-game-container .mc6c-btn-primary {
+            background: #bf360c;
+            color: #fff;
+        }
+        
+        #mc6c-game-container .mc6c-btn-primary:hover {
+            background: #e64a19;
+        }
+        
+        #mc6c-game-container .mc6c-btn-secondary {
+            background: #e0e0e0;
+            color: #333;
+        }
+        
+        #mc6c-game-container .mc6c-btn-secondary:hover {
+            background: #bdbdbd;
+        }
+        
+        #mc6c-game-container .mc6c-btn-success {
+            background: #2e7d32;
+            color: #fff;
+        }
+        
+        #mc6c-game-container .mc6c-btn-success:hover {
+            background: #388e3c;
+        }
+        
+        #mc6c-game-container .mc6c-score-area {
+            text-align: center;
+            margin-top: 24px;
+            padding: 20px;
+            background: #fff;
+            border-radius: 12px;
+            display: none;
+            border: 2px solid #e64a19;
+        }
+        
+        #mc6c-game-container .mc6c-score-area.mc6c-show {
+            display: block;
+        }
+        
+        #mc6c-game-container .mc6c-score-emoji {
+            font-size: 3em;
+            margin-bottom: 10px;
+        }
+        
+        #mc6c-game-container .mc6c-score-text {
+            font-size: 1.3em;
+            font-weight: 600;
+            color: #bf360c;
+        }
+        
+        #mc6c-game-container .mc6c-score-details {
+            font-size: 0.95em;
+            color: #666;
+            margin-top: 8px;
+        }
+        
+        #mc6c-game-container .mc6c-summary {
+            margin-top: 20px;
+            background: #fff;
+            border: 2px solid #2e7d32;
+            border-radius: 12px;
+            padding: 16px;
+            display: none;
+        }
+        
+        #mc6c-game-container .mc6c-summary.mc6c-show {
+            display: block;
+        }
+        
+        #mc6c-game-container .mc6c-summary-title {
+            font-weight: 600;
+            color: #2e7d32;
+            margin-bottom: 10px;
+        }
+        
+        #mc6c-game-container .mc6c-summary-content {
+            font-size: 0.9em;
+            color: #333;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+    <div id="mc6c-game-container">
+        <div class="mc6c-header">
+            <h1 class="mc6c-title">⚠️ Watch Out 3: No WILL in IF Clause!</h1>
+            <p class="mc6c-subtitle">A Common French Speaker Mistake</p>
+        </div>
+        
+        <div class="mc6c-instructions">
+            <strong>Instructions:</strong> Each sentence has a mistake. Rewrite it correctly.
+            <div class="mc6c-instructions-fr">
+                <strong>Instructions :</strong> Chaque phrase contient une erreur. Réécris-la correctement.
+            </div>
+        </div>
+        
+        <div class="mc6c-rule-box">
+            <div class="mc6c-rule-title">🚫 Never use WILL in the IF clause!</div>
+            <div class="mc6c-rule-examples">
+                <div class="mc6c-example mc6c-wrong">
+                    ✗ If it <span class="mc6c-strike">will rain</span>...
+                </div>
+                <div class="mc6c-example mc6c-right">
+                    ✓ If it <strong>rains</strong>...
+                </div>
+            </div>
+            <div class="mc6c-rule-french">
+                En français on dit "Si il <em>pleuvra</em>..." mais en anglais: IF + <strong>PRESENT SIMPLE</strong>
+            </div>
+        </div>
+        
+        <div class="mc6c-progress-bar">
+            <div class="mc6c-progress-fill" id="mc6c-progress-fill"></div>
+        </div>
+        
+        <div class="mc6c-questions" id="mc6c-questions">
+            <!-- Generated by JS -->
+        </div>
+        
+        <div class="mc6c-controls">
+            <button class="mc6c-btn mc6c-btn-secondary" onclick="MC6CGame.reset()">🔄 Recommencer</button>
+            <button class="mc6c-btn mc6c-btn-primary" onclick="MC6CGame.checkAll()">✅ Vérifier tout</button>
+            <button class="mc6c-btn mc6c-btn-success" onclick="MC6CGame.showAnswers()">📋 Voir les réponses</button>
+        </div>
+        
+        <div class="mc6c-score-area" id="mc6c-score">
+            <div class="mc6c-score-emoji" id="mc6c-score-emoji"></div>
+            <div class="mc6c-score-text" id="mc6c-score-text"></div>
+            <div class="mc6c-score-details" id="mc6c-score-details"></div>
+        </div>
+        
+        <div class="mc6c-summary" id="mc6c-summary">
+            <div class="mc6c-summary-title">📝 Remember / À retenir</div>
+            <div class="mc6c-summary-content">
+                <strong>First Conditional Structure:</strong><br>
+                IF + <span style="color:#2e7d32;">PRESENT SIMPLE</span> → WILL + verb<br><br>
+                <strong>Examples:</strong><br>
+                • If it <span style="color:#2e7d32;">rains</span>, we will stay home.<br>
+                • If you <span style="color:#2e7d32;">don't hurry</span>, you will be late.<br>
+                • We will go if the weather <span style="color:#2e7d32;">is</span> nice.
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const MC6CGame = (function() {
+            'use strict';
+            
+            const questions = [
+                {
+                    id: 1,
+                    wrongSentence: "If it <span class='mc6c-error-word'>will rain</span>, we'll stay at home.",
+                    answer: "If it rains, we'll stay at home.",
+                    acceptAlso: ["If it rains, we will stay at home.", "If it rains we'll stay at home."],
+                    feedback: "will rain → RAINS (present simple après IF)"
+                },
+                {
+                    id: 2,
+                    wrongSentence: "If you <span class='mc6c-error-word'>will help</span> me, I'll finish faster.",
+                    answer: "If you help me, I'll finish faster.",
+                    acceptAlso: ["If you help me, I will finish faster."],
+                    feedback: "will help → HELP (present simple après IF)"
+                },
+                {
+                    id: 3,
+                    wrongSentence: "We won't go out if it <span class='mc6c-error-word'>will be</span> cold.",
+                    answer: "We won't go out if it is cold.",
+                    acceptAlso: ["We will not go out if it is cold.", "We won't go out if it's cold."],
+                    feedback: "will be → IS (present simple après IF)"
+                },
+                {
+                    id: 4,
+                    wrongSentence: "If they <span class='mc6c-error-word'>won't listen</span>, nothing will change.",
+                    answer: "If they don't listen, nothing will change.",
+                    acceptAlso: ["If they do not listen, nothing will change."],
+                    feedback: "won't listen → DON'T LISTEN (present simple négatif après IF)"
+                },
+                {
+                    id: 5,
+                    wrongSentence: "The ice caps will melt if temperatures <span class='mc6c-error-word'>will rise</span>.",
+                    answer: "The ice caps will melt if temperatures rise.",
+                    acceptAlso: [],
+                    feedback: "will rise → RISE (present simple après IF, même si IF est à la fin)"
+                },
+                {
+                    id: 6,
+                    wrongSentence: "If we <span class='mc6c-error-word'>won't protect</span> the forests, many species will disappear.",
+                    answer: "If we don't protect the forests, many species will disappear.",
+                    acceptAlso: ["If we do not protect the forests, many species will disappear."],
+                    feedback: "won't protect → DON'T PROTECT (present simple négatif après IF)"
+                }
+            ];
+            
+            let state = { answers: {}, totalCorrect: 0 };
+            let dom = {};
+            
+            function init() {
+                dom.questions = document.getElementById('mc6c-questions');
+                dom.progressFill = document.getElementById('mc6c-progress-fill');
+                dom.score = document.getElementById('mc6c-score');
+                dom.scoreEmoji = document.getElementById('mc6c-score-emoji');
+                dom.scoreText = document.getElementById('mc6c-score-text');
+                dom.scoreDetails = document.getElementById('mc6c-score-details');
+                dom.summary = document.getElementById('mc6c-summary');
+                renderQuestions();
+            }
+            
+            function renderQuestions() {
+                let html = '';
+                questions.forEach(q => {
+                    html += `
+                        <div class="mc6c-question-card" id="mc6c-card-${q.id}">
+                            <div class="mc6c-question-header">
+                                <span class="mc6c-question-number">${q.id}</span>
+                                <span style="color:#c62828; font-weight:500;">Find and fix the error:</span>
+                            </div>
+                            <div class="mc6c-sentence">${q.wrongSentence}</div>
+                            <div class="mc6c-input-area">
+                                <div class="mc6c-input-label">✏️ Correct sentence:</div>
+                                <input type="text" class="mc6c-input" id="mc6c-input-${q.id}" 
+                                       placeholder="Rewrite the sentence correctly..."
+                                       oninput="MC6CGame.onInput(${q.id})" autocomplete="off" spellcheck="false">
+                            </div>
+                            <div class="mc6c-feedback-inline" id="mc6c-feedback-${q.id}"></div>
+                        </div>
+                    `;
+                });
+                dom.questions.innerHTML = html;
+            }
+            
+            function onInput(id) {
+                const input = document.getElementById(`mc6c-input-${id}`);
+                state.answers[id] = input.value.trim();
+                updateProgress();
+            }
+            
+            function updateProgress() {
+                const filled = Object.values(state.answers).filter(a => a.length > 0).length;
+                dom.progressFill.style.width = (filled / questions.length * 100) + '%';
+            }
+            
+            function normalize(str) {
+                return str.toLowerCase()
+                    .replace(/[?.!,]/g, '')
+                    .replace(/\s+/g, ' ')
+                    .replace(/n't/g, ' not')
+                    .replace(/we'll/g, 'we will')
+                    .replace(/i'll/g, 'i will')
+                    .replace(/it's/g, 'it is')
+                    .replace(/won't/g, 'will not')
+                    .replace(/don't/g, 'do not')
+                    .trim();
+            }
+            
+            function checkAnswer(id) {
+                const q = questions.find(q => q.id === id);
+                const userNorm = normalize(state.answers[id] || '');
+                const correctNorm = normalize(q.answer);
+                
+                if (userNorm === correctNorm) return true;
+                return q.acceptAlso.some(alt => normalize(alt) === userNorm);
+            }
+            
+            function checkAll() {
+                state.totalCorrect = 0;
+                questions.forEach(q => {
+                    const input = document.getElementById(`mc6c-input-${q.id}`);
+                    const card = document.getElementById(`mc6c-card-${q.id}`);
+                    const feedback = document.getElementById(`mc6c-feedback-${q.id}`);
+                    
+                    input.classList.remove('mc6c-correct-input', 'mc6c-incorrect-input');
+                    card.classList.remove('mc6c-correct-card', 'mc6c-incorrect-card');
+                    feedback.classList.remove('mc6c-show', 'mc6c-success', 'mc6c-error');
+                    
+                    if (!state.answers[q.id]) {
+                        card.classList.add('mc6c-incorrect-card');
+                        feedback.innerHTML = "⚠️ Écris la phrase corrigée !";
+                        feedback.classList.add('mc6c-show', 'mc6c-error');
+                        return;
+                    }
+                    
+                    if (checkAnswer(q.id)) {
+                        state.totalCorrect++;
+                        input.classList.add('mc6c-correct-input');
+                        card.classList.add('mc6c-correct-card');
+                        feedback.innerHTML = `✅ Correct! ${q.feedback}`;
+                        feedback.classList.add('mc6c-show', 'mc6c-success');
+                    } else {
+                        input.classList.add('mc6c-incorrect-input');
+                        card.classList.add('mc6c-incorrect-card');
+                        feedback.innerHTML = `❌ ${q.feedback}<br><strong>Réponse:</strong> ${q.answer}`;
+                        feedback.classList.add('mc6c-show', 'mc6c-error');
+                    }
+                });
+                showScore();
+                dom.summary.classList.add('mc6c-show');
+            }
+            
+            function showScore() {
+                dom.score.classList.add('mc6c-show');
+                const pct = Math.round(state.totalCorrect / questions.length * 100);
+                dom.scoreEmoji.textContent = pct === 100 ? '🏆' : pct >= 60 ? '👍' : '📚';
+                dom.scoreText.textContent = pct === 100 ? 'Perfect!' : pct >= 60 ? 'Good job!' : 'Review the rule!';
+                dom.scoreDetails.textContent = `${state.totalCorrect}/${questions.length} correct (${pct}%)`;
+            }
+            
+            function showAnswers() {
+                questions.forEach(q => {
+                    const input = document.getElementById(`mc6c-input-${q.id}`);
+                    const card = document.getElementById(`mc6c-card-${q.id}`);
+                    const feedback = document.getElementById(`mc6c-feedback-${q.id}`);
+                    
+                    input.value = q.answer;
+                    input.classList.add('mc6c-correct-input');
+                    input.disabled = true;
+                    card.classList.add('mc6c-correct-card');
+                    feedback.innerHTML = `✅ ${q.answer}<br>${q.feedback}`;
+                    feedback.classList.add('mc6c-show', 'mc6c-success');
+                    state.answers[q.id] = q.answer;
+                });
+                updateProgress();
+                state.totalCorrect = questions.length;
+                dom.score.classList.add('mc6c-show');
+                dom.scoreEmoji.textContent = '📋';
+                dom.scoreText.textContent = 'Answer Key';
+                dom.scoreDetails.textContent = 'All answers shown';
+                dom.summary.classList.add('mc6c-show');
+            }
+            
+            function reset() {
+                state = { answers: {}, totalCorrect: 0 };
+                renderQuestions();
+                dom.progressFill.style.width = '0%';
+                dom.score.classList.remove('mc6c-show');
+                dom.summary.classList.remove('mc6c-show');
+            }
+            
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', init);
+            } else {
+                init();
+            }
+            
+            return { onInput, checkAll, showAnswers, reset };
+        })();
+    </script>
+</body>
+</html>

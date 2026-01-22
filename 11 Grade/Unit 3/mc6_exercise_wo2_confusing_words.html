@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MC6 - Watch Out 2: Confusing Words</title>
+    <style>
+        #mc6b-game-container {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 850px;
+            margin: 0 auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%);
+            border-radius: 16px;
+            box-sizing: border-box;
+        }
+        
+        #mc6b-game-container * { box-sizing: border-box; }
+        
+        #mc6b-game-container .mc6b-header { text-align: center; margin-bottom: 20px; }
+        
+        #mc6b-game-container .mc6b-title {
+            font-size: 1.5em;
+            color: #e65100;
+            margin: 0 0 8px 0;
+            font-weight: 700;
+        }
+        
+        #mc6b-game-container .mc6b-subtitle { font-size: 0.95em; color: #666; margin: 0; }
+        
+        #mc6b-game-container .mc6b-instructions {
+            background: #fff;
+            border-left: 4px solid #ff9800;
+            padding: 12px 16px;
+            margin-bottom: 20px;
+            border-radius: 0 8px 8px 0;
+            font-size: 0.95em;
+            color: #333;
+        }
+        
+        #mc6b-game-container .mc6b-instructions-fr {
+            color: #e65100;
+            font-style: italic;
+            margin-top: 8px;
+            font-size: 0.9em;
+        }
+        
+        #mc6b-game-container .mc6b-vocab-box {
+            background: #fff;
+            border: 2px solid #ff9800;
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 20px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+        
+        @media (max-width: 600px) {
+            #mc6b-game-container .mc6b-vocab-box { grid-template-columns: 1fr; }
+        }
+        
+        #mc6b-game-container .mc6b-vocab-item {
+            padding: 12px;
+            border-radius: 8px;
+            background: #fff8e1;
+        }
+        
+        #mc6b-game-container .mc6b-vocab-word {
+            font-weight: 700;
+            color: #e65100;
+            font-size: 1.1em;
+        }
+        
+        #mc6b-game-container .mc6b-vocab-type {
+            font-size: 0.8em;
+            color: #666;
+            font-style: italic;
+        }
+        
+        #mc6b-game-container .mc6b-vocab-def {
+            font-size: 0.9em;
+            color: #333;
+            margin-top: 4px;
+        }
+        
+        #mc6b-game-container .mc6b-vocab-fr {
+            font-size: 0.85em;
+            color: #7b1fa2;
+            font-style: italic;
+            margin-top: 2px;
+        }
+        
+        #mc6b-game-container .mc6b-progress-bar {
+            background: #ddd;
+            border-radius: 10px;
+            height: 8px;
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+        
+        #mc6b-game-container .mc6b-progress-fill {
+            background: linear-gradient(90deg, #e65100, #ffb74d);
+            height: 100%;
+            width: 0%;
+            transition: width 0.3s ease;
+            border-radius: 10px;
+        }
+        
+        #mc6b-game-container .mc6b-questions {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        
+        #mc6b-game-container .mc6b-question-card {
+            background: #fff;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            padding: 16px;
+            transition: all 0.3s ease;
+        }
+        
+        #mc6b-game-container .mc6b-question-card.mc6b-correct {
+            border-color: #2e7d32;
+            background: #e8f5e9;
+        }
+        
+        #mc6b-game-container .mc6b-question-card.mc6b-incorrect {
+            border-color: #c62828;
+            background: #ffebee;
+        }
+        
+        #mc6b-game-container .mc6b-question-number {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: #e65100;
+            color: #fff;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            font-weight: 600;
+            font-size: 0.85em;
+            margin-right: 10px;
+        }
+        
+        #mc6b-game-container .mc6b-sentence {
+            font-size: 1em;
+            color: #333;
+            line-height: 1.8;
+        }
+        
+        #mc6b-game-container .mc6b-choice-group {
+            display: inline-flex;
+            gap: 6px;
+            margin: 0 4px;
+            vertical-align: middle;
+        }
+        
+        #mc6b-game-container .mc6b-choice-btn {
+            padding: 4px 14px;
+            font-size: 0.95em;
+            border: 2px solid #ff9800;
+            border-radius: 6px;
+            background: #fff8e1;
+            color: #e65100;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-weight: 600;
+        }
+        
+        #mc6b-game-container .mc6b-choice-btn:hover { background: #ffe0b2; }
+        
+        #mc6b-game-container .mc6b-choice-btn.mc6b-selected {
+            background: #ff9800;
+            color: #fff;
+        }
+        
+        #mc6b-game-container .mc6b-choice-btn.mc6b-correct-choice {
+            background: #2e7d32;
+            border-color: #2e7d32;
+            color: #fff;
+        }
+        
+        #mc6b-game-container .mc6b-choice-btn.mc6b-wrong-choice {
+            background: #c62828;
+            border-color: #c62828;
+            color: #fff;
+        }
+        
+        #mc6b-game-container .mc6b-choice-btn:disabled { cursor: not-allowed; opacity: 0.9; }
+        
+        #mc6b-game-container .mc6b-feedback-inline {
+            margin-top: 10px;
+            padding: 8px 10px;
+            border-radius: 6px;
+            font-size: 0.85em;
+            line-height: 1.4;
+            display: none;
+        }
+        
+        #mc6b-game-container .mc6b-feedback-inline.mc6b-show { display: block; }
+        
+        #mc6b-game-container .mc6b-feedback-inline.mc6b-success {
+            background: #e8f5e9;
+            border: 1px solid #a5d6a7;
+            color: #1b5e20;
+        }
+        
+        #mc6b-game-container .mc6b-feedback-inline.mc6b-error {
+            background: #ffebee;
+            border: 1px solid #ef9a9a;
+            color: #c62828;
+        }
+        
+        #mc6b-game-container .mc6b-controls {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            margin-top: 24px;
+            flex-wrap: wrap;
+        }
+        
+        #mc6b-game-container .mc6b-btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        #mc6b-game-container .mc6b-btn-primary { background: #e65100; color: #fff; }
+        #mc6b-game-container .mc6b-btn-primary:hover { background: #ff9800; }
+        #mc6b-game-container .mc6b-btn-secondary { background: #e0e0e0; color: #333; }
+        #mc6b-game-container .mc6b-btn-secondary:hover { background: #bdbdbd; }
+        #mc6b-game-container .mc6b-btn-success { background: #2e7d32; color: #fff; }
+        #mc6b-game-container .mc6b-btn-success:hover { background: #388e3c; }
+        
+        #mc6b-game-container .mc6b-score-area {
+            text-align: center;
+            margin-top: 24px;
+            padding: 20px;
+            background: #fff;
+            border-radius: 12px;
+            display: none;
+            border: 2px solid #ff9800;
+        }
+        
+        #mc6b-game-container .mc6b-score-area.mc6b-show { display: block; }
+        #mc6b-game-container .mc6b-score-emoji { font-size: 3em; margin-bottom: 10px; }
+        #mc6b-game-container .mc6b-score-text { font-size: 1.3em; font-weight: 600; color: #e65100; }
+        #mc6b-game-container .mc6b-score-details { font-size: 0.95em; color: #666; margin-top: 8px; }
+    </style>
+</head>
+<body>
+    <div id="mc6b-game-container">
+        <div class="mc6b-header">
+            <h1 class="mc6b-title">⚠️ Watch Out 2: Confusing Words</h1>
+            <p class="mc6b-subtitle">Effect vs Affect | Weather vs Climate</p>
+        </div>
+        
+        <div class="mc6b-instructions">
+            <strong>Instructions:</strong> Choose the correct word for each sentence. Pay attention to the difference between similar words!
+            <div class="mc6b-instructions-fr">
+                <strong>Instructions :</strong> Choisis le mot correct pour chaque phrase. Fais attention à la différence entre les mots similaires !
+            </div>
+        </div>
+        
+        <div class="mc6b-vocab-box">
+            <div class="mc6b-vocab-item">
+                <span class="mc6b-vocab-word">effect</span> <span class="mc6b-vocab-type">(noun)</span>
+                <div class="mc6b-vocab-def">a result or consequence</div>
+                <div class="mc6b-vocab-fr">🇫🇷 un effet, une conséquence</div>
+            </div>
+            <div class="mc6b-vocab-item">
+                <span class="mc6b-vocab-word">affect</span> <span class="mc6b-vocab-type">(verb)</span>
+                <div class="mc6b-vocab-def">to influence or change something</div>
+                <div class="mc6b-vocab-fr">🇫🇷 affecter, influencer</div>
+            </div>
+            <div class="mc6b-vocab-item">
+                <span class="mc6b-vocab-word">weather</span> <span class="mc6b-vocab-type">(noun)</span>
+                <div class="mc6b-vocab-def">daily conditions (rain, sun, etc.)</div>
+                <div class="mc6b-vocab-fr">🇫🇷 le temps (qu'il fait)</div>
+            </div>
+            <div class="mc6b-vocab-item">
+                <span class="mc6b-vocab-word">climate</span> <span class="mc6b-vocab-type">(noun)</span>
+                <div class="mc6b-vocab-def">average weather over many years</div>
+                <div class="mc6b-vocab-fr">🇫🇷 le climat (sur le long terme)</div>
+            </div>
+        </div>
+        
+        <div class="mc6b-progress-bar">
+            <div class="mc6b-progress-fill" id="mc6b-progress-fill"></div>
+        </div>
+        
+        <div class="mc6b-questions" id="mc6b-questions"></div>
+        
+        <div class="mc6b-controls">
+            <button class="mc6b-btn mc6b-btn-secondary" onclick="MC6BGame.reset()">🔄 Recommencer</button>
+            <button class="mc6b-btn mc6b-btn-primary" onclick="MC6BGame.checkAll()">✅ Vérifier tout</button>
+            <button class="mc6b-btn mc6b-btn-success" onclick="MC6BGame.showAnswers()">📋 Voir les réponses</button>
+        </div>
+        
+        <div class="mc6b-score-area" id="mc6b-score">
+            <div class="mc6b-score-emoji" id="mc6b-score-emoji"></div>
+            <div class="mc6b-score-text" id="mc6b-score-text"></div>
+            <div class="mc6b-score-details" id="mc6b-score-details"></div>
+        </div>
+    </div>
+
+    <script>
+        const MC6BGame = (function() {
+            'use strict';
+            
+            const questions = [
+                {
+                    id: 1,
+                    before: "Pollution has a big",
+                    options: ["effect", "affect"],
+                    after: "on our health.",
+                    answer: "effect",
+                    feedback: "EFFECT (noun) = un effet. 'A big effect' → on utilise le nom."
+                },
+                {
+                    id: 2,
+                    before: "How will climate change",
+                    options: ["effect", "affect"],
+                    after: "the world's wildlife?",
+                    answer: "affect",
+                    feedback: "AFFECT (verb) = affecter. Après 'will' → on utilise le verbe."
+                },
+                {
+                    id: 3,
+                    before: "The",
+                    options: ["weather", "climate"],
+                    after: "in Scotland is often rainy.",
+                    answer: "weather",
+                    feedback: "WEATHER = le temps quotidien. 'Often rainy' = description du temps habituel (pas le climat sur 30 ans)."
+                },
+                {
+                    id: 4,
+                    before: "Africa has a warm",
+                    options: ["weather", "climate"],
+                    after: ".",
+                    answer: "climate",
+                    feedback: "CLIMATE = caractéristique générale sur le long terme. L'Afrique a un CLIMAT chaud."
+                },
+                {
+                    id: 5,
+                    before: "What's the",
+                    options: ["weather", "climate"],
+                    after: "like today?",
+                    answer: "weather",
+                    feedback: "WEATHER = 'today' = on parle du temps aujourd'hui, pas du climat général."
+                },
+                {
+                    id: 6,
+                    before: "Rising temperatures will",
+                    options: ["effect", "affect"],
+                    after: "sea levels.",
+                    answer: "affect",
+                    feedback: "AFFECT (verb) = influencer. 'Will affect' = va affecter/influencer."
+                },
+                {
+                    id: 7,
+                    before: "The",
+                    options: ["effects", "affects"],
+                    after: "of pollution are serious.",
+                    answer: "effects",
+                    feedback: "EFFECTS (noun plural) = les effets. 'The effects ARE' = c'est un nom."
+                },
+                {
+                    id: 8,
+                    before: "Scientists study how",
+                    options: ["weather", "climate"],
+                    after: "change will impact our future.",
+                    answer: "climate",
+                    feedback: "CLIMATE CHANGE = le changement climatique (sur le long terme, pas la météo d'un jour)."
+                }
+            ];
+            
+            let state = { answers: {}, totalCorrect: 0 };
+            let dom = {};
+            
+            function init() {
+                dom.questions = document.getElementById('mc6b-questions');
+                dom.progressFill = document.getElementById('mc6b-progress-fill');
+                dom.score = document.getElementById('mc6b-score');
+                dom.scoreEmoji = document.getElementById('mc6b-score-emoji');
+                dom.scoreText = document.getElementById('mc6b-score-text');
+                dom.scoreDetails = document.getElementById('mc6b-score-details');
+                renderQuestions();
+            }
+            
+            function renderQuestions() {
+                let html = '';
+                questions.forEach(q => {
+                    const optionsHtml = q.options.map((opt, idx) => 
+                        `<button class="mc6b-choice-btn" id="mc6b-opt-${q.id}-${idx}" onclick="MC6BGame.selectOption(${q.id}, '${opt}', ${idx})">${opt}</button>`
+                    ).join(' / ');
+                    
+                    html += `
+                        <div class="mc6b-question-card" id="mc6b-card-${q.id}">
+                            <span class="mc6b-question-number">${q.id}</span>
+                            <span class="mc6b-sentence">
+                                ${q.before}
+                                <span class="mc6b-choice-group">${optionsHtml}</span>
+                                ${q.after}
+                            </span>
+                            <div class="mc6b-feedback-inline" id="mc6b-feedback-${q.id}"></div>
+                        </div>
+                    `;
+                });
+                dom.questions.innerHTML = html;
+            }
+            
+            function selectOption(questionId, option, optionIndex) {
+                const q = questions.find(q => q.id === questionId);
+                q.options.forEach((opt, idx) => {
+                    document.getElementById(`mc6b-opt-${questionId}-${idx}`).classList.remove('mc6b-selected');
+                });
+                document.getElementById(`mc6b-opt-${questionId}-${optionIndex}`).classList.add('mc6b-selected');
+                state.answers[questionId] = option;
+                updateProgress();
+            }
+            
+            function updateProgress() {
+                const answered = Object.keys(state.answers).length;
+                dom.progressFill.style.width = (answered / questions.length * 100) + '%';
+            }
+            
+            function checkAll() {
+                state.totalCorrect = 0;
+                questions.forEach(q => {
+                    const card = document.getElementById(`mc6b-card-${q.id}`);
+                    const feedback = document.getElementById(`mc6b-feedback-${q.id}`);
+                    card.classList.remove('mc6b-correct', 'mc6b-incorrect');
+                    feedback.classList.remove('mc6b-show', 'mc6b-success', 'mc6b-error');
+                    
+                    q.options.forEach((opt, idx) => {
+                        const btn = document.getElementById(`mc6b-opt-${q.id}-${idx}`);
+                        btn.classList.remove('mc6b-correct-choice', 'mc6b-wrong-choice');
+                        btn.disabled = true;
+                    });
+                    
+                    const userAnswer = state.answers[q.id];
+                    if (!userAnswer) {
+                        card.classList.add('mc6b-incorrect');
+                        feedback.innerHTML = "⚠️ Choisis une option !";
+                        feedback.classList.add('mc6b-show', 'mc6b-error');
+                        return;
+                    }
+                    
+                    const correctIdx = q.options.indexOf(q.answer);
+                    document.getElementById(`mc6b-opt-${q.id}-${correctIdx}`).classList.add('mc6b-correct-choice');
+                    
+                    if (userAnswer === q.answer) {
+                        state.totalCorrect++;
+                        card.classList.add('mc6b-correct');
+                        feedback.innerHTML = `✅ Correct! ${q.feedback}`;
+                        feedback.classList.add('mc6b-show', 'mc6b-success');
+                    } else {
+                        const wrongIdx = q.options.indexOf(userAnswer);
+                        document.getElementById(`mc6b-opt-${q.id}-${wrongIdx}`).classList.add('mc6b-wrong-choice');
+                        card.classList.add('mc6b-incorrect');
+                        feedback.innerHTML = `❌ ${q.feedback}`;
+                        feedback.classList.add('mc6b-show', 'mc6b-error');
+                    }
+                });
+                showScore();
+            }
+            
+            function showScore() {
+                dom.score.classList.add('mc6b-show');
+                const pct = Math.round(state.totalCorrect / questions.length * 100);
+                dom.scoreEmoji.textContent = pct === 100 ? '🏆' : pct >= 60 ? '👍' : '📚';
+                dom.scoreText.textContent = pct === 100 ? 'Perfect!' : pct >= 60 ? 'Good job!' : 'Keep practicing!';
+                dom.scoreDetails.textContent = `${state.totalCorrect}/${questions.length} correct (${pct}%)`;
+            }
+            
+            function showAnswers() {
+                questions.forEach(q => {
+                    const card = document.getElementById(`mc6b-card-${q.id}`);
+                    const feedback = document.getElementById(`mc6b-feedback-${q.id}`);
+                    
+                    q.options.forEach((opt, idx) => {
+                        const btn = document.getElementById(`mc6b-opt-${q.id}-${idx}`);
+                        btn.classList.remove('mc6b-selected', 'mc6b-wrong-choice');
+                        btn.disabled = true;
+                        if (opt === q.answer) btn.classList.add('mc6b-correct-choice');
+                    });
+                    
+                    state.answers[q.id] = q.answer;
+                    card.classList.add('mc6b-correct');
+                    feedback.innerHTML = `✅ <strong>${q.answer}</strong> - ${q.feedback}`;
+                    feedback.classList.add('mc6b-show', 'mc6b-success');
+                });
+                updateProgress();
+                state.totalCorrect = questions.length;
+                dom.score.classList.add('mc6b-show');
+                dom.scoreEmoji.textContent = '📋';
+                dom.scoreText.textContent = 'Answer Key';
+                dom.scoreDetails.textContent = 'All answers shown';
+            }
+            
+            function reset() {
+                state = { answers: {}, totalCorrect: 0 };
+                renderQuestions();
+                dom.progressFill.style.width = '0%';
+                dom.score.classList.remove('mc6b-show');
+            }
+            
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', init);
+            } else {
+                init();
+            }
+            
+            return { selectOption, checkAll, showAnswers, reset };
+        })();
+    </script>
+</body>
+</html>

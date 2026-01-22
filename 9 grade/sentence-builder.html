@@ -1,0 +1,1389 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Unit 4 - Sentence Builder</title>
+    <style>
+        /* ===== SENTENCE BUILDER STYLES - Scoped with .sb- prefix ===== */
+        * {
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body.sb-body {
+            font-family: 'Lexend', 'OpenDyslexic', Arial, sans-serif;
+            margin: 0;
+            padding: 10px;
+            background: linear-gradient(135deg, #ff6b6b 0%, #feca57 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        @import url('https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700&display=swap');
+
+        .sb-container {
+            max-width: 500px;
+            margin: 0 auto;
+            padding: 10px;
+        }
+
+        .sb-header {
+            background: white;
+            border-radius: 20px;
+            padding: 15px;
+            margin-bottom: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .sb-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #ff6b6b;
+            margin: 0 0 10px 0;
+            text-align: center;
+        }
+
+        .sb-stats {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .sb-stat-box {
+            background: #fff5f5;
+            padding: 8px 12px;
+            border-radius: 12px;
+            text-align: center;
+            flex: 1;
+            min-width: 70px;
+        }
+
+        .sb-stat-label {
+            font-size: 0.65rem;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .sb-stat-value {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #ff6b6b;
+        }
+
+        .sb-timer-danger .sb-stat-value {
+            color: #e74c3c;
+            animation: sb-pulse 0.5s infinite;
+        }
+
+        @keyframes sb-pulse {
+
+            0%,
+            100% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.1);
+            }
+        }
+
+        .sb-level-selector {
+            background: white;
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            text-align: center;
+        }
+
+        .sb-level-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+        .sb-level-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .sb-level-btn {
+            padding: 15px 20px;
+            border: none;
+            border-radius: 15px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: inherit;
+        }
+
+        .sb-level-btn:active {
+            transform: scale(0.95);
+        }
+
+        #sb-level1-btn {
+            background: linear-gradient(135deg, #56ab2f 0%, #a8e063 100%);
+            color: white;
+        }
+
+        #sb-level2-btn {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+        }
+
+        #sb-level3-btn {
+            background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+            color: white;
+        }
+
+        .sb-level-desc {
+            font-size: 0.8rem;
+            opacity: 0.9;
+            margin-top: 5px;
+        }
+
+        .sb-game-area {
+            display: none;
+        }
+
+        .sb-game-area.sb-active {
+            display: block;
+        }
+
+        .sb-task-card {
+            background: white;
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .sb-task-header {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+
+        .sb-task-badge {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .sb-badge-tense {
+            background: #e8f4fd;
+            color: #2196f3;
+        }
+
+        .sb-badge-form {
+            background: #fce4ec;
+            color: #e91e63;
+        }
+
+        .sb-task-instruction {
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 10px;
+        }
+
+        .sb-french-sentence {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #333;
+            padding: 12px;
+            background: #f8f9fa;
+            border-radius: 12px;
+            border-left: 4px solid #ff6b6b;
+        }
+
+        .sb-build-area {
+            background: white;
+            border-radius: 20px;
+            padding: 15px;
+            margin-bottom: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .sb-answer-zone {
+            min-height: 60px;
+            padding: 15px;
+            border: 3px dashed #e0e0e0;
+            border-radius: 15px;
+            margin-bottom: 15px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            align-items: center;
+            justify-content: flex-start;
+            transition: all 0.3s ease;
+        }
+
+        .sb-answer-zone.sb-correct {
+            border-color: #56ab2f;
+            background: #f0fff0;
+        }
+
+        .sb-answer-zone.sb-incorrect {
+            border-color: #e74c3c;
+            background: #fff0f0;
+            animation: sb-shake 0.5s ease;
+        }
+
+        @keyframes sb-shake {
+
+            0%,
+            100% {
+                transform: translateX(0);
+            }
+
+            25% {
+                transform: translateX(-5px);
+            }
+
+            75% {
+                transform: translateX(5px);
+            }
+        }
+
+        .sb-word-bank {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            justify-content: center;
+        }
+
+        .sb-word-chip {
+            padding: 12px 16px;
+            background: linear-gradient(135deg, #ff6b6b 0%, #feca57 100%);
+            color: white;
+            border-radius: 25px;
+            font-size: 0.95rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            user-select: none;
+        }
+
+        .sb-word-chip:active {
+            transform: scale(0.95);
+        }
+
+        .sb-word-chip.sb-selected {
+            background: #ccc;
+            color: #666;
+            opacity: 0.5;
+        }
+
+        .sb-word-chip.sb-in-answer {
+            background: #667eea;
+        }
+
+        .sb-answer-placeholder {
+            color: #999;
+            font-style: italic;
+        }
+
+        .sb-controls-row {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .sb-btn {
+            flex: 1;
+            padding: 14px 16px;
+            border: none;
+            border-radius: 15px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: inherit;
+        }
+
+        .sb-btn:active {
+            transform: scale(0.95);
+        }
+
+        .sb-btn-primary {
+            background: linear-gradient(135deg, #ff6b6b 0%, #feca57 100%);
+            color: white;
+        }
+
+        .sb-btn-secondary {
+            background: #fff5f5;
+            color: #ff6b6b;
+        }
+
+        .sb-btn-danger {
+            background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+            color: white;
+        }
+
+        .sb-btn-small {
+            padding: 10px 14px;
+            font-size: 0.85rem;
+        }
+
+        .sb-feedback {
+            background: white;
+            border-radius: 15px;
+            padding: 15px;
+            text-align: center;
+            margin-bottom: 15px;
+            min-height: 60px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            font-weight: 500;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .sb-feedback.sb-success {
+            background: linear-gradient(135deg, #56ab2f 0%, #a8e063 100%);
+            color: white;
+        }
+
+        .sb-feedback.sb-error {
+            background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+            color: white;
+        }
+
+        .sb-correct-answer {
+            font-size: 0.85rem;
+            margin-top: 5px;
+            opacity: 0.9;
+        }
+
+        .sb-end-screen {
+            display: none;
+            background: white;
+            border-radius: 20px;
+            padding: 30px 20px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .sb-end-screen.sb-active {
+            display: block;
+        }
+
+        .sb-end-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #ff6b6b;
+            margin-bottom: 20px;
+        }
+
+        .sb-end-stats {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+        }
+
+        .sb-end-stat {
+            background: #fff5f5;
+            padding: 15px 20px;
+            border-radius: 15px;
+        }
+
+        .sb-end-stat-value {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #ff6b6b;
+        }
+
+        .sb-end-stat-label {
+            font-size: 0.75rem;
+            color: #666;
+        }
+
+        .sb-progress-indicator {
+            font-size: 0.85rem;
+            color: #666;
+            margin-top: 10px;
+        }
+
+        .sb-hidden {
+            display: none !important;
+        }
+
+        .sb-grammar-help {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 12px;
+            margin-top: 10px;
+            font-size: 0.8rem;
+            color: #666;
+        }
+
+        .sb-grammar-help strong {
+            color: #ff6b6b;
+        }
+    </style>
+</head>
+
+<body class="sb-body">
+    <div class="sb-container" id="sb-container">
+        <!-- Header -->
+        <div class="sb-header" id="sb-header">
+            <h1 class="sb-title">📝 Unit 4: Sentence Builder (v2)</h1>
+            <div class="sb-stats" id="sb-stats">
+                <div class="sb-stat-box" id="sb-timer-box">
+                    <div class="sb-stat-label">Time</div>
+                    <div class="sb-stat-value" id="sb-timer">--</div>
+                </div>
+                <div class="sb-stat-box">
+                    <div class="sb-stat-label">Score</div>
+                    <div class="sb-stat-value" id="sb-score">0</div>
+                </div>
+                <div class="sb-stat-box">
+                    <div class="sb-stat-label">Streak</div>
+                    <div class="sb-stat-value" id="sb-streak">0</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tense Selector -->
+        <div class="sb-level-selector" id="sb-tense-selector">
+            <div class="sb-level-title">Choose Tense</div>
+            <div id="sb-tense-buttons" class="sb-level-buttons"></div>
+        </div>
+
+        <!-- Level Selector -->
+        <div class="sb-level-selector sb-hidden" id="sb-level-selector">
+            <div class="sb-level-title">Choose Your Level</div>
+            <div class="sb-level-buttons">
+                <button class="sb-level-btn" id="sb-level1-btn">
+                    🟢 Level 1 - Easy
+                    <div class="sb-level-desc">60 seconds per sentence • Grammar hints</div>
+                </button>
+                <button class="sb-level-btn" id="sb-level2-btn">
+                    🟠 Level 2 - Medium
+                    <div class="sb-level-desc">20 seconds per sentence • No hints</div>
+                </button>
+                <button class="sb-level-btn" id="sb-level3-btn">
+                    🔴 Level 3 - Challenge
+                    <div class="sb-level-desc">15 seconds total • Extra words!</div>
+                </button>
+            </div>
+            <div class="sb-progress-indicator" id="sb-progress-indicator"></div>
+        </div>
+
+        <!-- Game Area -->
+        <div class="sb-game-area" id="sb-game-area">
+            <!-- Task Card -->
+            <div class="sb-task-card">
+                <div class="sb-task-header">
+                    <span class="sb-task-badge sb-badge-tense" id="sb-tense-badge">Present Simple</span>
+                    <span class="sb-task-badge sb-badge-form" id="sb-form-badge">Affirmative</span>
+                </div>
+                <div class="sb-task-instruction">🇫🇷 Build the English sentence:</div>
+                <div class="sb-french-sentence" id="sb-french-sentence">---</div>
+                <div class="sb-grammar-help" id="sb-grammar-help"></div>
+            </div>
+
+            <!-- Build Area -->
+            <div class="sb-build-area">
+                <div class="sb-answer-zone" id="sb-answer-zone">
+                    <span class="sb-answer-placeholder" id="sb-placeholder">Tap words below to build your
+                        sentence...</span>
+                </div>
+                <div class="sb-word-bank" id="sb-word-bank"></div>
+            </div>
+
+            <!-- Controls -->
+            <div class="sb-controls-row">
+                <button class="sb-btn sb-btn-secondary sb-btn-small" id="sb-clear-btn">🔄 Clear</button>
+                <button class="sb-btn sb-btn-primary" id="sb-check-btn">✓ Check</button>
+                <button class="sb-btn sb-btn-secondary sb-btn-small" id="sb-skip-btn">Skip →</button>
+            </div>
+
+            <!-- Feedback -->
+            <div class="sb-feedback" id="sb-feedback">
+                Tap words to build the sentence, then check your answer!
+            </div>
+
+            <!-- End Button -->
+            <button class="sb-btn sb-btn-danger" id="sb-end-btn" style="width: 100%;">End Game</button>
+        </div>
+
+        <!-- End Screen -->
+        <div class="sb-end-screen" id="sb-end-screen">
+            <div class="sb-end-title" id="sb-end-title">🎉 Great Job!</div>
+            <div class="sb-end-stats">
+                <div class="sb-end-stat">
+                    <div class="sb-end-stat-value" id="sb-final-score">0</div>
+                    <div class="sb-end-stat-label">Final Score</div>
+                </div>
+                <div class="sb-end-stat">
+                    <div class="sb-end-stat-value" id="sb-final-correct">0</div>
+                    <div class="sb-end-stat-label">Correct</div>
+                </div>
+                <div class="sb-end-stat">
+                    <div class="sb-end-stat-value" id="sb-best-streak">0</div>
+                    <div class="sb-end-stat-label">Best Streak</div>
+                </div>
+            </div>
+            <div class="sb-controls-row">
+                <button class="sb-btn sb-btn-primary" id="sb-play-again-btn">Play Again</button>
+                <button class="sb-btn sb-btn-secondary" id="sb-reset-btn">Reset Progress</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sentence Data (Pre-rendered in HTML) -->
+    <div id="sentence-data" style="display: none;"></div>
+
+    <script>
+        // ===== SENTENCE BUILDER JAVASCRIPT =====
+        // Simplified to match spelling-game structure
+
+        // Sentences organized by tense - now loaded from HTML
+        var sentencesByTense = (function() {
+            // For brevity and maintainability, we define sentences in JavaScript arrays
+            // but they could be loaded from HTML data attributes if needed
+            return {
+            presentSimple: [
+                // Present Simple - Affirmative
+                {
+                    french: "J'écoute de la musique pop.",
+                    english: ["I", "listen", "to", "pop", "music", "."],
+                    tense: "Present Simple",
+                    form: "Affirmative",
+                    hint: "I/You/We/They + verb"
+                },
+                {
+                    french: "Elle joue du clavier.",
+                    english: ["She", "plays", "the", "keyboard", "."],
+                    tense: "Present Simple",
+                    form: "Affirmative",
+                    hint: "He/She/It + verb+s"
+                },
+                {
+                    french: "Le chanteur est célèbre.",
+                    english: ["The", "singer", "is", "famous", "."],
+                    tense: "Present Simple",
+                    form: "Affirmative",
+                    hint: "He/She/It + is"
+                },
+                {
+                    french: "Nous aimons la musique classique.",
+                    english: ["We", "like", "classical", "music", "."],
+                    tense: "Present Simple",
+                    form: "Affirmative",
+                    hint: "We/They + verb"
+                },
+                {
+                    french: "Le batteur joue dans un groupe.",
+                    english: ["The", "drummer", "plays", "in", "a", "band", "."],
+                    tense: "Present Simple",
+                    form: "Affirmative",
+                    hint: "He/She + verb+s"
+                },
+                {
+                    french: "J'habite près du concert.",
+                    english: ["I", "live", "near", "the", "concert", "."],
+                    tense: "Present Simple",
+                    form: "Affirmative",
+                    hint: "I + verb"
+                },
+                {
+                    french: "Elle chante des chansons.",
+                    english: ["She", "sings", "songs", "."],
+                    tense: "Present Simple",
+                    form: "Affirmative",
+                    hint: "She + verb+s"
+                },
+
+                // Present Simple - Negative
+                {
+                    french: "Je n'aime pas les cuivres.",
+                    english: ["I", "do", "not", "like", "brass", "instruments", "."],
+                    altEnglish: ["I", "don't", "like", "brass", "instruments", "."],
+                    tense: "Present Simple",
+                    form: "Negative",
+                    hint: "I/You/We/They + do not/don't + verb"
+                },
+                {
+                    french: "Il ne joue pas de la guitare basse.",
+                    english: ["He", "does", "not", "play", "the", "bass", "guitar", "."],
+                    altEnglish: ["He", "doesn't", "play", "the", "bass", "guitar", "."],
+                    tense: "Present Simple",
+                    form: "Negative",
+                    hint: "He/She/It + does not/doesn't + verb"
+                },
+                {
+                    french: "Nous n'écoutons pas la radio.",
+                    english: ["We", "do", "not", "listen", "to", "the", "radio", "."],
+                    altEnglish: ["We", "don't", "listen", "to", "the", "radio", "."],
+                    tense: "Present Simple",
+                    form: "Negative",
+                    hint: "We/They + do not/don't + verb"
+                },
+                {
+                    french: "L'actrice n'est pas célèbre.",
+                    english: ["The", "actress", "is", "not", "famous", "."],
+                    altEnglish: ["The", "actress", "isn't", "famous", "."],
+                    tense: "Present Simple",
+                    form: "Negative",
+                    hint: "He/She/It + is not/isn't"
+                },
+
+                // Present Simple - Questions
+                {
+                    french: "Aimes-tu la musique pop ?",
+                    english: ["Do", "you", "like", "pop", "music", "?"],
+                    tense: "Present Simple",
+                    form: "Question",
+                    hint: "Do + I/you/we/they + verb?"
+                },
+                {
+                    french: "Est-ce qu'elle joue du saxophone ?",
+                    english: ["Does", "she", "play", "the", "saxophone", "?"],
+                    tense: "Present Simple",
+                    form: "Question",
+                    hint: "Does + he/she/it + verb?"
+                },
+                {
+                    french: "Le musicien est-il célèbre ?",
+                    english: ["Is", "the", "musician", "famous", "?"],
+                    tense: "Present Simple",
+                    form: "Question",
+                    hint: "Is + he/she/it...?"
+                },
+                {
+                    french: "Est-ce qu'ils aiment les percussions ?",
+                    english: ["Do", "they", "like", "percussion", "instruments", "?"],
+                    tense: "Present Simple",
+                    form: "Question",
+                    hint: "Do + they + verb?"
+                }
+            ],
+            presentContinuous: [
+                // Present Continuous - Affirmative
+                {
+                    french: "Je suis en train d'écouter une chanson.",
+                    english: ["I", "am", "listening", "to", "a", "song", "."],
+                    tense: "Present Continuous",
+                    form: "Affirmative",
+                    hint: "I + am + verb-ing"
+                },
+                {
+                    french: "Elle chante au concert.",
+                    english: ["She", "is", "singing", "at", "the", "concert", "."],
+                    tense: "Present Continuous",
+                    form: "Affirmative",
+                    hint: "He/She/It + is + verb-ing"
+                },
+                {
+                    french: "Nous chantons dans un chœur.",
+                    english: ["We", "are", "singing", "in", "a", "choir", "."],
+                    tense: "Present Continuous",
+                    form: "Affirmative",
+                    hint: "We/They + are + verb-ing"
+                },
+                {
+                    french: "Le groupe joue un tube.",
+                    english: ["The", "band", "is", "playing", "a", "hit", "song", "."],
+                    tense: "Present Continuous",
+                    form: "Affirmative",
+                    hint: "He/She/It + is + verb-ing"
+                },
+
+                // Present Continuous - Negative
+                {
+                    french: "Je ne joue pas du clavier.",
+                    english: ["I", "am", "not", "playing", "the", "keyboard", "."],
+                    tense: "Present Continuous",
+                    form: "Negative",
+                    hint: "I + am not + verb-ing"
+                },
+                {
+                    french: "Elle n'écoute pas les cordes.",
+                    english: ["She", "is", "not", "listening", "to", "string", "instruments", "."],
+                    altEnglish: ["She", "isn't", "listening", "to", "string", "instruments", "."],
+                    tense: "Present Continuous",
+                    form: "Negative",
+                    hint: "He/She/It + is not/isn't + verb-ing"
+                },
+
+                // Present Continuous - Questions
+                {
+                    french: "Est-ce que tu écoutes la radio ?",
+                    english: ["Are", "you", "listening", "to", "the", "radio", "?"],
+                    tense: "Present Continuous",
+                    form: "Question",
+                    hint: "Are + you/we/they + verb-ing?"
+                },
+                {
+                    french: "Est-ce qu'il joue de la guitare ?",
+                    english: ["Is", "he", "playing", "the", "guitar", "?"],
+                    tense: "Present Continuous",
+                    form: "Question",
+                    hint: "Is + he/she/it + verb-ing?"
+                }
+            ],
+            pastSimple: [
+                // Past Simple - Affirmative
+                {
+                    french: "J'ai écouté un concert hier soir.",
+                    english: ["I", "listened", "to", "a", "concert", "yesterday", "evening", "."],
+                    tense: "Past Simple",
+                    form: "Affirmative",
+                    hint: "Subject + verb-ed"
+                },
+                {
+                    french: "Elle a chanté la semaine dernière.",
+                    english: ["She", "sang", "last", "week", "."],
+                    tense: "Past Simple",
+                    form: "Affirmative",
+                    hint: "Subject + verb past form"
+                },
+                {
+                    french: "Le batteur a joué hier.",
+                    english: ["The", "drummer", "played", "yesterday", "."],
+                    tense: "Past Simple",
+                    form: "Affirmative",
+                    hint: "Subject + verb-ed"
+                },
+                {
+                    french: "Nous sommes allés au concert le week-end dernier.",
+                    english: ["We", "went", "to", "the", "concert", "last", "weekend", "."],
+                    tense: "Past Simple",
+                    form: "Affirmative",
+                    hint: "Subject + verb past form"
+                },
+                {
+                    french: "L'acteur était célèbre l'année dernière.",
+                    english: ["The", "actor", "was", "famous", "last", "year", "."],
+                    tense: "Past Simple",
+                    form: "Affirmative",
+                    hint: "He/She/It + was"
+                },
+                {
+                    french: "Je suis né le 4 janvier.",
+                    english: ["I", "was", "born", "on", "4th", "January", "."],
+                    tense: "Past Simple",
+                    form: "Affirmative",
+                    hint: "I/He/She + was born"
+                },
+
+                // Past Simple - Negative
+                {
+                    french: "Je n'ai pas écouté la radio hier.",
+                    english: ["I", "did", "not", "listen", "to", "the", "radio", "yesterday", "."],
+                    altEnglish: ["I", "didn't", "listen", "to", "the", "radio", "yesterday", "."],
+                    tense: "Past Simple",
+                    form: "Negative",
+                    hint: "Subject + did not/didn't + verb"
+                },
+                {
+                    french: "Elle n'a pas chanté la nuit dernière.",
+                    english: ["She", "did", "not", "sing", "last", "night", "."],
+                    altEnglish: ["She", "didn't", "sing", "last", "night", "."],
+                    tense: "Past Simple",
+                    form: "Negative",
+                    hint: "Subject + did not/didn't + verb"
+                },
+                {
+                    french: "Le concert n'était pas super.",
+                    english: ["The", "concert", "was", "not", "cool", "."],
+                    altEnglish: ["The", "concert", "wasn't", "cool", "."],
+                    tense: "Past Simple",
+                    form: "Negative",
+                    hint: "It + was not/wasn't"
+                },
+
+                // Past Simple - Questions
+                {
+                    french: "As-tu écouté le tube ?",
+                    english: ["Did", "you", "listen", "to", "the", "hit", "song", "?"],
+                    tense: "Past Simple",
+                    form: "Question",
+                    hint: "Did + subject + verb?"
+                },
+                {
+                    french: "Comment était le concert ?",
+                    english: ["How", "was", "the", "concert", "?"],
+                    tense: "Past Simple",
+                    form: "Question",
+                    hint: "How + was + it?"
+                },
+                {
+                    french: "Quand es-tu né ?",
+                    english: ["When", "were", "you", "born", "?"],
+                    tense: "Past Simple",
+                    form: "Question",
+                    hint: "When + were + you + born?"
+                },
+                {
+                    french: "Est-ce qu'elle a joué hier matin ?",
+                    english: ["Did", "she", "play", "yesterday", "morning", "?"],
+                    tense: "Past Simple",
+                    form: "Question",
+                    hint: "Did + she + verb?"
+                }
+            ]
+            };
+        })();
+
+        // Tense metadata
+        var sbTenses = [
+            { id: 'all', name: 'All Tenses', count: 36 },
+            { id: 'presentSimple', name: '📗 Present Simple', count: 15 },
+            { id: 'presentContinuous', name: '📘 Present Continuous', count: 8 },
+            { id: 'pastSimple', name: '📙 Past Simple', count: 13 }
+        ];
+
+        // Get all sentences for backward compatibility
+        function getAllSentences() {
+            var all = [];
+            for (var key in sentencesByTense) {
+                all = all.concat(sentencesByTense[key]);
+            }
+            return all;
+        }
+
+        var sentences = getAllSentences();
+
+        // State
+        var state = {
+            level: 1,
+            score: 0,
+            streak: 0,
+            bestStreak: 0,
+            correctCount: 0,
+            timer: 0,
+            timerInterval: null,
+            currentSentence: null,
+            currentAnswer: [],
+            usedSentences: [],
+            wordElements: [],
+            selectedTense: 'all',
+            currentSentences: []
+        };
+
+        // LocalStorage key
+        var STORAGE_KEY = 'sb_unit4_progress';
+
+        // Initialize
+        function init() {
+            loadProgress();
+            renderTenseSelector();
+            updateProgressIndicator();
+            bindEvents();
+        }
+
+        // Render tense selector
+        function renderTenseSelector() {
+            var container = document.getElementById('sb-tense-buttons');
+            if (!container) {
+                console.error("Container 'sb-tense-buttons' not found");
+                return;
+            }
+            container.innerHTML = '';
+
+            try {
+                if (!sbTenses || sbTenses.length === 0) {
+                    container.innerHTML = '<div style="color:red; padding:10px;">Error: No tenses loaded.</div>';
+                    return;
+                }
+
+                sbTenses.forEach(function (tense) {
+                    var btn = document.createElement('button');
+                    btn.className = 'sb-level-btn';
+                    btn.id = 'sb-tense-' + tense.id + '-btn';
+
+                    if (tense.id === 'all') {
+                        btn.style.background = 'linear-gradient(135deg, #ff6b6b 0%, #feca57 100%)';
+                    } else if (tense.id === 'presentSimple') {
+                        btn.style.background = 'linear-gradient(135deg, #56ab2f 0%, #a8e063 100%)';
+                    } else if (tense.id === 'presentContinuous') {
+                        btn.style.background = 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)';
+                    } else if (tense.id === 'pastSimple') {
+                        btn.style.background = 'linear-gradient(135deg, #fa709a 0%, #fee140 100%)';
+                    }
+
+                    btn.innerHTML = tense.name + '<div class="sb-level-desc">' + tense.count + ' sentences</div>';
+                    btn.addEventListener('click', function () {
+                        selectTense(tense.id);
+                    });
+
+                    container.appendChild(btn);
+                });
+            } catch (e) {
+                console.error("Error in renderTenseSelector:", e);
+                container.innerHTML = '<div style="color:red;">Error rendering tenses: ' + e.message + '</div>';
+            }
+        }
+
+        // Select a tense
+        function selectTense(tenseId) {
+            state.selectedTense = tenseId;
+
+            if (tenseId === 'all') {
+                state.currentSentences = getAllSentences();
+            } else {
+                state.currentSentences = sentencesByTense[tenseId].slice();
+            }
+
+            document.getElementById('sb-tense-selector').classList.add('sb-hidden');
+            document.getElementById('sb-level-selector').classList.remove('sb-hidden');
+        }
+
+        // Bind event listeners
+        function bindEvents() {
+            document.getElementById('sb-level1-btn').addEventListener('click', function () { startGame(1); });
+            document.getElementById('sb-level2-btn').addEventListener('click', function () { startGame(2); });
+            document.getElementById('sb-level3-btn').addEventListener('click', function () { startGame(3); });
+            document.getElementById('sb-clear-btn').addEventListener('click', clearAnswer);
+            document.getElementById('sb-check-btn').addEventListener('click', checkAnswer);
+            document.getElementById('sb-skip-btn').addEventListener('click', skipSentence);
+            document.getElementById('sb-end-btn').addEventListener('click', function () { endGame(); });
+            document.getElementById('sb-play-again-btn').addEventListener('click', playAgain);
+            document.getElementById('sb-reset-btn').addEventListener('click', resetProgress);
+        }
+
+        // Load progress
+        function loadProgress() {
+            try {
+                var saved = localStorage.getItem(STORAGE_KEY);
+                if (saved) {
+                    var data = JSON.parse(saved);
+                    state.bestStreak = data.bestStreak || 0;
+                }
+            } catch (e) {
+                console.log('Could not load progress:', e);
+            }
+            state.currentSentences = getAllSentences();
+        }
+
+        // Save progress
+        function saveProgress() {
+            try {
+                var data = {
+                    bestStreak: state.bestStreak
+                };
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+            } catch (e) {
+                console.log('Could not save progress:', e);
+            }
+        }
+
+        // Update progress indicator
+        function updateProgressIndicator() {
+            var indicator = document.getElementById('sb-progress-indicator');
+            var totalSentences = getAllSentences().length;
+            indicator.textContent = 'Best streak: ' + state.bestStreak + ' | ' + totalSentences + ' sentences available';
+        }
+
+        // Start game
+        function startGame(level) {
+            state.level = level;
+            state.score = 0;
+            state.streak = 0;
+            state.correctCount = 0;
+            state.usedSentences = [];
+
+            if (level === 1) {
+                state.timer = 60;
+            } else if (level === 2) {
+                state.timer = 20;
+            } else {
+                state.timer = 15;
+            }
+
+            document.getElementById('sb-level-selector').classList.add('sb-hidden');
+            document.getElementById('sb-game-area').classList.add('sb-active');
+            document.getElementById('sb-end-screen').classList.remove('sb-active');
+
+            updateDisplay();
+            nextSentence();
+            startTimer();
+        }
+
+        // Start timer
+        function startTimer() {
+            if (state.timerInterval) {
+                clearInterval(state.timerInterval);
+            }
+
+            state.timerInterval = setInterval(function () {
+                if (state.level === 3) {
+                    if (state.timer > 0) {
+                        state.timer--;
+                    }
+                    if (state.timer <= 0 && state.score > 0) {
+                        endGame();
+                        return;
+                    }
+                } else {
+                    state.timer--;
+                    if (state.timer <= 0) {
+                        endGame();
+                        return;
+                    }
+                }
+                updateTimerDisplay();
+            }, 1000);
+        }
+
+        // Update timer display
+        function updateTimerDisplay() {
+            var timerEl = document.getElementById('sb-timer');
+            var timerBox = document.getElementById('sb-timer-box');
+            timerEl.textContent = state.timer + 's';
+
+            if (state.timer <= 5 && state.level !== 3) {
+                timerBox.classList.add('sb-timer-danger');
+            } else {
+                timerBox.classList.remove('sb-timer-danger');
+            }
+        }
+
+        // Next sentence
+        function nextSentence() {
+            var available = state.currentSentences.filter(function (s, i) {
+                return state.usedSentences.indexOf(i) === -1;
+            });
+
+            if (available.length === 0) {
+                state.usedSentences = [];
+                available = state.currentSentences.slice();
+            }
+
+            var randomIndex = Math.floor(Math.random() * available.length);
+            var sentenceIndex = state.currentSentences.indexOf(available[randomIndex]);
+
+            state.usedSentences.push(sentenceIndex);
+            state.currentSentence = state.currentSentences[sentenceIndex];
+            state.currentAnswer = [];
+
+            renderSentence();
+        }
+
+        // Render sentence
+        function renderSentence() {
+            var sentence = state.currentSentence;
+
+            document.getElementById('sb-tense-badge').textContent = sentence.tense;
+            document.getElementById('sb-form-badge').textContent = sentence.form;
+            document.getElementById('sb-french-sentence').textContent = sentence.french;
+
+            var helpEl = document.getElementById('sb-grammar-help');
+            if (state.level === 1) {
+                helpEl.innerHTML = '<strong>Hint:</strong> ' + sentence.hint;
+                helpEl.style.display = 'block';
+            } else {
+                helpEl.style.display = 'none';
+            }
+
+            renderWordBank();
+            clearAnswer();
+        }
+
+        // Shuffle array
+        function shuffle(array) {
+            var shuffled = array.slice();
+            for (var i = shuffled.length - 1; i > 0; i--) {
+                var j = Math.floor(Math.random() * (i + 1));
+                var temp = shuffled[i];
+                shuffled[i] = shuffled[j];
+                shuffled[j] = temp;
+            }
+            return shuffled;
+        }
+
+        // Render word bank
+        function renderWordBank() {
+            var sentence = state.currentSentence;
+            var words = sentence.english.slice();
+
+            if (sentence.altEnglish) {
+                sentence.altEnglish.forEach(function (word) {
+                    if (words.indexOf(word) === -1) {
+                        words.push(word);
+                    }
+                });
+            }
+
+            if (state.level === 3) {
+                var distractors = getDistractors(sentence);
+                words = words.concat(distractors);
+            }
+
+            // Remove duplicates
+            var uniqueWords = [];
+            words.forEach(function (word) {
+                if (uniqueWords.indexOf(word) === -1) {
+                    uniqueWords.push(word);
+                }
+            });
+
+            words = shuffle(uniqueWords);
+
+            var wordBank = document.getElementById('sb-word-bank');
+            wordBank.innerHTML = '';
+            state.wordElements = [];
+
+            words.forEach(function (word, i) {
+                var div = document.createElement('div');
+                div.className = 'sb-word-chip';
+                div.textContent = word;
+                div.setAttribute('data-word', word);
+                div.setAttribute('data-index', i);
+                div.addEventListener('click', function () {
+                    selectWord(this, word);
+                });
+                wordBank.appendChild(div);
+                state.wordElements.push({ element: div, word: word, selected: false });
+            });
+        }
+
+        // Get distractor words
+        function getDistractors(sentence) {
+            var distractors = [
+                "am", "is", "are", "was", "were",
+                "do", "does", "did", "don't", "doesn't", "didn't",
+                "have", "has", "had",
+                "play", "plays", "played", "playing",
+                "listen", "listens", "listened", "listening",
+                "sing", "sings", "sang", "singing",
+                "like", "likes", "liked", "liking",
+                "go", "goes", "went", "going",
+                "the", "a", "an", "to", "at", "in", "on",
+                "not", "very", "really"
+            ];
+
+            var sentenceWords = sentence.english.map(function (w) { return w.toLowerCase(); });
+            var altWords = sentence.altEnglish ? sentence.altEnglish.map(function (w) { return w.toLowerCase(); }) : [];
+            var allSentenceWords = sentenceWords.concat(altWords);
+
+            var available = distractors.filter(function (d) {
+                return allSentenceWords.indexOf(d.toLowerCase()) === -1;
+            });
+
+            var count = Math.floor(Math.random() * 3) + 3;
+            return shuffle(available).slice(0, count);
+        }
+
+        // Select word from bank
+        function selectWord(element, word) {
+            if (element.classList.contains('sb-selected')) return;
+
+            element.classList.add('sb-selected');
+            state.currentAnswer.push(word);
+            renderAnswer();
+        }
+
+        // Render answer zone
+        function renderAnswer() {
+            var answerZone = document.getElementById('sb-answer-zone');
+
+            if (state.currentAnswer.length === 0) {
+                answerZone.innerHTML = '<span class="sb-answer-placeholder">Tap words below to build your sentence...</span>';
+            } else {
+                answerZone.innerHTML = '';
+                state.currentAnswer.forEach(function (word, i) {
+                    var div = document.createElement('div');
+                    div.className = 'sb-word-chip sb-in-answer';
+                    div.textContent = word;
+                    div.addEventListener('click', function () {
+                        removeWord(i);
+                    });
+                    answerZone.appendChild(div);
+                });
+            }
+        }
+
+        // Remove word from answer
+        function removeWord(index) {
+            var word = state.currentAnswer[index];
+            state.currentAnswer.splice(index, 1);
+
+            // Re-enable word in bank
+            state.wordElements.forEach(function (item) {
+                if (item.word === word && item.element.classList.contains('sb-selected')) {
+                    item.element.classList.remove('sb-selected');
+                }
+            });
+
+            renderAnswer();
+        }
+
+        // Clear answer
+        function clearAnswer() {
+            state.currentAnswer = [];
+
+            state.wordElements.forEach(function (item) {
+                item.element.classList.remove('sb-selected');
+            });
+
+            renderAnswer();
+
+            var answerZone = document.getElementById('sb-answer-zone');
+            answerZone.classList.remove('sb-correct', 'sb-incorrect');
+        }
+
+        // Check answer
+        function checkAnswer() {
+            if (state.currentAnswer.length === 0) return;
+
+            var sentence = state.currentSentence;
+            var userAnswer = state.currentAnswer.join(' ');
+            var correctAnswer = sentence.english.join(' ');
+            var altAnswer = sentence.altEnglish ? sentence.altEnglish.join(' ') : null;
+
+            var isCorrect = userAnswer === correctAnswer || userAnswer === altAnswer;
+
+            if (isCorrect) {
+                handleCorrectAnswer();
+            } else {
+                handleIncorrectAnswer(correctAnswer);
+            }
+        }
+
+        // Handle correct answer
+        function handleCorrectAnswer() {
+            var answerZone = document.getElementById('sb-answer-zone');
+            answerZone.classList.add('sb-correct');
+
+            state.score += 15;
+            state.streak++;
+            state.correctCount++;
+            if (state.streak > state.bestStreak) {
+                state.bestStreak = state.streak;
+            }
+
+            // Reset timer for levels 1 and 2, no change for level 3
+            if (state.level === 1) {
+                state.timer = 60;
+            } else if (state.level === 2) {
+                state.timer = 20;
+            }
+
+            showFeedback('✓ Correct! +15', 'success');
+
+            setTimeout(function () {
+                updateDisplay();
+                saveProgress();
+                nextSentence();
+            }, 1200);
+        }
+
+        // Handle incorrect answer
+        function handleIncorrectAnswer(correctAnswer) {
+            var answerZone = document.getElementById('sb-answer-zone');
+            answerZone.classList.add('sb-incorrect');
+
+            state.streak = 0;
+
+            showFeedback('✗ Correct answer: ' + correctAnswer, 'error');
+
+            setTimeout(function () {
+                answerZone.classList.remove('sb-incorrect');
+                updateDisplay();
+                nextSentence();
+            }, 2500);
+        }
+
+        // Skip sentence
+        function skipSentence() {
+            state.streak = 0;
+            nextSentence();
+        }
+
+        // Show feedback
+        function showFeedback(message, type) {
+            var feedback = document.getElementById('sb-feedback');
+            feedback.textContent = message;
+            feedback.className = 'sb-feedback';
+            if (type) {
+                feedback.classList.add('sb-' + type);
+            }
+
+            setTimeout(function () {
+                feedback.className = 'sb-feedback';
+                feedback.textContent = 'Tap words to build the sentence, then check your answer!';
+            }, 2500);
+        }
+
+        // Update display
+        function updateDisplay() {
+            document.getElementById('sb-score').textContent = state.score;
+            document.getElementById('sb-streak').textContent = state.streak;
+            updateTimerDisplay();
+        }
+
+        // End game
+        function endGame() {
+            if (state.timerInterval) {
+                clearInterval(state.timerInterval);
+            }
+
+            document.getElementById('sb-game-area').classList.remove('sb-active');
+            document.getElementById('sb-end-screen').classList.add('sb-active');
+
+            var title = document.getElementById('sb-end-title');
+            if (state.level === 3 && state.timer <= 0) {
+                title.textContent = '⏰ Time\'s Up!';
+            } else {
+                title.textContent = '🎉 Great Job!';
+            }
+
+            document.getElementById('sb-final-score').textContent = state.score;
+            document.getElementById('sb-final-correct').textContent = state.correctCount;
+            document.getElementById('sb-best-streak').textContent = state.bestStreak;
+
+            saveProgress();
+        }
+
+        // Play again
+        function playAgain() {
+            document.getElementById('sb-end-screen').classList.remove('sb-active');
+            document.getElementById('sb-level-selector').classList.add('sb-hidden');
+            document.getElementById('sb-tense-selector').classList.remove('sb-hidden');
+            updateProgressIndicator();
+        }
+
+        // Reset progress
+        function resetProgress() {
+            if (confirm('Are you sure you want to reset your best streak?')) {
+                state.bestStreak = 0;
+                localStorage.removeItem(STORAGE_KEY);
+                playAgain();
+            }
+        }
+
+
+
+        // Initialize on load
+        window.onload = function () {
+            console.log("Starting Sentence Builder (window.onload)...");
+            try {
+                init();
+                console.log("Sentence Builder initialized successfully");
+            } catch (e) {
+                console.error("Failed to initialize Sentence Builder:", e);
+                alert("Game failed to start: " + e.message);
+            }
+        };
+    </script>
+</body>
+
+</html>

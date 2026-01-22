@@ -1,0 +1,1184 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Unit 4 - Spelling Game</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: 'Inter', Arial, sans-serif;
+            margin: 0;
+            padding: 10px;
+            background: #F4F6F8;
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .sp-container {
+            max-width: 500px;
+            margin: 0 auto;
+            padding: 10px;
+        }
+
+        .sp-header {
+            background: #1a1a1a;
+            border-radius: 20px;
+            padding: 15px;
+            margin-bottom: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .sp-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #22b6ff;
+            margin: 0 0 10px 0;
+            text-align: center;
+        }
+
+        .sp-stats {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .sp-stat-box {
+            background: #2a2a2a;
+            padding: 8px 15px;
+            border-radius: 12px;
+            text-align: center;
+            flex: 1;
+            min-width: 80px;
+        }
+
+        .sp-stat-label {
+            font-size: 0.7rem;
+            color: #aaa;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .sp-stat-value {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #22b6ff;
+        }
+
+        .sp-timer-danger .sp-stat-value {
+            color: #e74c3c;
+            animation: sp-pulse 0.5s infinite;
+        }
+
+        @keyframes sp-pulse {
+
+            0%,
+            100% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.1);
+            }
+        }
+
+        .sp-level-selector {
+            background: #1a1a1a;
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            text-align: center;
+        }
+
+        .sp-level-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #fff;
+        }
+
+        .sp-level-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .sp-level-btn {
+            padding: 15px 20px;
+            border: none;
+            border-radius: 15px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: inherit;
+        }
+
+        .sp-level-btn:active {
+            transform: scale(0.95);
+        }
+
+        .tab-nav {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .tab-btn {
+            padding: 12px 20px;
+            background: #2a2a2a;
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+
+        .tab-btn.active {
+            background: #22b6ff;
+            color: #fff;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .sp-level-desc {
+            font-size: 0.8rem;
+            opacity: 0.9;
+            margin-top: 5px;
+        }
+
+        .sp-game-area {
+            display: none;
+        }
+
+        .sp-game-area.sp-active {
+            display: block;
+        }
+
+        .sp-progress-section {
+            background: #1a1a1a;
+            border-radius: 15px;
+            padding: 15px;
+            margin-bottom: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .sp-progress-title {
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #fff;
+        }
+
+        .sp-progress-bar {
+            height: 12px;
+            background: #2a2a2a;
+            border-radius: 6px;
+            overflow: hidden;
+        }
+
+        .sp-progress-fill {
+            height: 100%;
+            background: #22b6ff;
+            border-radius: 6px;
+            transition: width 0.3s ease;
+        }
+
+        .sp-progress-text {
+            font-size: 0.8rem;
+            color: #aaa;
+            margin-top: 5px;
+            text-align: center;
+        }
+
+        .sp-word-card {
+            background: #1a1a1a;
+            border-radius: 20px;
+            padding: 25px 20px;
+            margin-bottom: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .sp-french-word {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #22b6ff;
+            margin-bottom: 10px;
+        }
+
+        .sp-instruction {
+            font-size: 0.9rem;
+            color: #aaa;
+            margin-bottom: 5px;
+        }
+
+        .sp-hint {
+            font-size: 0.85rem;
+            color: #999;
+            margin-top: 10px;
+            font-style: italic;
+        }
+
+        .sp-input-section {
+            background: #1a1a1a;
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .sp-input-wrapper {
+            position: relative;
+            margin-bottom: 15px;
+        }
+
+        .sp-input {
+            width: 100%;
+            padding: 18px 20px;
+            font-size: 1.2rem;
+            font-family: inherit;
+            border: 3px solid #2a2a2a;
+            background: #2a2a2a;
+            color: #fff;
+            border-radius: 15px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .sp-input:focus {
+            outline: none;
+            border-color: #22b6ff;
+        }
+
+        .sp-input.sp-correct {
+            border-color: #56ab2f;
+            background: rgba(86, 171, 47, 0.2);
+        }
+
+        .sp-input.sp-incorrect {
+            border-color: #e74c3c;
+            background: rgba(231, 76, 60, 0.2);
+            animation: sp-shake 0.5s ease;
+        }
+
+        @keyframes sp-shake {
+
+            0%,
+            100% {
+                transform: translateX(0);
+            }
+
+            25% {
+                transform: translateX(-5px);
+            }
+
+            75% {
+                transform: translateX(5px);
+            }
+        }
+
+        .sp-submit-btn {
+            width: 100%;
+            padding: 18px 20px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            font-family: inherit;
+            background: #22b6ff;
+            color: white;
+            border: none;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .sp-submit-btn:hover {
+            background: #1a9ae6;
+        }
+
+        .sp-submit-btn:active {
+            transform: scale(0.95);
+        }
+
+        .sp-submit-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .sp-feedback {
+            background: #1a1a1a;
+            border-radius: 15px;
+            padding: 15px;
+            text-align: center;
+            margin-bottom: 15px;
+            min-height: 60px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            font-weight: 500;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            color: #fff;
+        }
+
+        .sp-feedback.sp-success {
+            background: #56ab2f;
+        }
+
+        .sp-feedback.sp-error {
+            background: #e74c3c;
+        }
+
+        .sp-controls {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .sp-btn {
+            flex: 1;
+            min-width: 100px;
+            padding: 15px 20px;
+            border: none;
+            border-radius: 15px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: inherit;
+        }
+
+        .sp-btn:active {
+            transform: scale(0.95);
+        }
+
+        .sp-btn-primary {
+            background: #22b6ff;
+            color: white;
+        }
+
+        .sp-btn-secondary {
+            background: #2a2a2a;
+            color: #22b6ff;
+        }
+
+        .sp-btn-warning {
+            background: #f39c12;
+            color: white;
+        }
+
+        .sp-btn-danger {
+            background: #e74c3c;
+            color: white;
+        }
+
+        .sp-end-screen {
+            display: none;
+            background: #1a1a1a;
+            border-radius: 20px;
+            padding: 30px 20px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .sp-end-screen.sp-active {
+            display: block;
+        }
+
+        .sp-end-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #22b6ff;
+            margin-bottom: 20px;
+        }
+
+        .sp-end-stats {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+        }
+
+        .sp-end-stat {
+            background: #2a2a2a;
+            padding: 15px 25px;
+            border-radius: 15px;
+        }
+
+        .sp-end-stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #22b6ff;
+        }
+
+        .sp-end-stat-label {
+            font-size: 0.8rem;
+            color: #aaa;
+        }
+
+        .sp-set-indicator {
+            font-size: 0.85rem;
+            color: #aaa;
+            margin-top: 10px;
+        }
+
+        .sp-hidden {
+            display: none !important;
+        }
+
+        .sp-letter-hint {
+            display: flex;
+            justify-content: center;
+            gap: 5px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+
+        .sp-letter-box {
+            width: 30px;
+            height: 35px;
+            border: 2px solid #22b6ff;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            font-weight: 600;
+            color: #22b6ff;
+            background: #2a2a2a;
+        }
+
+        .sp-letter-box.sp-revealed {
+            background: #22b6ff;
+            color: white;
+        }
+
+        @media (max-width: 480px) {
+            .sp-container {
+                padding: 5px;
+            }
+
+            .sp-stats {
+                gap: 5px;
+            }
+
+            .sp-stat-box {
+                padding: 6px 10px;
+                min-width: 70px;
+            }
+
+            .sp-controls {
+                gap: 5px;
+            }
+
+            .sp-btn {
+                padding: 12px 15px;
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="sp-container">
+        <div class="sp-header">
+            <h1 class="sp-title">✍️ Unit 4: World of Music - Spelling</h1>
+            <div class="sp-stats">
+                <div class="sp-stat-box" id="sp-timer-box">
+                    <div class="sp-stat-label">Time</div>
+                    <div class="sp-stat-value" id="sp-timer">--</div>
+                </div>
+                <div class="sp-stat-box">
+                    <div class="sp-stat-label">Score</div>
+                    <div class="sp-stat-value" id="sp-score">0</div>
+                </div>
+                <div class="sp-stat-box">
+                    <div class="sp-stat-label">Streak</div>
+                    <div class="sp-stat-value" id="sp-streak">0</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="sp-level-selector" id="sp-chapter-selector">
+            <div class="sp-level-title">Choose Word Set</div>
+            <div class="tab-nav">
+                <button class="tab-btn active" onclick="showTab('all')">All Words</button>
+                <button class="tab-btn" onclick="showTab('music')">🎵 Music</button>
+                <button class="tab-btn" onclick="showTab('pastTime')">⏰ Past Time</button>
+                <button class="tab-btn" onclick="showTab('wordsAndPhrases')">📝 Words & Phrases</button>
+                <button class="tab-btn" onclick="showTab('everydayEnglish')">💬 Everyday</button>
+            </div>
+            <div id="tab-all" class="tab-content active">
+                <div class="sp-level-buttons">
+                    <button class="sp-level-btn" onclick="selectChapter('all')"
+                        style="background: #22b6ff; color: white;">
+                        All Words
+                        <div class="sp-level-desc">56 words total</div>
+                    </button>
+                </div>
+            </div>
+            <div id="tab-music" class="tab-content">
+                <div class="sp-level-buttons">
+                    <button class="sp-level-btn" onclick="selectChapter('music')"
+                        style="background: linear-gradient(135deg, #56ab2f 0%, #a8e063 100%); color: white;">
+                        🎵 Music
+                        <div class="sp-level-desc">17 words</div>
+                    </button>
+                </div>
+            </div>
+            <div id="tab-pastTime" class="tab-content">
+                <div class="sp-level-buttons">
+                    <button class="sp-level-btn" onclick="selectChapter('pastTime')"
+                        style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white;">
+                        ⏰ Past Time Expressions
+                        <div class="sp-level-desc">9 words</div>
+                    </button>
+                </div>
+            </div>
+            <div id="tab-wordsAndPhrases" class="tab-content">
+                <div class="sp-level-buttons">
+                    <button class="sp-level-btn" onclick="selectChapter('wordsAndPhrases')"
+                        style="background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); color: white;">
+                        📝 Words & Phrases
+                        <div class="sp-level-desc">23 words</div>
+                    </button>
+                </div>
+            </div>
+            <div id="tab-everydayEnglish" class="tab-content">
+                <div class="sp-level-buttons">
+                    <button class="sp-level-btn" onclick="selectChapter('everydayEnglish')"
+                        style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); color: white;">
+                        💬 Everyday English
+                        <div class="sp-level-desc">7 words</div>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="sp-level-selector sp-hidden" id="sp-level-selector">
+            <div class="sp-level-title">Choose Your Level</div>
+            <div class="sp-level-buttons">
+                <button class="sp-level-btn" id="sp-level1-btn"
+                    style="background: linear-gradient(135deg, #56ab2f 0%, #a8e063 100%); color: white;">
+                    🟢 Level 1 - Easy
+                    <div class="sp-level-desc">60 seconds per word • First letter hint</div>
+                </button>
+                <button class="sp-level-btn" id="sp-level2-btn"
+                    style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white;">
+                    🟠 Level 2 - Medium
+                    <div class="sp-level-desc">20 seconds per word • Letter count hint</div>
+                </button>
+                <button class="sp-level-btn" id="sp-level3-btn"
+                    style="background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); color: white;">
+                    🔴 Level 3 - Challenge
+                    <div class="sp-level-desc">15 seconds total • No hints!</div>
+                </button>
+            </div>
+            <div class="sp-set-indicator" id="sp-set-indicator"></div>
+        </div>
+
+        <div class="sp-game-area" id="sp-game-area">
+            <div class="sp-progress-section">
+                <div class="sp-progress-title">Words Mastered</div>
+                <div class="sp-progress-bar">
+                    <div class="sp-progress-fill" id="sp-progress-fill" style="width: 0%"></div>
+                </div>
+                <div class="sp-progress-text" id="sp-progress-text">0 / 0 words mastered</div>
+            </div>
+
+            <div class="sp-word-card">
+                <div class="sp-instruction">🇫🇷 Translate to English:</div>
+                <div class="sp-french-word" id="sp-french-word">---</div>
+                <div class="sp-hint" id="sp-hint"></div>
+                <div class="sp-letter-hint" id="sp-letter-hint"></div>
+            </div>
+
+            <div class="sp-input-section">
+                <div class="sp-input-wrapper">
+                    <input type="text" class="sp-input" id="sp-input" placeholder="Type the English word..."
+                        autocomplete="off" autocapitalize="off" spellcheck="false">
+                </div>
+                <button class="sp-submit-btn" id="sp-submit-btn">
+                    Check Answer
+                </button>
+            </div>
+
+            <div class="sp-feedback" id="sp-feedback">
+                Type the English translation and press Enter!
+            </div>
+
+            <div class="sp-controls">
+                <button class="sp-btn sp-btn-warning" id="sp-hint-btn">💡 Hint</button>
+                <button class="sp-btn sp-btn-secondary" id="sp-skip-btn">Skip</button>
+                <button class="sp-btn sp-btn-danger" id="sp-end-btn">End</button>
+            </div>
+        </div>
+
+        <div class="sp-end-screen" id="sp-end-screen">
+            <div class="sp-end-title" id="sp-end-title">🎉 Great Job!</div>
+            <div class="sp-end-stats">
+                <div class="sp-end-stat">
+                    <div class="sp-end-stat-value" id="sp-final-score">0</div>
+                    <div class="sp-end-stat-label">Final Score</div>
+                </div>
+                <div class="sp-end-stat">
+                    <div class="sp-end-stat-value" id="sp-final-mastered">0</div>
+                    <div class="sp-end-stat-label">Words Mastered</div>
+                </div>
+                <div class="sp-end-stat">
+                    <div class="sp-end-stat-value" id="sp-best-streak">0</div>
+                    <div class="sp-end-stat-label">Best Streak</div>
+                </div>
+            </div>
+            <div class="sp-controls">
+                <button class="sp-btn sp-btn-primary" id="sp-play-again-btn">Play Again</button>
+                <button class="sp-btn sp-btn-secondary" id="sp-reset-btn">Reset All Progress</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Vocabulary Data (Pre-rendered in HTML) -->
+    <div id="vocabulary-data" style="display: none;">
+        <div class="vocabulary-chapter" data-chapter="music">
+            <div class="vocab-word" data-french="groupe" data-english="band"></div>
+            <div class="vocab-word" data-french="musique classique" data-english="classical music"></div>
+            <div class="vocab-word" data-french="concert" data-english="concert"></div>
+            <div class="vocab-word" data-french="batteur" data-english="drummer"></div>
+            <div class="vocab-word" data-french="tube" data-english="hit song"></div>
+            <div class="vocab-word" data-french="musicien" data-english="musician"></div>
+            <div class="vocab-word" data-french="musique pop" data-english="pop music"></div>
+            <div class="vocab-word" data-french="chanteur" data-english="singer"></div>
+            <div class="vocab-word" data-french="chanson" data-english="song"></div>
+            <div class="vocab-word" data-french="basse" data-english="bass guitar"></div>
+            <div class="vocab-word" data-french="les cuivres" data-english="brass instruments"></div>
+            <div class="vocab-word" data-french="chœur, chorale" data-english="choir"></div>
+            <div class="vocab-word" data-french="clavier" data-english="keyboard"></div>
+            <div class="vocab-word" data-french="les percussions" data-english="percussion instruments"></div>
+            <div class="vocab-word" data-french="saxophone" data-english="saxophone"></div>
+            <div class="vocab-word" data-french="les cordes" data-english="string instruments"></div>
+            <div class="vocab-word" data-french="les bois" data-english="woodwind instruments"></div>
+        </div>
+        <div class="vocabulary-chapter" data-chapter="pastTime">
+            <div class="vocab-word" data-french="la nuit dernière" data-english="last night"></div>
+            <div class="vocab-word" data-french="la semaine dernière" data-english="last week"></div>
+            <div class="vocab-word" data-french="le week-end dernier" data-english="last weekend"></div>
+            <div class="vocab-word" data-french="le mois dernier" data-english="last month"></div>
+            <div class="vocab-word" data-french="l'année dernière" data-english="last year"></div>
+            <div class="vocab-word" data-french="hier" data-english="yesterday"></div>
+            <div class="vocab-word" data-french="hier matin" data-english="yesterday morning"></div>
+            <div class="vocab-word" data-french="hier après-midi" data-english="yesterday afternoon"></div>
+            <div class="vocab-word" data-french="hier soir" data-english="yesterday evening"></div>
+        </div>
+        <div class="vocabulary-chapter" data-chapter="wordsAndPhrases">
+            <div class="vocab-word" data-french="acteur" data-english="actor"></div>
+            <div class="vocab-word" data-french="actrice" data-english="actress"></div>
+            <div class="vocab-word" data-french="célèbre" data-english="famous"></div>
+            <div class="vocab-word" data-french="radio" data-english="radio"></div>
+            <div class="vocab-word" data-french="star" data-english="star"></div>
+            <div class="vocab-word" data-french="appartement" data-english="apartment"></div>
+            <div class="vocab-word" data-french="date" data-english="date"></div>
+            <div class="vocab-word" data-french="petite amie" data-english="girlfriend"></div>
+            <div class="vocab-word" data-french="vie" data-english="life"></div>
+            <div class="vocab-word" data-french="près de" data-english="near"></div>
+            <div class="vocab-word" data-french="nom de famille" data-english="surname"></div>
+            <div class="vocab-word" data-french="épouse" data-english="wife"></div>
+            <div class="vocab-word" data-french="à six heures" data-english="at six o'clock"></div>
+            <div class="vocab-word" data-french="le soir" data-english="at night"></div>
+            <div class="vocab-word" data-french="pendant le week-end" data-english="at the weekend"></div>
+            <div class="vocab-word" data-french="le matin" data-english="in the morning"></div>
+            <div class="vocab-word" data-french="l'après-midi" data-english="in the afternoon"></div>
+            <div class="vocab-word" data-french="en avril" data-english="in April"></div>
+            <div class="vocab-word" data-french="en 1990" data-english="in 1990"></div>
+            <div class="vocab-word" data-french="le samedi" data-english="on Saturday"></div>
+            <div class="vocab-word" data-french="le dimanche matin" data-english="on Sunday morning"></div>
+            <div class="vocab-word" data-french="le 4 janvier" data-english="on 4th January"></div>
+        </div>
+        <div class="vocabulary-chapter" data-chapter="everydayEnglish">
+            <div class="vocab-word" data-french="Super !" data-english="Cool!"></div>
+            <div class="vocab-word" data-french="Je sais." data-english="I know."></div>
+            <div class="vocab-word" data-french="Je suis désolé." data-english="I'm sorry."></div>
+            <div class="vocab-word" data-french="Bien sûr !" data-english="Of course!"></div>
+            <div class="vocab-word" data-french="Vraiment ?" data-english="Really?"></div>
+            <div class="vocab-word" data-french="De rien." data-english="You're welcome."></div>
+            <div class="vocab-word" data-french="C'est une plaisanterie !" data-english="It's a joke!"></div>
+        </div>
+    </div>
+
+    <script>
+        // Load vocabulary from pre-rendered HTML elements
+        function loadVocabularyFromHTML() {
+            var vocabularyByChapter = {};
+            var chapters = document.querySelectorAll('#vocabulary-data .vocabulary-chapter');
+
+            chapters.forEach(function(chapterEl) {
+                var chapterId = chapterEl.getAttribute('data-chapter');
+                var words = [];
+                var wordElements = chapterEl.querySelectorAll('.vocab-word');
+
+                wordElements.forEach(function(wordEl) {
+                    words.push({
+                        french: wordEl.getAttribute('data-french'),
+                        english: wordEl.getAttribute('data-english')
+                    });
+                });
+
+                vocabularyByChapter[chapterId] = words;
+            });
+
+            return vocabularyByChapter;
+        }
+
+        var vocabularyByChapter = loadVocabularyFromHTML();
+
+        var state = {
+            level: 1,
+            score: 0,
+            streak: 0,
+            bestStreak: 0,
+            timer: 0,
+            timerInterval: null,
+            currentWord: null,
+            hintsUsed: 0,
+            revealedLetters: [],
+            wordProgress: {},
+            masteredWords: [],
+            totalWords: 0,
+            selectedChapter: 'all',
+            currentVocabulary: []
+        };
+
+        var STORAGE_KEY = 'sp_unit4_progress';
+
+        function showTab(tabId) {
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+
+            event.target.classList.add('active');
+            document.getElementById('tab-' + tabId).classList.add('active');
+        }
+
+        function getAllVocabulary() {
+            var all = [];
+            for (var key in vocabularyByChapter) {
+                all = all.concat(vocabularyByChapter[key]);
+            }
+            return all;
+        }
+
+        function selectChapter(chapterId) {
+            state.selectedChapter = chapterId;
+
+            if (chapterId === 'all') {
+                state.currentVocabulary = getAllVocabulary();
+            } else {
+                state.currentVocabulary = vocabularyByChapter[chapterId].slice();
+            }
+
+            state.totalWords = state.currentVocabulary.length;
+
+            document.getElementById('sp-chapter-selector').classList.add('sp-hidden');
+            document.getElementById('sp-level-selector').classList.remove('sp-hidden');
+            updateSetIndicator();
+        }
+
+        function updateSetIndicator() {
+            var indicator = document.getElementById('sp-set-indicator');
+            var mastered = state.masteredWords.length;
+            var total = state.totalWords;
+            indicator.textContent = 'Progress: ' + mastered + '/' + total + ' words mastered';
+        }
+
+        function startGame(level) {
+            state.level = level;
+            state.score = 0;
+            state.streak = 0;
+
+            if (level === 1) {
+                state.timer = 60;
+            } else if (level === 2) {
+                state.timer = 20;
+            } else {
+                state.timer = 15;
+            }
+
+            document.getElementById('sp-level-selector').classList.add('sp-hidden');
+            document.getElementById('sp-game-area').classList.add('sp-active');
+            document.getElementById('sp-end-screen').classList.remove('sp-active');
+
+            updateDisplay();
+            nextWord();
+            startTimer();
+        }
+
+        function startTimer() {
+            if (state.timerInterval) {
+                clearInterval(state.timerInterval);
+            }
+
+            state.timerInterval = setInterval(function () {
+                if (state.level === 3) {
+                    if (state.timer > 0) {
+                        state.timer--;
+                    }
+                    if (state.timer <= 0 && state.score > 0) {
+                        endGame();
+                        return;
+                    }
+                } else {
+                    state.timer--;
+                    if (state.timer <= 0) {
+                        endGame();
+                        return;
+                    }
+                }
+                updateTimerDisplay();
+            }, 1000);
+        }
+
+        function updateTimerDisplay() {
+            var timerEl = document.getElementById('sp-timer');
+            var timerBox = document.getElementById('sp-timer-box');
+            timerEl.textContent = state.timer + 's';
+
+            if (state.timer <= 5 && state.level !== 3) {
+                timerBox.classList.add('sp-timer-danger');
+            } else {
+                timerBox.classList.remove('sp-timer-danger');
+            }
+        }
+
+        function getAvailableWords() {
+            return state.currentVocabulary.filter(function (word) {
+                return state.masteredWords.indexOf(word.english) === -1;
+            });
+        }
+
+        function getWeightedWords() {
+            var available = getAvailableWords();
+            var weighted = [];
+
+            available.forEach(function (word) {
+                var progress = state.wordProgress[word.english] || 0;
+                var weight = progress < 0 ? 3 : 1;
+                for (var i = 0; i < weight; i++) {
+                    weighted.push(word);
+                }
+            });
+
+            return weighted;
+        }
+
+        function nextWord() {
+            var available = getAvailableWords();
+
+            if (available.length === 0) {
+                endGame(true);
+                return;
+            }
+
+            var weighted = getWeightedWords();
+            state.currentWord = weighted[Math.floor(Math.random() * weighted.length)];
+            state.hintsUsed = 0;
+            state.revealedLetters = [];
+
+            document.getElementById('sp-french-word').textContent = state.currentWord.french;
+            document.getElementById('sp-input').value = '';
+            document.getElementById('sp-input').className = 'sp-input';
+            document.getElementById('sp-input').focus();
+
+            showLevelHint();
+            updateProgress();
+        }
+
+        function showLevelHint() {
+            var hintEl = document.getElementById('sp-hint');
+            var letterHintEl = document.getElementById('sp-letter-hint');
+            var word = state.currentWord.english;
+
+            if (state.level === 1) {
+                hintEl.textContent = 'Starts with "' + word[0].toUpperCase() + '" • ' + word.length + ' letters';
+                renderLetterBoxes(word, [0]);
+            } else if (state.level === 2) {
+                hintEl.textContent = word.length + ' letters';
+                renderLetterBoxes(word, []);
+            } else {
+                hintEl.textContent = '';
+                letterHintEl.innerHTML = '';
+            }
+        }
+
+        function renderLetterBoxes(word, revealedIndices) {
+            var letterHintEl = document.getElementById('sp-letter-hint');
+            state.revealedLetters = revealedIndices.slice();
+
+            var html = '';
+            for (var i = 0; i < word.length; i++) {
+                var letter = word[i];
+                var isRevealed = revealedIndices.indexOf(i) !== -1;
+                var displayLetter = isRevealed ? letter.toUpperCase() : '';
+                var revealedClass = isRevealed ? 'sp-revealed' : '';
+
+                if (letter === ' ') {
+                    html += '<div style="width: 15px;"></div>';
+                } else {
+                    html += '<div class="sp-letter-box ' + revealedClass + '">' + displayLetter + '</div>';
+                }
+            }
+            letterHintEl.innerHTML = html;
+        }
+
+        function showHint() {
+            if (!state.currentWord) return;
+
+            var word = state.currentWord.english;
+            var unrevealedIndices = [];
+
+            for (var i = 0; i < word.length; i++) {
+                if (word[i] !== ' ' && state.revealedLetters.indexOf(i) === -1) {
+                    unrevealedIndices.push(i);
+                }
+            }
+
+            if (unrevealedIndices.length > 0) {
+                var randomIndex = unrevealedIndices[Math.floor(Math.random() * unrevealedIndices.length)];
+                state.revealedLetters.push(randomIndex);
+                renderLetterBoxes(word, state.revealedLetters);
+                state.hintsUsed++;
+
+                if (state.level !== 3) {
+                    state.timer = Math.max(0, state.timer - 2);
+                    showFeedback('-2 seconds for hint', '');
+                }
+            }
+        }
+
+        function checkAnswer() {
+            if (!state.currentWord) return;
+
+            var input = document.getElementById('sp-input');
+            var userAnswer = input.value.trim().toLowerCase();
+            var correctAnswer = state.currentWord.english.toLowerCase();
+
+            if (userAnswer === '') return;
+
+            if (userAnswer === correctAnswer) {
+                handleCorrectAnswer();
+            } else {
+                handleIncorrectAnswer();
+            }
+        }
+
+        function handleCorrectAnswer() {
+            var input = document.getElementById('sp-input');
+            var word = state.currentWord.english;
+
+            input.classList.add('sp-correct');
+
+            var baseScore = 10;
+            var hintPenalty = state.hintsUsed * 2;
+            var earnedScore = Math.max(1, baseScore - hintPenalty);
+
+            state.score += earnedScore;
+            state.streak++;
+            if (state.streak > state.bestStreak) {
+                state.bestStreak = state.streak;
+            }
+
+            if (state.level === 1) {
+                state.timer = 60;
+            } else if (state.level === 2) {
+                state.timer = 20;
+            }
+
+            var progress = (state.wordProgress[word] || 0) + 1;
+            state.wordProgress[word] = progress;
+
+            if (progress >= 3 && state.masteredWords.indexOf(word) === -1) {
+                state.masteredWords.push(word);
+                showFeedback('🌟 "' + word + '" mastered! +' + earnedScore, 'success');
+            } else {
+                showFeedback('✓ Correct! +' + earnedScore, 'success');
+            }
+
+            setTimeout(function () {
+                updateDisplay();
+                saveProgress();
+                nextWord();
+            }, 1000);
+        }
+
+        function handleIncorrectAnswer() {
+            var input = document.getElementById('sp-input');
+            var word = state.currentWord.english;
+
+            input.classList.add('sp-incorrect');
+
+            state.streak = 0;
+            state.wordProgress[word] = Math.min(0, (state.wordProgress[word] || 0) - 1);
+
+            showFeedback('✗ The answer was: "' + word + '"', 'error');
+
+            setTimeout(function () {
+                input.classList.remove('sp-incorrect');
+                updateDisplay();
+                saveProgress();
+                nextWord();
+            }, 2000);
+        }
+
+        function skipWord() {
+            if (state.currentWord) {
+                var word = state.currentWord.english;
+                state.wordProgress[word] = Math.min(0, (state.wordProgress[word] || 0) - 1);
+                state.streak = 0;
+                saveProgress();
+            }
+            nextWord();
+        }
+
+        function showFeedback(message, type) {
+            var feedback = document.getElementById('sp-feedback');
+            feedback.textContent = message;
+            feedback.className = 'sp-feedback';
+            if (type) {
+                feedback.classList.add('sp-' + type);
+            }
+
+            setTimeout(function () {
+                feedback.className = 'sp-feedback';
+                feedback.textContent = 'Type the English translation and press Enter!';
+            }, 2000);
+        }
+
+        function updateDisplay() {
+            document.getElementById('sp-score').textContent = state.score;
+            document.getElementById('sp-streak').textContent = state.streak;
+            updateTimerDisplay();
+            updateProgress();
+        }
+
+        function updateProgress() {
+            var mastered = state.masteredWords.length;
+            var total = state.totalWords;
+            var percentage = (mastered / total) * 100;
+
+            document.getElementById('sp-progress-fill').style.width = percentage + '%';
+            document.getElementById('sp-progress-text').textContent = mastered + ' / ' + total + ' words mastered';
+        }
+
+        function endGame(allMastered) {
+            if (state.timerInterval) {
+                clearInterval(state.timerInterval);
+            }
+
+            document.getElementById('sp-game-area').classList.remove('sp-active');
+            document.getElementById('sp-end-screen').classList.add('sp-active');
+
+            var title = document.getElementById('sp-end-title');
+            if (allMastered) {
+                title.textContent = '🏆 All Words Mastered!';
+            } else if (state.level === 3 && state.timer <= 0) {
+                title.textContent = '⏰ Time\'s Up!';
+            } else {
+                title.textContent = '🎉 Great Job!';
+            }
+
+            document.getElementById('sp-final-score').textContent = state.score;
+            document.getElementById('sp-final-mastered').textContent = state.masteredWords.length;
+            document.getElementById('sp-best-streak').textContent = state.bestStreak;
+
+            saveProgress();
+        }
+
+        function playAgain() {
+            document.getElementById('sp-end-screen').classList.remove('sp-active');
+            document.getElementById('sp-level-selector').classList.add('sp-hidden');
+            document.getElementById('sp-chapter-selector').classList.remove('sp-hidden');
+            updateSetIndicator();
+        }
+
+        function resetProgress() {
+            if (confirm('Are you sure you want to reset all progress? This cannot be undone.')) {
+                state.wordProgress = {};
+                state.masteredWords = [];
+                state.bestStreak = 0;
+                localStorage.removeItem(STORAGE_KEY);
+                playAgain();
+            }
+        }
+
+        function loadProgress() {
+            try {
+                var saved = localStorage.getItem(STORAGE_KEY);
+                if (saved) {
+                    var data = JSON.parse(saved);
+                    state.wordProgress = data.wordProgress || {};
+                    state.masteredWords = data.masteredWords || [];
+                    state.bestStreak = data.bestStreak || 0;
+                }
+            } catch (e) {
+                console.log('Could not load progress:', e);
+            }
+            state.currentVocabulary = getAllVocabulary();
+            state.totalWords = state.currentVocabulary.length;
+        }
+
+        function saveProgress() {
+            try {
+                var data = {
+                    wordProgress: state.wordProgress,
+                    masteredWords: state.masteredWords,
+                    bestStreak: state.bestStreak
+                };
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+            } catch (e) {
+                console.log('Could not save progress:', e);
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            loadProgress();
+            updateSetIndicator();
+
+            document.getElementById('sp-level1-btn').addEventListener('click', function () { startGame(1); });
+            document.getElementById('sp-level2-btn').addEventListener('click', function () { startGame(2); });
+            document.getElementById('sp-level3-btn').addEventListener('click', function () { startGame(3); });
+            document.getElementById('sp-submit-btn').addEventListener('click', checkAnswer);
+            document.getElementById('sp-hint-btn').addEventListener('click', showHint);
+            document.getElementById('sp-skip-btn').addEventListener('click', skipWord);
+            document.getElementById('sp-end-btn').addEventListener('click', function () { endGame(); });
+            document.getElementById('sp-play-again-btn').addEventListener('click', playAgain);
+            document.getElementById('sp-reset-btn').addEventListener('click', resetProgress);
+
+            document.getElementById('sp-input').addEventListener('keypress', function (e) {
+                if (e.key === 'Enter') {
+                    checkAnswer();
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Code de César - Entraînement</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .game-container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 30px;
+            max-width: 900px;
+            width: 100%;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+        }
+
+        h1 {
+            color: #0f3460;
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 2.2em;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 25px;
+            font-size: 1.1em;
+        }
+
+        .stats-bar {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .stat {
+            background: linear-gradient(135deg, #0f3460 0%, #1a1a2e 100%);
+            color: white;
+            padding: 12px 25px;
+            border-radius: 12px;
+            text-align: center;
+            min-width: 120px;
+        }
+
+        .stat-label {
+            font-size: 0.85em;
+            opacity: 0.9;
+        }
+
+        .stat-value {
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+
+        .alphabet-display {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 20px;
+            font-family: 'Courier New', monospace;
+        }
+
+        .alphabet-row {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 3px;
+            margin: 5px 0;
+        }
+
+        .alphabet-row span {
+            width: 28px;
+            height: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 0.9em;
+        }
+
+        .alphabet-row.original span {
+            background: #e3f2fd;
+            border-radius: 5px;
+            color: #1565c0;
+        }
+
+        .alphabet-row.shifted span {
+            background: #fff3e0;
+            border-radius: 5px;
+            color: #e65100;
+        }
+
+        .arrow-label {
+            text-align: center;
+            color: #666;
+            font-size: 0.9em;
+            margin: 8px 0;
+        }
+
+        .question-area {
+            background: #f0f4ff;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 20px;
+        }
+
+        .question-type {
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .question-type.encode {
+            background: #e3f2fd;
+            color: #1565c0;
+        }
+
+        .question-type.decode {
+            background: #fff3e0;
+            color: #e65100;
+        }
+
+        .question-number {
+            color: #0f3460;
+            font-size: 1.1em;
+            margin-bottom: 10px;
+        }
+
+        .question-text {
+            font-size: 1.4em;
+            font-weight: bold;
+            color: #1a1a2e;
+            margin-bottom: 20px;
+            font-family: 'Courier New', monospace;
+            letter-spacing: 2px;
+            word-break: break-all;
+        }
+
+        .input-group {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .input-group input {
+            flex: 1;
+            min-width: 200px;
+            padding: 15px;
+            font-size: 1.2em;
+            border: 3px solid #0f3460;
+            border-radius: 10px;
+            font-family: 'Courier New', monospace;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .input-group input:focus {
+            outline: none;
+            border-color: #e94560;
+            box-shadow: 0 0 0 3px rgba(233, 69, 96, 0.2);
+        }
+
+        .btn {
+            padding: 15px 30px;
+            font-size: 1.1em;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #e94560 0%, #0f3460 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(233, 69, 96, 0.4);
+        }
+
+        .feedback {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            font-weight: bold;
+            display: none;
+        }
+
+        .feedback.correct {
+            background: #d4edda;
+            color: #155724;
+            display: block;
+        }
+
+        .feedback.incorrect {
+            background: #f8d7da;
+            color: #721c24;
+            display: block;
+        }
+
+        .progress-container {
+            margin-bottom: 20px;
+        }
+
+        .progress-bar {
+            background: #e9ecef;
+            height: 12px;
+            border-radius: 6px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            background: linear-gradient(135deg, #e94560 0%, #0f3460 100%);
+            height: 100%;
+            transition: width 0.5s ease;
+        }
+
+        .progress-text {
+            text-align: center;
+            margin-top: 8px;
+            color: #666;
+        }
+
+        .welcome-screen, .results-screen {
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        .welcome-screen h2, .results-screen h2 {
+            color: #0f3460;
+            font-size: 1.8em;
+            margin-bottom: 20px;
+        }
+
+        .welcome-screen p {
+            color: #666;
+            line-height: 1.8;
+            margin-bottom: 30px;
+        }
+
+        .btn-start {
+            padding: 20px 50px;
+            font-size: 1.3em;
+        }
+
+        .results-screen .score-display {
+            font-size: 4em;
+            color: #e94560;
+            margin: 30px 0;
+        }
+
+        .results-screen .score-label {
+            font-size: 1.2em;
+            color: #666;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .hint-box {
+            background: #fff3cd;
+            border: 1px solid #ffc107;
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 15px;
+            font-size: 0.95em;
+        }
+
+        .hint-box strong {
+            color: #856404;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+
+        .shake {
+            animation: shake 0.3s;
+        }
+    </style>
+</head>
+<body>
+    <div class="game-container">
+        <h1>🔐 Code de César</h1>
+        <p class="subtitle">Décalage +3 : A→D, B→E, C→F...</p>
+
+        <div id="welcomeScreen" class="welcome-screen">
+            <h2>Bienvenue dans l'entraînement César !</h2>
+            <p>
+                Le chiffrement de César est une technique de cryptographie simple.<br>
+                Chaque lettre est remplacée par une autre située un peu plus loin dans l'alphabet.<br><br>
+                <strong>Avec un décalage de +3 :</strong><br>
+                A devient D, B devient E, C devient F, etc.<br>
+                Pour décoder, on fait l'inverse : D devient A, E devient B, etc.
+            </p>
+            <button class="btn btn-primary btn-start" onclick="startGame()">🚀 Commencer</button>
+        </div>
+
+        <div id="gameScreen" class="hidden">
+            <div class="stats-bar">
+                <div class="stat">
+                    <div class="stat-label">Score</div>
+                    <div class="stat-value" id="score">0</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-label">Bonnes réponses</div>
+                    <div class="stat-value" id="correct">0/10</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-label">Temps</div>
+                    <div class="stat-value" id="timer">0:00</div>
+                </div>
+            </div>
+
+            <div class="progress-container">
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+                </div>
+                <div class="progress-text" id="progressText">Question 1/10</div>
+            </div>
+
+            <div class="alphabet-display">
+                <div class="arrow-label">Alphabet original :</div>
+                <div class="alphabet-row original" id="originalAlphabet"></div>
+                <div class="arrow-label">↓ Décalage +3 ↓</div>
+                <div class="alphabet-row shifted" id="shiftedAlphabet"></div>
+            </div>
+
+            <div class="question-area">
+                <span class="question-type" id="questionType">ENCODER</span>
+                <div class="question-number" id="questionNumber">Question 1</div>
+                <div class="question-text" id="questionText">MESSAGE</div>
+
+                <div class="input-group">
+                    <input type="text" id="answerInput" placeholder="Ta réponse..." autocomplete="off">
+                    <button class="btn btn-primary" onclick="checkAnswer()">Valider</button>
+                </div>
+
+                <div class="feedback" id="feedback"></div>
+
+                <div class="hint-box">
+                    <strong>💡 Astuce :</strong> <span id="hintText">Regarde bien la correspondance entre les deux alphabets ci-dessus !</span>
+                </div>
+            </div>
+        </div>
+
+        <div id="resultsScreen" class="results-screen hidden">
+            <h2>🎉 Entraînement terminé !</h2>
+            <div class="score-label">Ton score</div>
+            <div class="score-display" id="finalScore">0</div>
+            <p id="resultsMessage"></p>
+            <button class="btn btn-primary btn-start" onclick="restartGame()">🔄 Rejouer</button>
+        </div>
+    </div>
+
+    <script>
+        const SHIFT = 3;
+        const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+
+        const questions = [
+            { type: 'encode', text: 'BONJOUR', answer: 'ERQMRXU' },
+            { type: 'decode', text: 'VHFUHW', answer: 'SECRET' },
+            { type: 'encode', text: 'SECURITE', answer: 'VHFXULWH' },
+            { type: 'decode', text: 'FKLIIUH', answer: 'CHIFFRE' },
+            { type: 'encode', text: 'MOT DE PASSE', answer: 'PRW GH SDVVH' },
+            { type: 'decode', text: 'FRGH', answer: 'CODE' },
+            { type: 'encode', text: 'CRYPTER', answer: 'FUBSWHU' },
+            { type: 'decode', text: 'DOSKDEHW', answer: 'ALPHABET' },
+            { type: 'encode', text: 'LE MOT DE PASSE EST SECRET', answer: 'OH PRW GH SDVVH HVW VHFUHW' },
+            { type: 'decode', text: 'FHVDU', answer: 'CESAR' }
+        ];
+
+        let currentQuestion = 0;
+        let score = 0;
+        let correctAnswers = 0;
+        let startTime = null;
+        let timerInterval = null;
+
+        function initAlphabetDisplay() {
+            const originalDiv = document.getElementById('originalAlphabet');
+            const shiftedDiv = document.getElementById('shiftedAlphabet');
+
+            let originalHTML = '';
+            let shiftedHTML = '';
+            for (let i = 0; i < alphabet.length; i++) {
+                originalHTML += '<span>' + alphabet[i] + '</span>';
+                shiftedHTML += '<span>' + alphabet[(i + SHIFT) % 26] + '</span>';
+            }
+            originalDiv.innerHTML = originalHTML;
+            shiftedDiv.innerHTML = shiftedHTML;
+        }
+
+        function startGame() {
+            document.getElementById('welcomeScreen').classList.add('hidden');
+            document.getElementById('gameScreen').classList.remove('hidden');
+            document.getElementById('resultsScreen').classList.add('hidden');
+
+            currentQuestion = 0;
+            score = 0;
+            correctAnswers = 0;
+            startTime = Date.now();
+
+            initAlphabetDisplay();
+            loadQuestion();
+            startTimer();
+        }
+
+        function startTimer() {
+            timerInterval = setInterval(function() {
+                const elapsed = Math.floor((Date.now() - startTime) / 1000);
+                const minutes = Math.floor(elapsed / 60);
+                const seconds = elapsed % 60;
+                document.getElementById('timer').textContent = minutes + ':' + (seconds < 10 ? '0' : '') + seconds;
+            }, 1000);
+        }
+
+        function loadQuestion() {
+            const q = questions[currentQuestion];
+
+            document.getElementById('questionType').textContent = q.type === 'encode' ? '🔒 ENCODER' : '🔓 DÉCODER';
+            document.getElementById('questionType').className = 'question-type ' + q.type;
+            document.getElementById('questionNumber').textContent = 'Question ' + (currentQuestion + 1);
+            document.getElementById('questionText').textContent = q.text;
+            document.getElementById('answerInput').value = '';
+            document.getElementById('feedback').className = 'feedback';
+            document.getElementById('feedback').textContent = '';
+
+            document.getElementById('hintText').textContent = q.type === 'encode'
+                ? 'Pour encoder, trouve chaque lettre dans l\'alphabet original et regarde la lettre correspondante en dessous.'
+                : 'Pour décoder, trouve chaque lettre dans l\'alphabet décalé (orange) et regarde la lettre correspondante au-dessus.';
+
+            document.getElementById('progressFill').style.width = (currentQuestion / questions.length * 100) + '%';
+            document.getElementById('progressText').textContent = 'Question ' + (currentQuestion + 1) + '/' + questions.length;
+
+            document.getElementById('answerInput').focus();
+        }
+
+        function normalizeAnswer(str) {
+            return str.toUpperCase().replace(/[^A-Z ]/g, '').trim();
+        }
+
+        function checkAnswer() {
+            const userAnswer = normalizeAnswer(document.getElementById('answerInput').value);
+            const correctAnswer = questions[currentQuestion].answer;
+            const feedback = document.getElementById('feedback');
+
+            if (userAnswer === correctAnswer) {
+                feedback.className = 'feedback correct';
+                feedback.textContent = '✅ Bravo ! C\'est correct !';
+                score += 10;
+                correctAnswers++;
+                document.getElementById('score').textContent = score;
+                document.getElementById('correct').textContent = correctAnswers + '/' + questions.length;
+
+                setTimeout(function() {
+                    currentQuestion++;
+                    if (currentQuestion < questions.length) {
+                        loadQuestion();
+                    } else {
+                        endGame();
+                    }
+                }, 1500);
+            } else {
+                feedback.className = 'feedback incorrect';
+                feedback.textContent = '❌ Pas tout à fait... La bonne réponse était : ' + correctAnswer;
+                document.getElementById('answerInput').classList.add('shake');
+                setTimeout(function() {
+                    document.getElementById('answerInput').classList.remove('shake');
+                }, 300);
+
+                setTimeout(function() {
+                    currentQuestion++;
+                    if (currentQuestion < questions.length) {
+                        loadQuestion();
+                    } else {
+                        endGame();
+                    }
+                }, 2500);
+            }
+        }
+
+        function endGame() {
+            clearInterval(timerInterval);
+            document.getElementById('gameScreen').classList.add('hidden');
+            document.getElementById('resultsScreen').classList.remove('hidden');
+
+            document.getElementById('finalScore').textContent = score + '/100';
+
+            let message = '';
+            if (score >= 90) {
+                message = '🏆 Excellent ! Tu maîtrises parfaitement le code de César !';
+            } else if (score >= 70) {
+                message = '👍 Très bien ! Tu as compris le principe, continue à t\'entraîner !';
+            } else if (score >= 50) {
+                message = '💪 Pas mal ! Relis bien les correspondances et réessaie !';
+            } else {
+                message = '📚 Continue à t\'entraîner, tu vas y arriver !';
+            }
+            document.getElementById('resultsMessage').textContent = message;
+        }
+
+        function restartGame() {
+            startGame();
+        }
+
+        document.getElementById('answerInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                checkAnswer();
+            }
+        });
+    </script>
+</body>
+</html>

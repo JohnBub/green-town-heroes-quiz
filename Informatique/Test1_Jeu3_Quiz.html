@@ -1,0 +1,767 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Définitions - Sécurité Informatique</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            min-height: 100vh;
+            color: #fff;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            padding: 30px 0;
+        }
+
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .subtitle {
+            font-size: 1.2em;
+            opacity: 0.9;
+            margin-bottom: 20px;
+        }
+
+        .score-display {
+            background: rgba(255,255,255,0.1);
+            padding: 15px 30px;
+            border-radius: 15px;
+            display: inline-block;
+            margin-bottom: 20px;
+        }
+
+        .score-display span {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #4ade80;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 10px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 5px;
+            margin-bottom: 30px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #4ade80, #22d3ee);
+            border-radius: 5px;
+            transition: width 0.5s ease;
+        }
+
+        .question-card {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .question-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .question-number {
+            background: linear-gradient(135deg, #f472b6, #c084fc);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: bold;
+        }
+
+        .question-type {
+            background: rgba(255,255,255,0.2);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9em;
+        }
+
+        .question-points {
+            color: #fbbf24;
+            font-weight: bold;
+        }
+
+        .question-text {
+            font-size: 1.3em;
+            margin-bottom: 25px;
+            line-height: 1.5;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .option {
+            background: rgba(255,255,255,0.1);
+            padding: 15px 20px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .option:hover {
+            background: rgba(255,255,255,0.2);
+            transform: translateX(10px);
+        }
+
+        .option.selected {
+            border-color: #22d3ee;
+            background: rgba(34, 211, 238, 0.2);
+        }
+
+        .option.correct {
+            border-color: #4ade80;
+            background: rgba(74, 222, 128, 0.3);
+        }
+
+        .option.incorrect {
+            border-color: #f87171;
+            background: rgba(248, 113, 113, 0.3);
+        }
+
+        .option-letter {
+            width: 35px;
+            height: 35px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .open-answer {
+            width: 100%;
+            padding: 15px;
+            border-radius: 12px;
+            border: 2px solid rgba(255,255,255,0.3);
+            background: rgba(255,255,255,0.1);
+            color: #fff;
+            font-size: 1.1em;
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .open-answer:focus {
+            outline: none;
+            border-color: #22d3ee;
+        }
+
+        .open-answer::placeholder {
+            color: rgba(255,255,255,0.5);
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #4ade80, #22d3ee);
+            color: #1a1a2e;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.2em;
+            font-weight: bold;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: block;
+            margin: 30px auto 0;
+        }
+
+        .btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 30px rgba(74, 222, 128, 0.3);
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .feedback {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 12px;
+            text-align: center;
+            font-weight: bold;
+            display: none;
+        }
+
+        .feedback.correct {
+            background: rgba(74, 222, 128, 0.3);
+            border: 2px solid #4ade80;
+            display: block;
+        }
+
+        .feedback.incorrect {
+            background: rgba(248, 113, 113, 0.3);
+            border: 2px solid #f87171;
+            display: block;
+        }
+
+        .feedback.partial {
+            background: rgba(251, 191, 36, 0.3);
+            border: 2px solid #fbbf24;
+            display: block;
+        }
+
+        .keywords-hint {
+            margin-top: 10px;
+            font-size: 0.9em;
+            opacity: 0.8;
+            font-weight: normal;
+        }
+
+        .results-screen {
+            display: none;
+            text-align: center;
+            padding: 50px 30px;
+        }
+
+        .results-screen.active {
+            display: block;
+        }
+
+        .results-title {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+        }
+
+        .results-score {
+            font-size: 4em;
+            font-weight: bold;
+            color: #4ade80;
+            margin-bottom: 20px;
+        }
+
+        .results-message {
+            font-size: 1.3em;
+            margin-bottom: 30px;
+            opacity: 0.9;
+        }
+
+        .results-details {
+            background: rgba(255,255,255,0.1);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+
+        .results-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .results-row:last-child {
+            border-bottom: none;
+        }
+
+        .game-container {
+            display: block;
+        }
+
+        .game-container.hidden {
+            display: none;
+        }
+
+        .intro-screen {
+            text-align: center;
+            padding: 50px 30px;
+        }
+
+        .intro-screen.hidden {
+            display: none;
+        }
+
+        .intro-icon {
+            font-size: 5em;
+            margin-bottom: 20px;
+        }
+
+        .intro-text {
+            font-size: 1.2em;
+            margin-bottom: 30px;
+            line-height: 1.6;
+            opacity: 0.9;
+        }
+
+        .intro-details {
+            background: rgba(255,255,255,0.1);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            text-align: left;
+        }
+
+        .intro-details h3 {
+            margin-bottom: 15px;
+            color: #4ade80;
+        }
+
+        .intro-details ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .intro-details li {
+            padding: 8px 0;
+            padding-left: 30px;
+            position: relative;
+        }
+
+        .intro-details li::before {
+            content: "OK";
+            position: absolute;
+            left: 0;
+            color: #4ade80;
+        }
+
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 1.8em;
+            }
+
+            .question-text {
+                font-size: 1.1em;
+            }
+
+            .option {
+                padding: 12px 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Quiz Securite Informatique</h1>
+            <p class="subtitle">Testez vos connaissances sur les concepts de securite</p>
+            <div class="score-display">
+                Score: <span id="score">0</span> / <span id="maxScore">30</span> pts
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+            </div>
+        </header>
+
+        <div class="intro-screen" id="introScreen">
+            <div class="intro-icon">-</div>
+            <h2 style="font-size: 2em; margin-bottom: 20px;">Quiz Definitions</h2>
+            <p class="intro-text">
+                Ce quiz teste vos connaissances sur les concepts fondamentaux de la securite informatique.<br>
+                Repondez aux questions pour verifier votre comprehension.
+            </p>
+            <div class="intro-details">
+                <h3>Structure du quiz</h3>
+                <ul>
+                    <li><strong>8 questions QCM</strong> - Choisissez la bonne reponse (2 pts chacune)</li>
+                    <li><strong>4 questions ouvertes</strong> - Repondez avec vos mots (3.5 pts chacune)</li>
+                </ul>
+                <h3 style="margin-top: 20px;">Themes abordes</h3>
+                <ul>
+                    <li>Mots de passe et authentification</li>
+                    <li>Phishing et arnaques en ligne</li>
+                    <li>Cyberharcelement</li>
+                    <li>Chiffrement et cryptographie</li>
+                    <li>Protection des donnees personnelles</li>
+                    <li>Bons comportements en ligne</li>
+                </ul>
+            </div>
+            <button class="btn" onclick="startQuiz()">Commencer le Quiz</button>
+        </div>
+
+        <div class="game-container hidden" id="gameContainer">
+            <div id="questionContainer"></div>
+        </div>
+
+        <div class="results-screen" id="resultsScreen">
+            <div class="intro-icon">-</div>
+            <h2 class="results-title">Quiz Termine!</h2>
+            <div class="results-score" id="finalScore">0/30</div>
+            <p class="results-message" id="resultsMessage"></p>
+            <div class="results-details">
+                <div class="results-row">
+                    <span>Questions QCM correctes:</span>
+                    <span id="qcmCorrect">0/8</span>
+                </div>
+                <div class="results-row">
+                    <span>Points QCM:</span>
+                    <span id="qcmPoints">0/16</span>
+                </div>
+                <div class="results-row">
+                    <span>Points questions ouvertes:</span>
+                    <span id="openPoints">0/14</span>
+                </div>
+                <div class="results-row" style="font-weight: bold; font-size: 1.2em;">
+                    <span>Score Total:</span>
+                    <span id="totalPoints">0/30</span>
+                </div>
+            </div>
+            <button class="btn" onclick="restartQuiz()">Recommencer</button>
+        </div>
+    </div>
+
+    <script>
+        const qcmQuestions = [
+            {
+                question: "Qu'est-ce qu'un mot de passe fort?",
+                options: [
+                    "Un mot de passe avec uniquement des lettres",
+                    "Un mot de passe court et facile a retenir",
+                    "Un mot de passe long avec lettres, chiffres et caracteres speciaux",
+                    "Le nom de votre animal de compagnie"
+                ],
+                correct: 2,
+                points: 2
+            },
+            {
+                question: "Qu'est-ce que le phishing?",
+                options: [
+                    "Un type de virus informatique",
+                    "Une technique pour voler des informations en se faisant passer pour une entite de confiance",
+                    "Un logiciel de protection",
+                    "Une methode de chiffrement"
+                ],
+                correct: 1,
+                points: 2
+            },
+            {
+                question: "Quel est le meilleur comportement face a un email suspect?",
+                options: [
+                    "Cliquer sur le lien pour verifier",
+                    "Repondre pour demander des informations",
+                    "Ne pas cliquer et signaler comme spam",
+                    "Transferer a tous ses contacts"
+                ],
+                correct: 2,
+                points: 2
+            },
+            {
+                question: "Qu'est-ce que le cyberharcelement?",
+                options: [
+                    "Un virus qui endommage l'ordinateur",
+                    "Des attaques repetees via les moyens numeriques pour nuire a quelqu'un",
+                    "Le piratage d'un compte",
+                    "L'envoi de publicites"
+                ],
+                correct: 1,
+                points: 2
+            },
+            {
+                question: "Que signifie chiffrer un message?",
+                options: [
+                    "Compter les caracteres du message",
+                    "Transformer le message pour le rendre illisible sans la cle",
+                    "Envoyer le message plus rapidement",
+                    "Supprimer le message"
+                ],
+                correct: 1,
+                points: 2
+            },
+            {
+                question: "Quelles sont des donnees personnelles?",
+                options: [
+                    "Uniquement le mot de passe",
+                    "Nom, adresse, email, numero de telephone, photos",
+                    "Seulement les informations bancaires",
+                    "Les fichiers de l'ordinateur"
+                ],
+                correct: 1,
+                points: 2
+            },
+            {
+                question: "Pourquoi ne faut-il pas utiliser le meme mot de passe partout?",
+                options: [
+                    "C'est plus difficile a retenir",
+                    "Si un compte est pirate, tous les autres sont en danger",
+                    "Les sites n'acceptent pas les memes mots de passe",
+                    "Cela ralentit l'ordinateur"
+                ],
+                correct: 1,
+                points: 2
+            },
+            {
+                question: "Que faire si vous etes temoin de cyberharcelement?",
+                options: [
+                    "Ignorer la situation",
+                    "Participer pour s'amuser",
+                    "Soutenir la victime et signaler aux adultes/autorites",
+                    "Partager les messages"
+                ],
+                correct: 2,
+                points: 2
+            }
+        ];
+
+        const openQuestions = [
+            {
+                question: "Donnez 3 caracteristiques d'un mot de passe securise.",
+                keywords: ["long", "majuscule", "minuscule", "chiffre", "caractere special", "unique", "complexe", "different", "12", "caracteres", "symbole", "lettre"],
+                minKeywords: 3,
+                points: 3.5,
+                hint: "Pensez a la longueur, aux types de caracteres..."
+            },
+            {
+                question: "Comment reconnaitre un email de phishing? Donnez 2 indices.",
+                keywords: ["faute", "orthographe", "urgence", "urgent", "lien", "suspect", "expediteur", "inconnu", "demande", "information", "personnelle", "adresse", "etrange", "piece jointe", "menace", "trop beau"],
+                minKeywords: 2,
+                points: 3.5,
+                hint: "Pensez a l'expediteur, au contenu, aux liens..."
+            },
+            {
+                question: "Pourquoi est-il important de proteger ses donnees personnelles en ligne?",
+                keywords: ["vol", "identite", "usurpation", "piratage", "arnaque", "vie privee", "confidentialite", "securite", "harcelement", "escroquerie", "fraude", "publicite", "ciblee", "proteger"],
+                minKeywords: 2,
+                points: 3.5,
+                hint: "Pensez aux risques si quelqu'un obtient vos donnees..."
+            },
+            {
+                question: "Citez 2 bons comportements pour rester en securite sur Internet.",
+                keywords: ["mot de passe", "different", "unique", "mise a jour", "antivirus", "cliquer", "verifier", "signaler", "prudent", "partager", "confidentiel", "wifi", "public", "https", "sauvegarde", "double authentification", "2fa"],
+                minKeywords: 2,
+                points: 3.5,
+                hint: "Pensez aux habitudes quotidiennes de securite..."
+            }
+        ];
+
+        let currentQuestion = 0;
+        let score = 0;
+        let qcmCorrectCount = 0;
+        let qcmPointsTotal = 0;
+        let openPointsTotal = 0;
+        let totalQuestions = qcmQuestions.length + openQuestions.length;
+        let answers = [];
+        let answered = false;
+
+        function startQuiz() {
+            document.getElementById('introScreen').classList.add('hidden');
+            document.getElementById('gameContainer').classList.remove('hidden');
+            showQuestion();
+        }
+
+        function showQuestion() {
+            answered = false;
+            const container = document.getElementById('questionContainer');
+            const isQCM = currentQuestion < qcmQuestions.length;
+
+            updateProgress();
+
+            if (isQCM) {
+                const q = qcmQuestions[currentQuestion];
+                let optionsHtml = '';
+                q.options.forEach(function(opt, i) {
+                    optionsHtml += '<div class="option" onclick="selectOption(' + i + ')" id="option' + i + '">' +
+                        '<span class="option-letter">' + String.fromCharCode(65 + i) + '</span>' +
+                        '<span>' + opt + '</span>' +
+                        '</div>';
+                });
+
+                container.innerHTML = '<div class="question-card">' +
+                    '<div class="question-header">' +
+                        '<span class="question-number">Question ' + (currentQuestion + 1) + '/' + totalQuestions + '</span>' +
+                        '<span class="question-type">QCM</span>' +
+                        '<span class="question-points">' + q.points + ' pts</span>' +
+                    '</div>' +
+                    '<p class="question-text">' + q.question + '</p>' +
+                    '<div class="options">' + optionsHtml + '</div>' +
+                    '<div class="feedback" id="feedback"></div>' +
+                    '<button class="btn" id="nextBtn" onclick="nextQuestion()" disabled>Question Suivante</button>' +
+                '</div>';
+            } else {
+                const openIndex = currentQuestion - qcmQuestions.length;
+                const q = openQuestions[openIndex];
+                const savedAnswer = answers[currentQuestion] || '';
+
+                container.innerHTML = '<div class="question-card">' +
+                    '<div class="question-header">' +
+                        '<span class="question-number">Question ' + (currentQuestion + 1) + '/' + totalQuestions + '</span>' +
+                        '<span class="question-type">Question Ouverte</span>' +
+                        '<span class="question-points">' + q.points + ' pts</span>' +
+                    '</div>' +
+                    '<p class="question-text">' + q.question + '</p>' +
+                    '<textarea class="open-answer" id="openAnswer" placeholder="Ecrivez votre reponse ici...">' + savedAnswer + '</textarea>' +
+                    '<p style="margin-top: 10px; opacity: 0.7; font-size: 0.9em;">Indice: ' + q.hint + '</p>' +
+                    '<div class="feedback" id="feedback"></div>' +
+                    '<button class="btn" id="submitBtn" onclick="submitOpenAnswer()">Valider</button>' +
+                    '<button class="btn" id="nextBtn" onclick="nextQuestion()" style="display: none;">Question Suivante</button>' +
+                '</div>';
+            }
+        }
+
+        function selectOption(index) {
+            if (answered) return;
+            answered = true;
+
+            const q = qcmQuestions[currentQuestion];
+            const options = document.querySelectorAll('.option');
+            const feedback = document.getElementById('feedback');
+            const nextBtn = document.getElementById('nextBtn');
+
+            options.forEach(function(opt, i) {
+                opt.onclick = null;
+                if (i === q.correct) {
+                    opt.classList.add('correct');
+                } else if (i === index && i !== q.correct) {
+                    opt.classList.add('incorrect');
+                }
+            });
+
+            answers[currentQuestion] = index;
+
+            if (index === q.correct) {
+                score += q.points;
+                qcmCorrectCount++;
+                qcmPointsTotal += q.points;
+                feedback.className = 'feedback correct';
+                feedback.textContent = 'Correct! +' + q.points + ' points';
+            } else {
+                feedback.className = 'feedback incorrect';
+                feedback.textContent = 'Incorrect. La bonne reponse etait: ' + q.options[q.correct];
+            }
+
+            updateScore();
+            nextBtn.disabled = false;
+        }
+
+        function submitOpenAnswer() {
+            if (answered) return;
+
+            const textarea = document.getElementById('openAnswer');
+            const answer = textarea.value.toLowerCase().trim();
+
+            if (answer.length < 5) {
+                alert('Veuillez ecrire une reponse plus complete.');
+                return;
+            }
+
+            answered = true;
+            const openIndex = currentQuestion - qcmQuestions.length;
+            const q = openQuestions[openIndex];
+            const feedback = document.getElementById('feedback');
+            const submitBtn = document.getElementById('submitBtn');
+            const nextBtn = document.getElementById('nextBtn');
+
+            answers[currentQuestion] = answer;
+
+            let matchedKeywords = [];
+            q.keywords.forEach(function(keyword) {
+                if (answer.indexOf(keyword.toLowerCase()) !== -1) {
+                    matchedKeywords.push(keyword);
+                }
+            });
+
+            let earnedPoints = 0;
+            if (matchedKeywords.length >= q.minKeywords) {
+                earnedPoints = q.points;
+                feedback.className = 'feedback correct';
+                feedback.textContent = 'Excellente reponse! +' + q.points + ' points. Mots-cles trouves: ' + matchedKeywords.join(', ');
+            } else if (matchedKeywords.length > 0) {
+                earnedPoints = (matchedKeywords.length / q.minKeywords) * q.points;
+                earnedPoints = Math.round(earnedPoints * 10) / 10;
+                feedback.className = 'feedback partial';
+                feedback.textContent = 'Reponse partielle. +' + earnedPoints + ' points. Mots-cles trouves: ' + matchedKeywords.join(', ');
+            } else {
+                feedback.className = 'feedback incorrect';
+                feedback.textContent = 'Reponse insuffisante. Elements attendus: ' + q.keywords.slice(0, 4).join(', ') + '...';
+            }
+
+            score += earnedPoints;
+            openPointsTotal += earnedPoints;
+
+            textarea.disabled = true;
+            submitBtn.style.display = 'none';
+            nextBtn.style.display = 'block';
+            updateScore();
+        }
+
+        function nextQuestion() {
+            currentQuestion++;
+            if (currentQuestion >= totalQuestions) {
+                showResults();
+            } else {
+                showQuestion();
+            }
+        }
+
+        function updateScore() {
+            document.getElementById('score').textContent = Math.round(score * 10) / 10;
+        }
+
+        function updateProgress() {
+            const progress = (currentQuestion / totalQuestions) * 100;
+            document.getElementById('progressFill').style.width = progress + '%';
+        }
+
+        function showResults() {
+            document.getElementById('gameContainer').classList.add('hidden');
+            document.getElementById('resultsScreen').classList.add('active');
+
+            const percentage = (score / 30) * 100;
+            let message = '';
+
+            if (percentage >= 90) {
+                message = 'Excellent! Vous maitrisez parfaitement la securite informatique!';
+            } else if (percentage >= 70) {
+                message = 'Tres bien! Vous avez de bonnes connaissances en securite.';
+            } else if (percentage >= 50) {
+                message = 'Pas mal! Continuez a apprendre sur la securite informatique.';
+            } else {
+                message = 'Continuez a etudier! La securite informatique est importante.';
+            }
+
+            document.getElementById('finalScore').textContent = Math.round(score * 10) / 10 + '/30';
+            document.getElementById('resultsMessage').textContent = message;
+            document.getElementById('qcmCorrect').textContent = qcmCorrectCount + '/8';
+            document.getElementById('qcmPoints').textContent = qcmPointsTotal + '/16';
+            document.getElementById('openPoints').textContent = Math.round(openPointsTotal * 10) / 10 + '/14';
+            document.getElementById('totalPoints').textContent = Math.round(score * 10) / 10 + '/30';
+        }
+
+        function restartQuiz() {
+            currentQuestion = 0;
+            score = 0;
+            qcmCorrectCount = 0;
+            qcmPointsTotal = 0;
+            openPointsTotal = 0;
+            answers = [];
+            answered = false;
+
+            document.getElementById('resultsScreen').classList.remove('active');
+            document.getElementById('introScreen').classList.remove('hidden');
+            document.getElementById('progressFill').style.width = '0%';
+            updateScore();
+        }
+    </script>
+</body>
+</html>

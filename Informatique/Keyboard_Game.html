@@ -1,0 +1,1518 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Champion du Clavier - Entraînement Ludique Avancé</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .game-container {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            max-width: 1200px;
+            width: 100%;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h1 {
+            color: #667eea;
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 2.5em;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .mode-selector {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .mode-btn {
+            padding: 15px 30px;
+            font-size: 1.1em;
+            border: none;
+            border-radius: 50px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: bold;
+        }
+
+        .mode-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+
+        .mode-btn.active {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+
+        .level-indicator {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .level-indicator h2 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+
+        .progress-bar {
+            background: #e9ecef;
+            height: 30px;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .progress-fill {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            transition: width 0.5s ease;
+        }
+
+        .question-counter {
+            text-align: center;
+            color: #666;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 25px;
+            border-radius: 15px;
+            text-align: center;
+            flex: 1;
+            min-width: 150px;
+        }
+
+        .stat-card h3 {
+            font-size: 0.9em;
+            margin-bottom: 5px;
+            opacity: 0.9;
+        }
+
+        .stat-card .value {
+            font-size: 1.8em;
+            font-weight: bold;
+        }
+
+        .text-display {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            font-size: 1.3em;
+            line-height: 1.8;
+            min-height: 100px;
+        }
+
+        .text-display .correct {
+            color: #28a745;
+            background: #d4edda;
+            border-radius: 3px;
+            padding: 2px;
+        }
+
+        .text-display .incorrect {
+            color: #dc3545;
+            background: #f8d7da;
+            border-radius: 3px;
+            padding: 2px;
+            animation: shake 0.3s;
+        }
+
+        .text-display .current {
+            background: #ffc107;
+            padding: 2px 4px;
+            border-radius: 3px;
+            animation: pulse 1s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+
+        .input-area {
+            margin-bottom: 20px;
+        }
+
+        .input-area input {
+            width: 100%;
+            padding: 15px;
+            font-size: 1.2em;
+            border: 3px solid #667eea;
+            border-radius: 10px;
+            outline: none;
+            transition: all 0.3s;
+        }
+
+        .input-area input:focus {
+            border-color: #764ba2;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .encouragement {
+            text-align: center;
+            font-size: 1.2em;
+            color: #667eea;
+            margin: 20px 0;
+            min-height: 30px;
+            font-weight: bold;
+        }
+
+        /* Clavier virtuel amélioré */
+        .keyboard-visual {
+            background: #f0f4ff;
+            padding: 20px;
+            border-radius: 15px;
+            margin-top: 20px;
+        }
+
+        .keyboard-row {
+            display: flex;
+            justify-content: center;
+            gap: 5px;
+            margin-bottom: 5px;
+        }
+
+        .key {
+            background: white;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            padding: 10px;
+            min-width: 45px;
+            height: 45px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 0.9em;
+        }
+
+        .key:hover {
+            background: #f8f9fa;
+            transform: translateY(-2px);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        .key.highlight {
+            background: #ffc107;
+            border-color: #ffc107;
+            animation: blink 1s infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        .key .main-char {
+            font-weight: bold;
+            font-size: 1.1em;
+        }
+
+        .key .alt-char {
+            position: absolute;
+            font-size: 0.8em;
+            color: #666;
+        }
+
+        .key .alt-char.top-left {
+            top: 2px;
+            left: 5px;
+        }
+
+        .key .alt-char.top-right {
+            top: 2px;
+            right: 5px;
+            color: #764ba2;
+        }
+
+        .key .alt-char.bottom-right {
+            bottom: 2px;
+            right: 5px;
+            color: #28a745;
+        }
+
+        .key.wide {
+            min-width: 80px;
+        }
+
+        .key.wider {
+            min-width: 100px;
+        }
+
+        .key.space {
+            min-width: 300px;
+        }
+
+        .special-keys-help {
+            margin-top: 20px;
+            padding: 15px;
+            background: #e9ecef;
+            border-radius: 10px;
+        }
+
+        .special-keys-help h4 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+
+        .key-combination {
+            display: inline-block;
+            margin: 5px;
+            padding: 8px 15px;
+            background: white;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            text-align: center;
+            max-width: 500px;
+            animation: modalIn 0.5s ease;
+        }
+
+        @keyframes modalIn {
+            from { transform: scale(0.8); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .modal-content h2 {
+            color: #667eea;
+            font-size: 2em;
+            margin-bottom: 20px;
+        }
+
+        .modal-content .stars {
+            font-size: 3em;
+            margin: 20px 0;
+        }
+
+        .modal-content button {
+            padding: 15px 30px;
+            font-size: 1.1em;
+            border: none;
+            border-radius: 50px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: bold;
+            margin: 10px;
+        }
+
+        .modal-content button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+
+        .welcome-screen {
+            text-align: center;
+            padding: 40px;
+        }
+
+        .welcome-screen h2 {
+            color: #667eea;
+            font-size: 2em;
+            margin-bottom: 20px;
+        }
+
+        .welcome-screen p {
+            font-size: 1.1em;
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+
+        .start-btn {
+            padding: 20px 40px;
+            font-size: 1.3em;
+            border: none;
+            border-radius: 50px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: bold;
+            animation: pulse 2s infinite;
+        }
+
+        .start-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.3);
+        }
+
+        .game-area {
+            display: none;
+            animation: slideIn 0.5s ease;
+        }
+
+        .game-area.active {
+            display: block;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(-20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .tutorial {
+            background: #f0f4ff;
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            border-left: 5px solid #667eea;
+        }
+
+        .tutorial h2 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="game-container">
+        <h1>🎯 Champion du Clavier 🚀</h1>
+        
+        <div id="welcomeScreen" class="welcome-screen">
+            <h2>Bienvenue, futur champion ! 🌟</h2>
+            <p>
+                Es-tu prêt à devenir un as du clavier ? 🎮<br>
+                Ce jeu va t'aider à taper plus vite et mieux !<br>
+                20 niveaux progressifs t'attendent avec 5 questions par niveau.<br>
+                Commence par t'entraîner avec des phrases simples,<br>
+                puis relève le défi des caractères spéciaux !
+            </p>
+            <button class="start-btn" onclick="startGame()">🎯 Commencer l'aventure !</button>
+        </div>
+
+        <div id="gameContent" style="display: none;">
+            <div class="mode-selector">
+                <button class="mode-btn active" onclick="switchMode('sentences')">📝 Phrases</button>
+                <button class="mode-btn" onclick="switchMode('special')">⭐ Caractères Spéciaux</button>
+            </div>
+
+            <div id="tutorialSection" class="tutorial">
+                <h2>💡 Comment jouer ?</h2>
+                <p id="tutorialText">
+                    Tape le texte qui s'affiche à l'écran. Ne t'inquiète pas si tu es lent au début, 
+                    la vitesse viendra avec la pratique ! Chaque niveau a 5 questions.
+                </p>
+            </div>
+
+            <!-- Mode Phrases -->
+            <div id="sentencesMode" class="game-area active">
+                <div class="level-indicator">
+                    <h2>Niveau <span id="sentenceLevel">1</span> / 20</h2>
+                    <div class="progress-bar">
+                        <div id="sentenceProgress" class="progress-fill" style="width: 0%">0%</div>
+                    </div>
+                </div>
+
+                <div class="question-counter">
+                    Question <span id="sentenceQuestion">1</span> / 5
+                </div>
+
+                <div class="stats">
+                    <div class="stat-card">
+                        <h3>⏱️ Temps</h3>
+                        <div class="value" id="sentenceTime">0:00</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>🎯 Précision</h3>
+                        <div class="value" id="sentenceAccuracy">100%</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>⚡ Vitesse</h3>
+                        <div class="value" id="sentenceSpeed">0 MPM</div>
+                    </div>
+                </div>
+
+                <div class="text-display" id="sentenceDisplay"></div>
+                
+                <div class="input-area">
+                    <input type="text" id="sentenceInput" placeholder="Tape le texte ici..." autocomplete="off">
+                </div>
+
+                <div class="encouragement" id="sentenceEncouragement">Tu peux le faire ! 💪</div>
+            </div>
+
+            <!-- Mode Caractères Spéciaux -->
+            <div id="specialMode" class="game-area">
+                <div class="level-indicator">
+                    <h2>Niveau <span id="specialLevel">1</span> / 20</h2>
+                    <div class="progress-bar">
+                        <div id="specialProgress" class="progress-fill" style="width: 0%">0%</div>
+                    </div>
+                </div>
+
+                <div class="question-counter">
+                    Question <span id="specialQuestion">1</span> / 5
+                </div>
+
+                <div class="stats">
+                    <div class="stat-card">
+                        <h3>⏱️ Temps</h3>
+                        <div class="value" id="specialTime">0:00</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>🎯 Score</h3>
+                        <div class="value" id="specialScore">0</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>🔥 Combo</h3>
+                        <div class="value" id="specialCombo">0</div>
+                    </div>
+                </div>
+
+                <div class="text-display" id="specialDisplay"></div>
+                
+                <div class="input-area">
+                    <input type="text" id="specialInput" placeholder="Tape les caractères spéciaux..." autocomplete="off">
+                </div>
+
+                <div class="encouragement" id="specialEncouragement">Trouve les caractères spéciaux ! 🔍</div>
+
+                <!-- Clavier virtuel QWERTZ Suisse -->
+                <div class="keyboard-visual">
+                    <h3 style="color: #667eea; text-align: center; margin-bottom: 15px;">📌 Clavier QWERTZ Suisse-Français</h3>
+                    
+                    <!-- Rangée 1 -->
+                    <div class="keyboard-row">
+                        <div class="key">
+                            <span class="alt-char top-left">§</span>
+                            <span class="main-char">°</span>
+                        </div>
+                        <div class="key">
+                            <span class="alt-char top-left">+</span>
+                            <span class="main-char">1</span>
+                            <span class="alt-char bottom-right">¦</span>
+                        </div>
+                        <div class="key">
+                            <span class="alt-char top-left">"</span>
+                            <span class="main-char">2</span>
+                            <span class="alt-char bottom-right">@</span>
+                        </div>
+                        <div class="key" id="key-3">
+                            <span class="alt-char top-left">*</span>
+                            <span class="main-char">3</span>
+                            <span class="alt-char bottom-right">#</span>
+                        </div>
+                        <div class="key">
+                            <span class="alt-char top-left">ç</span>
+                            <span class="main-char">4</span>
+                        </div>
+                        <div class="key">
+                            <span class="alt-char top-left">%</span>
+                            <span class="main-char">5</span>
+                        </div>
+                        <div class="key">
+                            <span class="alt-char top-left">&</span>
+                            <span class="main-char">6</span>
+                            <span class="alt-char bottom-right">¬</span>
+                        </div>
+                        <div class="key">
+                            <span class="alt-char top-left">/</span>
+                            <span class="main-char">7</span>
+                            <span class="alt-char bottom-right">|</span>
+                        </div>
+                        <div class="key">
+                            <span class="alt-char top-left">(</span>
+                            <span class="main-char">8</span>
+                            <span class="alt-char bottom-right">¢</span>
+                        </div>
+                        <div class="key">
+                            <span class="alt-char top-left">)</span>
+                            <span class="main-char">9</span>
+                        </div>
+                        <div class="key">
+                            <span class="alt-char top-left">=</span>
+                            <span class="main-char">0</span>
+                        </div>
+                        <div class="key">
+                            <span class="alt-char top-left">?</span>
+                            <span class="main-char">'</span>
+                            <span class="alt-char bottom-right">´</span>
+                        </div>
+                        <div class="key">
+                            <span class="alt-char top-left">`</span>
+                            <span class="main-char">^</span>
+                            <span class="alt-char bottom-right">~</span>
+                        </div>
+                        <div class="key wider">
+                            <span class="main-char">⌫</span>
+                        </div>
+                    </div>
+
+                    <!-- Rangée 2 -->
+                    <div class="keyboard-row">
+                        <div class="key wide">
+                            <span class="main-char">Tab</span>
+                        </div>
+                        <div class="key">
+                            <span class="main-char">Q</span>
+                        </div>
+                        <div class="key">
+                            <span class="main-char">W</span>
+                        </div>
+                        <div class="key">
+                            <span class="main-char">E</span>
+                            <span class="alt-char bottom-right">€</span>
+                        </div>
+                        <div class="key">
+                            <span class="main-char">R</span>
+                        </div>
+                        <div class="key">
+                            <span class="main-char">T</span>
+                        </div>
+                        <div class="key">
+                            <span class="main-char">Z</span>
+                        </div>
+                        <div class="key">
+                            <span class="main-char">U</span>
+                        </div>
+                        <div class="key">
+                            <span class="main-char">I</span>
+                        </div>
+                        <div class="key">
+                            <span class="main-char">O</span>
+                        </div>
+                        <div class="key">
+                            <span class="main-char">P</span>
+                        </div>
+                        <div class="key">
+                            <span class="alt-char top-left">è</span>
+                            <span class="main-char">ü</span>
+                            <span class="alt-char bottom-right">[</span>
+                        </div>
+                        <div class="key">
+                            <span class="alt-char top-left">!</span>
+                            <span class="main-char">¨</span>
+                            <span class="alt-char bottom-right">]</span>
+                        </div>
+                    </div>
+
+                    <!-- Rangée 3 -->
+                    <div class="keyboard-row">
+                        <div class="key wider">
+                            <span class="main-char">Caps</span>
+                        </div>
+                        <div class="key">
+                            <span class="main-char">A</span>
+                        </div>
+                        <div class="key">
+                            <span class="main-char">S</span>
+                        </div>
+                        <div class="key">
+                            <span class="main-char">D</span>
+                        </div>
+                        <div class="key">
+                            <span class="main-char">F</span>
+                        </div>
+                        <div class="key">
+                            <span class="main-char">G</span>
+                        </div>
+                        <div class="key">
+                            <span class="main-char">H</span>
+                        </div>
+                        <div class="key">
+                            <span class="main-char">J</span>
+                        </div>
+                        <div class="key">
+                            <span class="main-char">K</span>
+                        </div>
+                        <div class="key">
+                            <span class="main-char">L</span>
+                        </div>
+                        <div class="key">
+                            <span class="alt-char top-left">é</span>
+                            <span class="main-char">ö</span>
+                        </div>
+                        <div class="key">
+                            <span class="alt-char top-left">à</span>
+                            <span class="main-char">ä</span>
+                            <span class="alt-char bottom-right">{</span>
+                        </div>
+                        <div class="key">
+                            <span class="alt-char top-left">£</span>
+                            <span class="main-char">$</span>
+                            <span class="alt-char bottom-right">}</span>
+                        </div>
+                    </div>
+
+                    <!-- Rangée 4 -->
+                    <div class="keyboard-row">
+                        <div class="key wider">
+                            <span class="main-char">Shift</span>
+                        </div>
+                        <div class="key">
+                            <span class="alt-char top-left">></span>
+                            <span class="main-char"><</span>
+                            <span class="alt-char bottom-right">\</span>
+                        </div>
+                        <div class="key">
+                            <span class="main-char">Y</span>
+                        </div>
+                        <div class="key">
+                            <span class="main-char">X</span>
+                        </div>
+                        <div class="key">
+                            <span class="main-char">C</span>
+                        </div>
+                        <div class="key">
+                            <span class="main-char">V</span>
+                        </div>
+                        <div class="key">
+                            <span class="main-char">B</span>
+                        </div>
+                        <div class="key">
+                            <span class="main-char">N</span>
+                        </div>
+                        <div class="key">
+                            <span class="main-char">M</span>
+                        </div>
+                        <div class="key">
+                            <span class="alt-char top-left">;</span>
+                            <span class="main-char">,</span>
+                        </div>
+                        <div class="key">
+                            <span class="alt-char top-left">:</span>
+                            <span class="main-char">.</span>
+                        </div>
+                        <div class="key">
+                            <span class="alt-char top-left">_</span>
+                            <span class="main-char">-</span>
+                        </div>
+                        <div class="key wider">
+                            <span class="main-char">Shift</span>
+                        </div>
+                    </div>
+
+                    <!-- Rangée 5 -->
+                    <div class="keyboard-row">
+                        <div class="key wide">
+                            <span class="main-char">Ctrl</span>
+                        </div>
+                        <div class="key">
+                            <span class="main-char">Alt</span>
+                        </div>
+                        <div class="key space">
+                            <span class="main-char">Espace</span>
+                        </div>
+                        <div class="key">
+                            <span class="main-char">AltGr</span>
+                        </div>
+                        <div class="key wide">
+                            <span class="main-char">Ctrl</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="special-keys-help">
+                    <h4>🔑 Combinaisons importantes :</h4>
+                    <div style="display: flex; flex-wrap: wrap; gap: 10px; justify-content: center;">
+                        <div class="key-combination"><strong>!</strong> = Shift + §</div>
+                        <div class="key-combination"><strong>?</strong> = Shift + '</div>
+                        <div class="key-combination"><strong>@</strong> = AltGr + 2</div>
+                        <div class="key-combination"><strong>#</strong> = AltGr + 3</div>
+                        <div class="key-combination"><strong>*</strong> = Shift + 3</div>
+                        <div class="key-combination"><strong>&</strong> = Shift + 6</div>
+                        <div class="key-combination"><strong>€</strong> = AltGr + E</div>
+                        <div class="key-combination"><strong>$</strong> = touche $</div>
+                        <div class="key-combination"><strong>{ }</strong> = AltGr + ä / $</div>
+                        <div class="key-combination"><strong>[ ]</strong> = AltGr + ü / ¨</div>
+                        <div class="key-combination"><strong>|</strong> = AltGr + 7</div>
+                        <div class="key-combination"><strong>\</strong> = AltGr + <</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal de fin de niveau -->
+        <div id="levelCompleteModal" class="modal">
+            <div class="modal-content">
+                <h2>🎉 Niveau terminé ! 🎉</h2>
+                <div class="stars" id="modalStars"></div>
+                <p id="modalMessage"></p>
+                <button onclick="nextLevel()">Niveau suivant →</button>
+                <button onclick="retryLevel()">Refaire ce niveau</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Variables globales
+        let currentMode = 'sentences';
+        let currentLevel = 1;
+        let currentQuestion = 1;
+        let currentText = '';
+        let currentIndex = 0;
+        let startTime = null;
+        let timer = null;
+        let errors = 0;
+        let correctChars = 0;
+        let score = 0;
+        let combo = 0;
+        let maxCombo = 0;
+        let levelQuestions = [];
+        let questionStartTime = null;
+
+        // Génération des textes pour les phrases (20 niveaux)
+        function generateSentenceTexts() {
+            const texts = [];
+            
+            // Niveau 1-5: Lettres simples et mots courts
+            texts.push([
+                "chat",
+                "papa",
+                "mama",
+                "ami",
+                "jeu",
+                "sol",
+                "mer",
+                "lac",
+                "vue",
+                "bon"
+            ]);
+            
+            texts.push([
+                "le chat",
+                "ma mama",
+                "un ami",
+                "du pain",
+                "la mer",
+                "bon jeu",
+                "du lac",
+                "ta vue",
+                "il va",
+                "je ris"
+            ]);
+            
+            texts.push([
+                "le chat dort",
+                "papa est là",
+                "mama sourit",
+                "mon ami joue",
+                "sur la mer",
+                "dans le lac",
+                "je vais bien",
+                "tu es fort",
+                "il fait beau",
+                "nous jouons"
+            ]);
+            
+            texts.push([
+                "Le chat dort sur le lit.",
+                "Papa lit un bon livre.",
+                "Mama fait un gâteau.",
+                "Mon ami joue au foot.",
+                "Je vais à la plage."
+            ]);
+            
+            texts.push([
+                "Le soleil brille dans le ciel bleu.",
+                "Les enfants jouent dans le parc.",
+                "Ma soeur aime les fleurs roses.",
+                "Le chien court dans le jardin.",
+                "Nous mangeons des fruits frais."
+            ]);
+            
+            // Niveau 6-10: Phrases plus complexes
+            texts.push([
+                "J'aime beaucoup lire des histoires le soir.",
+                "Les oiseaux chantent dans les arbres verts.",
+                "Mon frère apprend à faire du vélo.",
+                "La maison est grande et très belle.",
+                "Nous partons en vacances à la montagne."
+            ]);
+            
+            texts.push([
+                "Aujourd'hui, nous allons visiter le musée d'art moderne.",
+                "Les élèves travaillent sur leur projet de sciences.",
+                "Ma grand-mère prépare toujours de délicieux gâteaux.",
+                "Le train arrive à la gare dans dix minutes.",
+                "J'apprends le français depuis trois ans maintenant."
+            ]);
+            
+            texts.push([
+                "Quand il pleut, j'aime rester à la maison et lire.",
+                "Les scientifiques découvrent de nouvelles planètes chaque année.",
+                "Mon professeur explique très bien les mathématiques difficiles.",
+                "La bibliothèque municipale organise des ateliers de lecture.",
+                "Nous devons protéger l'environnement pour les générations futures."
+            ]);
+            
+            texts.push([
+                "L'ordinateur est devenu un outil indispensable dans notre vie quotidienne.",
+                "Les astronautes s'entraînent pendant des années avant d'aller dans l'espace.",
+                "La musique classique peut aider à la concentration et à la relaxation.",
+                "Les nouvelles technologies transforment notre façon de communiquer.",
+                "L'apprentissage d'une langue étrangère ouvre de nombreuses portes."
+            ]);
+            
+            texts.push([
+                "Le développement durable est essentiel pour préserver notre planète bleue.",
+                "Les découvertes archéologiques nous révèlent les secrets du passé lointain.",
+                "La pratique régulière du sport contribue à maintenir une bonne santé.",
+                "Les innovations technologiques révolutionnent le monde de la médecine moderne.",
+                "L'éducation est la clé du progrès social et économique des nations."
+            ]);
+            
+            // Niveau 11-15: Introduction de caractères spéciaux
+            texts.push([
+                "Bonjour! Comment allez-vous aujourd'hui?",
+                "C'est génial! J'ai réussi mon examen.",
+                "Qu'est-ce que tu fais ce week-end?",
+                "Il fait 25°C, c'est parfait pour sortir!",
+                "L'adresse est: 15, rue de la Paix."
+            ]);
+            
+            texts.push([
+                "Mon email est: jean.dupont@exemple.com",
+                "Le prix est de 49,99€ (TVA incluse).",
+                "Rendez-vous à 14h30 devant l'entrée principale!",
+                "J'ai lu \"Le Petit Prince\" trois fois.",
+                "L'entreprise a augmenté de 15% cette année."
+            ]);
+            
+            texts.push([
+                "Le site web (www.exemple.ch) est très utile!",
+                "Les coordonnées GPS sont: 46.5°N, 6.6°E",
+                "Il a dit: \"Je reviendrai demain matin.\"",
+                "La formule est: E = mc² (Einstein, 1905)",
+                "Téléphone: +41 21 123 45 67 (bureau)"
+            ]);
+            
+            texts.push([
+                "L'équation x² + 2x - 3 = 0 a deux solutions.",
+                "Le fichier \"rapport_2024.pdf\" fait 2,5 MB.",
+                "Les heures d'ouverture: Lu-Ve 8h00-18h00",
+                "La température varie entre -5°C et +15°C.",
+                "Son salaire est de 5'000 CHF/mois (brut)."
+            ]);
+            
+            texts.push([
+                "L'URL https://www.suisse.ch/#contact est correcte.",
+                "Le code postal 1000 correspond à Lausanne (VD).",
+                "La réunion Zoom™ commence à 09:00 (CET).",
+                "J'ai acheté 3kg de pommes @ 2,50€/kg.",
+                "Le mot de passe doit contenir: A-Z, a-z, 0-9, !@#"
+            ]);
+            
+            // Niveau 16-20: Textes avancés avec tous les caractères
+            texts.push([
+                "Le rapport Q3/2024 montre une croissance de +12,5% (vs Q2).",
+                "L'algorithme O(n²) n'est pas optimal; préférez O(n·log n).",
+                "Contact: info@entreprise.ch | Tél: +41(0)21-555-1234",
+                "Le fichier .config contient: {\"debug\": true, \"port\": 8080}",
+                "Facture #2024-1587: Total = 1'234,56 CHF (TTC)"
+            ]);
+            
+            texts.push([
+                "Le cours EUR/CHF est à 0,9854 (-0,12% aujourd'hui).",
+                "Fonction: f(x) = 3x³ - 2x² + x - 7 | Dérivée: f'(x) = 9x² - 4x + 1",
+                "L'adresse MAC est: 00:1B:44:11:3A:B7 (interface eth0)",
+                "Commande SQL: SELECT * FROM users WHERE age >= 18 AND status = 'active';",
+                "Le hash SHA-256 commence par: 0x7d865e959b2466918c9863afca942d0fb89d7c9ac0c99bafc3749504ded97730"
+            ]);
+            
+            texts.push([
+                "L'expression régulière /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$/ valide les emails.",
+                "Code Python: if __name__ == \"__main__\": print(f\"Result: {calculate(x**2 + y**2)}\")",
+                "La séquence d'échappement \\n\\t\\\" permet d'afficher: nouvelle ligne, tabulation et guillemet.",
+                "URL avec paramètres: https://api.service.com/v2/data?user=123&token=abc456&format=json",
+                "Coordonnées bancaires: IBAN CH93 0076 2011 6238 5295 7 | BIC: POFICHBEXXX"
+            ]);
+            
+            texts.push([
+                "Le chemin d'accès C:\\Users\\Admin\\Documents\\Projets\\2024\\*.xlsx contient des fichiers Excel©.",
+                "Configuration serveur: {host: '192.168.1.100', port: 443, ssl: true, auth: 'Bearer eyJhbGc...'}",
+                "Formule chimique: C₆H₁₂O₆ + 6O₂ → 6CO₂ + 6H₂O + énergie (ATP)",
+                "Regex avancée: (?<=\\$)\\d+\\.\\d{2}(?=\\s*(USD|EUR|CHF)) capture les montants monétaires.",
+                "Git commit: feat(auth): implement OAuth 2.0 flow (#PR-1234) [skip ci] 🚀"
+            ]);
+            
+            texts.push([
+                "Interface TypeScript: export interface User<T extends BaseModel> { id: string; data: T; meta?: Record<string, any>; }",
+                "Benchmark results: Algorithm A: O(n·log n) ~123ms | Algorithm B: O(n²) ~4567ms | Speedup: 37.1x ⚡",
+                "Docker command: docker run -d --name app_v2.1.0 -p 8080:80 -e NODE_ENV=production --restart=always myapp:latest",
+                "Mathematical proof: ∀ε>0, ∃δ>0 : |x-a|<δ ⟹ |f(x)-L|<ε ∴ lim(x→a) f(x) = L ∎",
+                "Full-stack trace: Error in /src/components/Dashboard.tsx:42:15 - Cannot read property 'user' of undefined\n\tat Dashboard.render (<anonymous>:42:15)\n\tat processChild (react-dom.js:3458:14)"
+            ]);
+            
+            return texts;
+        }
+
+        // Génération des caractères spéciaux (20 niveaux)
+        function generateSpecialCharacters() {
+            const chars = [];
+            
+            // Niveaux 1-5: Caractères de base
+            chars.push("! . , ; :");
+            chars.push("? ! . , ;");
+            chars.push("( ) ! ? .");
+            chars.push("\" \" ' ' !");
+            chars.push("+ - = * /");
+            
+            // Niveaux 6-10: Symboles courants
+            chars.push("@ # $ % &");
+            chars.push("€ $ £ ¥ ¢");
+            chars.push("[ ] { } < >");
+            chars.push("/ \\ | ~ `");
+            chars.push("^ ° § ¨ ´");
+            
+            // Niveaux 11-15: Combinaisons
+            chars.push("!? ... -- ++");
+            chars.push("=> <= != ==");
+            chars.push("/* */ // <!--");
+            chars.push("&& || ?? !!");
+            chars.push(":) :( ;) :D xD");
+            
+            // Niveaux 16-20: Séquences complexes
+            chars.push("#!/bin/bash ~$");
+            chars.push("<?php ?> <%= %>");
+            chars.push("{{}} [[]] <<>>");
+            chars.push("http:// ftp:// ssh://");
+            chars.push("!@#$%^&*()_+-=[]{}|;':\",./<>?");
+            
+            return chars;
+        }
+
+        const sentenceTexts = generateSentenceTexts();
+        const specialCharacters = generateSpecialCharacters();
+
+        // Messages d'encouragement
+        const encouragements = [
+            "Excellent ! Continue comme ça ! 🌟",
+            "Tu progresses super bien ! 💪",
+            "Wow, quelle vitesse ! ⚡",
+            "Fantastique ! Tu es sur la bonne voie ! 🚀",
+            "Bravo ! Tu deviens un pro ! 🏆",
+            "Génial ! Continue tes efforts ! ✨",
+            "Impressionnant ! Tu maîtrises ! 🎯",
+            "Super ! Tu es en feu ! 🔥",
+            "Magnifique travail ! 👏",
+            "Tu es une star du clavier ! ⭐"
+        ];
+
+        const motivations = [
+            "Pas de souci, tu vas y arriver ! 💙",
+            "Chaque erreur te rend plus fort ! 💪",
+            "Respire et concentre-toi ! 🧘",
+            "Tu peux le faire ! 🌈",
+            "La pratique rend parfait ! 📈",
+            "Ne lâche rien ! 💫",
+            "C'est en forgeant qu'on devient forgeron ! 🔨",
+            "Tu progresses à chaque tentative ! 🌱",
+            "Courage, tu es sur la bonne voie ! 🛤️",
+            "Petit à petit, l'oiseau fait son nid ! 🐦"
+        ];
+
+        function startGame() {
+            document.getElementById('welcomeScreen').style.display = 'none';
+            document.getElementById('gameContent').style.display = 'block';
+            initializeMode();
+        }
+
+        function switchMode(mode) {
+            currentMode = mode;
+            currentLevel = 1;
+            currentQuestion = 1;
+            
+            // Mise à jour des boutons
+            document.querySelectorAll('.mode-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            // Affichage du bon mode
+            document.querySelectorAll('.game-area').forEach(area => {
+                area.classList.remove('active');
+            });
+            
+            if (mode === 'sentences') {
+                document.getElementById('sentencesMode').classList.add('active');
+                document.getElementById('tutorialText').textContent = 
+                    "Tape le texte qui s'affiche à l'écran. Ne t'inquiète pas si tu es lent au début, " +
+                    "la vitesse viendra avec la pratique ! Chaque niveau a 5 questions.";
+            } else {
+                document.getElementById('specialMode').classList.add('active');
+                document.getElementById('tutorialText').textContent = 
+                    "Tape les caractères spéciaux qui apparaissent ! Utilise le clavier virtuel " +
+                    "pour voir les combinaisons de touches. Plus tu es rapide, plus tu gagnes de points !";
+            }
+            
+            initializeMode();
+        }
+
+        function initializeMode() {
+            resetStats();
+            generateLevelQuestions();
+            loadQuestion();
+            startTimer();
+        }
+
+        function generateLevelQuestions() {
+            levelQuestions = [];
+            const pool = currentMode === 'sentences' ? 
+                sentenceTexts[currentLevel - 1] : 
+                [specialCharacters[currentLevel - 1]];
+            
+            // Générer 5 questions aléatoires pour le niveau
+            for (let i = 0; i < 5; i++) {
+                if (currentMode === 'sentences') {
+                    const randomIndex = Math.floor(Math.random() * pool.length);
+                    levelQuestions.push(pool[randomIndex]);
+                } else {
+                    // Pour les caractères spéciaux, mélanger et prendre une portion
+                    const chars = pool[0].split(' ');
+                    const shuffled = [...chars].sort(() => Math.random() - 0.5);
+                    const portion = shuffled.slice(0, Math.min(5 + currentLevel, chars.length)).join(' ');
+                    levelQuestions.push(portion);
+                }
+            }
+        }
+
+        function loadQuestion() {
+            currentText = levelQuestions[currentQuestion - 1];
+            currentIndex = 0;
+            questionStartTime = Date.now();
+            
+            if (currentMode === 'sentences') {
+                loadSentence();
+            } else {
+                loadSpecialChars();
+            }
+            
+            updateQuestionCounter();
+        }
+
+        function loadSentence() {
+            const display = document.getElementById('sentenceDisplay');
+            display.innerHTML = currentText.split('').map((char, i) => 
+                `<span id="char-${i}">${char}</span>`
+            ).join('');
+            
+            document.getElementById('char-0').classList.add('current');
+            document.getElementById('sentenceInput').value = '';
+            document.getElementById('sentenceInput').focus();
+            
+            updateLevelInfo('sentence');
+        }
+
+        function loadSpecialChars() {
+            const display = document.getElementById('specialDisplay');
+            display.innerHTML = currentText.split('').map((char, i) => 
+                `<span id="special-char-${i}">${char}</span>`
+            ).join('');
+            
+            document.getElementById('special-char-0').classList.add('current');
+            document.getElementById('specialInput').value = '';
+            document.getElementById('specialInput').focus();
+            
+            updateLevelInfo('special');
+            
+            // Highlight des touches sur le clavier virtuel
+            highlightKeysForCharacter(currentText[0]);
+        }
+
+        function highlightKeysForCharacter(char) {
+            // Retirer tous les highlights précédents
+            document.querySelectorAll('.key').forEach(key => {
+                key.classList.remove('highlight');
+            });
+            
+            // Logique pour highlighter les bonnes touches selon le caractère
+            const keyMappings = {
+                '!': ['§', 'Shift'],
+                '?': ["'", 'Shift'],
+                '@': ['2', 'AltGr'],
+                '#': ['3', 'AltGr'],
+                '*': ['3', 'Shift'],
+                '&': ['6', 'Shift'],
+                '€': ['E', 'AltGr'],
+                '$': ['$'],
+                '{': ['ä', 'AltGr'],
+                '}': ['$', 'AltGr'],
+                '[': ['ü', 'AltGr'],
+                ']': ['¨', 'AltGr'],
+                '|': ['7', 'AltGr'],
+                '\\': ['<', 'AltGr'],
+                '/': ['7', 'Shift'],
+                '(': ['8', 'Shift'],
+                ')': ['9', 'Shift'],
+                '=': ['0', 'Shift'],
+                '+': ['1', 'Shift'],
+                '%': ['5', 'Shift'],
+                '"': ['2', 'Shift'],
+                "'": ["'"],
+                '<': ['<'],
+                '>': ['<', 'Shift'],
+                ';': [',', 'Shift'],
+                ':': ['.', 'Shift'],
+                '_': ['-', 'Shift'],
+                '-': ['-'],
+                '.': ['.'],
+                ',': [','],
+                '°': ['§', 'Shift'],
+                '§': ['§'],
+                '^': ['^'],
+                '`': ['^', 'Shift'],
+                '~': ['^', 'AltGr'],
+                '¨': ['¨'],
+                '´': ["'", 'AltGr']
+            };
+            
+            if (keyMappings[char]) {
+                keyMappings[char].forEach(keyText => {
+                    document.querySelectorAll('.key').forEach(key => {
+                        if (key.textContent.includes(keyText)) {
+                            key.classList.add('highlight');
+                        }
+                    });
+                });
+            }
+        }
+
+        function updateQuestionCounter() {
+            if (currentMode === 'sentences') {
+                document.getElementById('sentenceQuestion').textContent = currentQuestion;
+            } else {
+                document.getElementById('specialQuestion').textContent = currentQuestion;
+            }
+        }
+
+        function updateLevelInfo(mode) {
+            const level = currentLevel;
+            const progress = ((currentQuestion - 1) / 5) * 100;
+            
+            if (mode === 'sentence') {
+                document.getElementById('sentenceLevel').textContent = level;
+                document.getElementById('sentenceProgress').style.width = progress + '%';
+                document.getElementById('sentenceProgress').textContent = Math.round(progress) + '%';
+            } else {
+                document.getElementById('specialLevel').textContent = level;
+                document.getElementById('specialProgress').style.width = progress + '%';
+                document.getElementById('specialProgress').textContent = Math.round(progress) + '%';
+            }
+        }
+
+        function resetStats() {
+            startTime = Date.now();
+            errors = 0;
+            correctChars = 0;
+            score = 0;
+            combo = 0;
+            maxCombo = 0;
+            
+            if (currentMode === 'sentences') {
+                document.getElementById('sentenceTime').textContent = '0:00';
+                document.getElementById('sentenceAccuracy').textContent = '100%';
+                document.getElementById('sentenceSpeed').textContent = '0 MPM';
+            } else {
+                document.getElementById('specialTime').textContent = '0:00';
+                document.getElementById('specialScore').textContent = '0';
+                document.getElementById('specialCombo').textContent = '0';
+            }
+        }
+
+        function startTimer() {
+            if (timer) clearInterval(timer);
+            
+            timer = setInterval(() => {
+                const elapsed = Math.floor((Date.now() - startTime) / 1000);
+                const minutes = Math.floor(elapsed / 60);
+                const seconds = elapsed % 60;
+                const timeStr = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+                
+                if (currentMode === 'sentences') {
+                    document.getElementById('sentenceTime').textContent = timeStr;
+                    
+                    // Calcul de la vitesse (mots par minute)
+                    if (correctChars > 0) {
+                        const mpm = Math.round((correctChars / 5) / (elapsed / 60));
+                        document.getElementById('sentenceSpeed').textContent = mpm + ' MPM';
+                    }
+                } else {
+                    document.getElementById('specialTime').textContent = timeStr;
+                }
+            }, 100);
+        }
+
+        // Gestionnaires d'événements
+        document.getElementById('sentenceInput').addEventListener('input', function(e) {
+            const input = e.target.value;
+            const lastChar = input[input.length - 1];
+            
+            if (lastChar === currentText[currentIndex]) {
+                handleCorrectChar('sentence');
+            } else if (input.length > 0) {
+                handleIncorrectChar('sentence');
+                e.target.value = input.slice(0, -1);
+            }
+        });
+
+        document.getElementById('specialInput').addEventListener('input', function(e) {
+            const input = e.target.value;
+            const lastChar = input[input.length - 1];
+            
+            if (lastChar === currentText[currentIndex]) {
+                handleCorrectChar('special');
+            } else if (input.length > 0) {
+                handleIncorrectChar('special');
+                e.target.value = input.slice(0, -1);
+            }
+        });
+
+        function handleCorrectChar(mode) {
+            correctChars++;
+            
+            if (mode === 'sentence') {
+                document.getElementById(`char-${currentIndex}`).classList.remove('current');
+                document.getElementById(`char-${currentIndex}`).classList.add('correct');
+                
+                currentIndex++;
+                
+                if (currentIndex < currentText.length) {
+                    document.getElementById(`char-${currentIndex}`).classList.add('current');
+                } else {
+                    // Question terminée
+                    questionComplete();
+                }
+                
+                // Mise à jour de la précision
+                const accuracy = Math.round((correctChars / (correctChars + errors)) * 100);
+                document.getElementById('sentenceAccuracy').textContent = accuracy + '%';
+            } else {
+                document.getElementById(`special-char-${currentIndex}`).classList.remove('current');
+                document.getElementById(`special-char-${currentIndex}`).classList.add('correct');
+                
+                // Mise à jour du combo et score
+                combo++;
+                if (combo > maxCombo) maxCombo = combo;
+                
+                // Score basé sur la vitesse et le combo
+                const timeBonus = Math.max(100 - (Date.now() - questionStartTime) / 100, 10);
+                score += Math.round(timeBonus * (1 + combo * 0.1));
+                
+                document.getElementById('specialCombo').textContent = combo;
+                document.getElementById('specialScore').textContent = score;
+                
+                currentIndex++;
+                
+                if (currentIndex < currentText.length) {
+                    document.getElementById(`special-char-${currentIndex}`).classList.add('current');
+                    document.getElementById('specialInput').value = '';
+                    
+                    // Highlight pour le prochain caractère
+                    highlightKeysForCharacter(currentText[currentIndex]);
+                } else {
+                    // Question terminée
+                    questionComplete();
+                }
+            }
+            
+            // Message d'encouragement
+            if (correctChars % 10 === 0 || combo % 5 === 0) {
+                showEncouragement(true);
+            }
+        }
+
+        function handleIncorrectChar(mode) {
+            errors++;
+            
+            if (mode === 'sentence') {
+                document.getElementById(`char-${currentIndex}`).classList.add('incorrect');
+                setTimeout(() => {
+                    document.getElementById(`char-${currentIndex}`).classList.remove('incorrect');
+                }, 300);
+                
+                // Mise à jour de la précision
+                const accuracy = Math.round((correctChars / (correctChars + errors)) * 100);
+                document.getElementById('sentenceAccuracy').textContent = accuracy + '%';
+            } else {
+                document.getElementById(`special-char-${currentIndex}`).classList.add('incorrect');
+                setTimeout(() => {
+                    document.getElementById(`special-char-${currentIndex}`).classList.remove('incorrect');
+                }, 300);
+                
+                // Reset du combo
+                combo = 0;
+                document.getElementById('specialCombo').textContent = combo;
+            }
+            
+            showEncouragement(false);
+        }
+
+        function showEncouragement(isCorrect) {
+            const messages = isCorrect ? encouragements : motivations;
+            const message = messages[Math.floor(Math.random() * messages.length)];
+            
+            if (currentMode === 'sentences') {
+                document.getElementById('sentenceEncouragement').textContent = message;
+            } else {
+                document.getElementById('specialEncouragement').textContent = message;
+            }
+        }
+
+        function questionComplete() {
+            if (currentQuestion < 5) {
+                currentQuestion++;
+                setTimeout(() => {
+                    loadQuestion();
+                    showEncouragement(true);
+                }, 500);
+            } else {
+                // Niveau terminé
+                levelComplete();
+            }
+            
+            // Mise à jour de la barre de progression
+            const progress = (currentQuestion / 5) * 100;
+            if (currentMode === 'sentences') {
+                document.getElementById('sentenceProgress').style.width = progress + '%';
+                document.getElementById('sentenceProgress').textContent = Math.round(progress) + '%';
+            } else {
+                document.getElementById('specialProgress').style.width = progress + '%';
+                document.getElementById('specialProgress').textContent = Math.round(progress) + '%';
+            }
+        }
+
+        function levelComplete() {
+            clearInterval(timer);
+            
+            // Calcul des étoiles
+            let stars = '⭐';
+            let message = 'Bien joué !';
+            
+            if (currentMode === 'sentences') {
+                const accuracy = Math.round((correctChars / (correctChars + errors)) * 100);
+                if (accuracy >= 95) {
+                    stars = '⭐⭐⭐';
+                    message = 'Parfait ! Tu es un champion !';
+                } else if (accuracy >= 85) {
+                    stars = '⭐⭐';
+                    message = 'Très bien ! Continue comme ça !';
+                }
+            } else {
+                if (maxCombo >= 15) {
+                    stars = '⭐⭐⭐';
+                    message = 'Incroyable combo ! Tu maîtrises !';
+                } else if (maxCombo >= 10) {
+                    stars = '⭐⭐';
+                    message = 'Super combo ! Très bon travail !';
+                }
+            }
+            
+            // Affichage du modal
+            document.getElementById('modalStars').textContent = stars;
+            document.getElementById('modalMessage').textContent = message;
+            document.getElementById('levelCompleteModal').style.display = 'flex';
+        }
+
+        function nextLevel() {
+            document.getElementById('levelCompleteModal').style.display = 'none';
+            
+            if (currentLevel < 20) {
+                currentLevel++;
+                currentQuestion = 1;
+                initializeMode();
+            } else {
+                // Jeu terminé
+                alert('🏆 Félicitations ! Tu as terminé tous les niveaux ! Tu es un vrai champion du clavier ! 🏆');
+                location.reload();
+            }
+        }
+
+        function retryLevel() {
+            document.getElementById('levelCompleteModal').style.display = 'none';
+            currentQuestion = 1;
+            initializeMode();
+        }
+
+        // Fermer le modal en cliquant à l'extérieur
+        document.getElementById('levelCompleteModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                this.style.display = 'none';
+            }
+        });
+
+        // Focus automatique sur les champs de saisie
+        document.addEventListener('click', function() {
+            if (currentMode === 'sentences') {
+                document.getElementById('sentenceInput').focus();
+            } else {
+                document.getElementById('specialInput').focus();
+            }
+        });
+    </script>
+</body>
+</html>

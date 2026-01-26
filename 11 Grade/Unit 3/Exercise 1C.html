@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MC1 - Exercise 1C: Kath's Homework</title>
+    <style>
+    #mc1c-game-container {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        max-width: 850px;
+        margin: 0 auto;
+        padding: 20px;
+        background: linear-gradient(135deg, #e8f5e9 0%, #e3f2fd 100%);
+        border-radius: 16px;
+        box-sizing: border-box;
+    }
+
+    #mc1c-game-container * {
+        box-sizing: border-box;
+    }
+
+    #mc1c-game-container .mc1c-header {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    #mc1c-game-container .mc1c-title {
+        font-size: 1.5em;
+        color: #1e3a5f;
+        margin: 0 0 8px 0;
+        font-weight: 700;
+    }
+
+    #mc1c-game-container .mc1c-subtitle {
+        font-size: 0.95em;
+        color: #666;
+        margin: 0;
+    }
+
+    #mc1c-game-container .mc1c-instructions {
+        background: #fff;
+        border-left: 4px solid #2e7d32;
+        padding: 12px 16px;
+        margin-bottom: 20px;
+        border-radius: 0 8px 8px 0;
+        font-size: 0.95em;
+        color: #333;
+    }
+
+    #mc1c-game-container .mc1c-instructions-fr {
+        color: #e65100;
+        font-style: italic;
+        margin-top: 8px;
+        font-size: 0.9em;
+    }
+
+    #mc1c-game-container .mc1c-word-bank {
+        background: #fff;
+        border: 2px solid #1976d2;
+        border-radius: 12px;
+        padding: 16px;
+        margin-bottom: 20px;
+    }
+
+    #mc1c-game-container .mc1c-word-bank-title {
+        font-weight: 600;
+        color: #1976d2;
+        margin-bottom: 12px;
+        font-size: 0.95em;
+    }
+
+    #mc1c-game-container .mc1c-word-list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    #mc1c-game-container .mc1c-word-chip {
+        background: #e3f2fd;
+        border: 2px solid #1976d2;
+        border-radius: 20px;
+        padding: 6px 14px;
+        font-size: 0.95em;
+        color: #1565c0;
+        font-weight: 500;
+        transition: all 0.2s ease;
+    }
+
+    #mc1c-game-container .mc1c-word-chip.mc1c-used {
+        background: #c8e6c9;
+        border-color: #2e7d32;
+        color: #1b5e20;
+        text-decoration: line-through;
+        opacity: 0.7;
+    }
+
+    #mc1c-game-container .mc1c-progress-bar {
+        background: #ddd;
+        border-radius: 10px;
+        height: 8px;
+        margin-bottom: 20px;
+        overflow: hidden;
+    }
+
+    #mc1c-game-container .mc1c-progress-fill {
+        background: linear-gradient(90deg, #2e7d32, #4caf50);
+        height: 100%;
+        width: 0%;
+        transition: width 0.3s ease;
+        border-radius: 10px;
+    }
+
+    #mc1c-game-container .mc1c-notebook {
+        background: #fffef0;
+        border: 1px solid #ddd;
+        border-radius: 12px;
+        padding: 24px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        position: relative;
+    }
+
+    #mc1c-game-container .mc1c-notebook::before {
+        content: '';
+        position: absolute;
+        left: 40px;
+        top: 0;
+        bottom: 0;
+        width: 2px;
+        background: #ffcccc;
+    }
+
+    #mc1c-game-container .mc1c-notebook-header {
+        text-align: center;
+        margin-bottom: 20px;
+        padding-bottom: 12px;
+        border-bottom: 2px dashed #ddd;
+    }
+
+    #mc1c-game-container .mc1c-notebook-title {
+        font-size: 1.1em;
+        color: #1e3a5f;
+        font-weight: 600;
+        margin: 0;
+    }
+
+    #mc1c-game-container .mc1c-notebook-author {
+        font-size: 0.9em;
+        color: #666;
+        font-style: italic;
+        margin-top: 4px;
+    }
+
+    #mc1c-game-container .mc1c-text-content {
+        font-size: 1.05em;
+        line-height: 2.2;
+        color: #333;
+        padding-left: 30px;
+    }
+
+    #mc1c-game-container .mc1c-gap {
+        display: inline-block;
+        vertical-align: middle;
+        margin: 0 2px;
+    }
+
+    #mc1c-game-container .mc1c-gap-number {
+        display: inline-block;
+        background: #1e3a5f;
+        color: #fff;
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        text-align: center;
+        line-height: 20px;
+        font-size: 0.7em;
+        font-weight: 600;
+        vertical-align: middle;
+        margin-right: 2px;
+    }
+
+    #mc1c-game-container .mc1c-input {
+        width: 130px;
+        padding: 4px 8px;
+        font-size: 0.95em;
+        border: 2px solid #1976d2;
+        border-radius: 6px;
+        background: #fff;
+        color: #333;
+        text-align: center;
+        transition: all 0.2s ease;
+    }
+
+    #mc1c-game-container .mc1c-input:focus {
+        outline: none;
+        border-color: #1565c0;
+        box-shadow: 0 0 0 3px rgba(25, 118, 210, 0.2);
+    }
+
+    #mc1c-game-container .mc1c-input.mc1c-correct {
+        border-color: #2e7d32;
+        background: #c8e6c9;
+        color: #1b5e20;
+        font-weight: 600;
+    }
+
+    #mc1c-game-container .mc1c-input.mc1c-incorrect {
+        border-color: #c62828;
+        background: #ffcdd2;
+        color: #b71c1c;
+    }
+
+    #mc1c-game-container .mc1c-input:disabled {
+        cursor: not-allowed;
+    }
+
+    #mc1c-game-container .mc1c-feedback-area {
+        margin-top: 20px;
+        padding: 16px;
+        border-radius: 10px;
+        display: none;
+    }
+
+    #mc1c-game-container .mc1c-feedback-area.mc1c-show {
+        display: block;
+    }
+
+    #mc1c-game-container .mc1c-feedback-area.mc1c-error {
+        background: #fff3e0;
+        border: 2px solid #e65100;
+    }
+
+    #mc1c-game-container .mc1c-feedback-title {
+        font-weight: 600;
+        color: #e65100;
+        margin-bottom: 8px;
+    }
+
+    #mc1c-game-container .mc1c-feedback-text {
+        font-size: 0.9em;
+        color: #333;
+        line-height: 1.5;
+    }
+
+    #mc1c-game-container .mc1c-controls {
+        display: flex;
+        gap: 12px;
+        justify-content: center;
+        margin-top: 24px;
+        flex-wrap: wrap;
+    }
+
+    #mc1c-game-container .mc1c-btn {
+        padding: 12px 24px;
+        border: none;
+        border-radius: 8px;
+        font-size: 1em;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s ease;
+    }
+
+    #mc1c-game-container .mc1c-btn-primary {
+        background: #1e3a5f;
+        color: #fff;
+    }
+
+    #mc1c-game-container .mc1c-btn-primary:hover {
+        background: #2c5282;
+    }
+
+    #mc1c-game-container .mc1c-btn-secondary {
+        background: #e0e0e0;
+        color: #333;
+    }
+
+    #mc1c-game-container .mc1c-btn-secondary:hover {
+        background: #bdbdbd;
+    }
+
+    #mc1c-game-container .mc1c-btn-success {
+        background: #2e7d32;
+        color: #fff;
+    }
+
+    #mc1c-game-container .mc1c-btn-success:hover {
+        background: #1b5e20;
+    }
+
+    #mc1c-game-container .mc1c-score-area {
+        text-align: center;
+        margin-top: 24px;
+        padding: 20px;
+        background: #fff;
+        border-radius: 12px;
+        display: none;
+        border: 2px solid #2e7d32;
+    }
+
+    #mc1c-game-container .mc1c-score-area.mc1c-show {
+        display: block;
+    }
+
+    #mc1c-game-container .mc1c-score-emoji {
+        font-size: 3em;
+        margin-bottom: 10px;
+    }
+
+    #mc1c-game-container .mc1c-score-text {
+        font-size: 1.3em;
+        font-weight: 600;
+        color: #1e3a5f;
+    }
+
+    #mc1c-game-container .mc1c-score-details {
+        font-size: 0.95em;
+        color: #666;
+        margin-top: 8px;
+    }
+
+    #mc1c-game-container .mc1c-answer-key {
+        margin-top: 20px;
+        background: #fff;
+        border-radius: 12px;
+        padding: 16px;
+        display: none;
+        border: 2px solid #1976d2;
+    }
+
+    #mc1c-game-container .mc1c-answer-key.mc1c-show {
+        display: block;
+    }
+
+    #mc1c-game-container .mc1c-answer-key-title {
+        font-weight: 600;
+        color: #1976d2;
+        margin-bottom: 12px;
+    }
+
+    #mc1c-game-container .mc1c-answer-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 8px;
+    }
+
+    #mc1c-game-container .mc1c-answer-item {
+        padding: 8px 12px;
+        background: #e3f2fd;
+        border-radius: 6px;
+        font-size: 0.9em;
+    }
+
+    #mc1c-game-container .mc1c-answer-item strong {
+        color: #1565c0;
+    }
+
+    #mc1c-game-container .mc1c-grammar-note {
+        margin-top: 20px;
+        background: #fff;
+        border: 2px solid #ff9800;
+        border-radius: 12px;
+        padding: 16px;
+        display: none;
+    }
+
+    #mc1c-game-container .mc1c-grammar-note.mc1c-show {
+        display: block;
+    }
+
+    #mc1c-game-container .mc1c-grammar-note-title {
+        font-weight: 600;
+        color: #e65100;
+        margin-bottom: 10px;
+    }
+
+    #mc1c-game-container .mc1c-grammar-note-content {
+        font-size: 0.9em;
+        color: #333;
+        line-height: 1.6;
+    }
+    </style>
+</head>
+<body>
+    <div id="mc1c-game-container">
+    <div class="mc1c-header">
+        <h1 class="mc1c-title">📓 Exercise 1C: Kath's Homework</h1>
+        <p class="mc1c-subtitle">Unit 3 - Our Planet | Will/Won't + Verbs</p>
+    </div>
+
+    <div class="mc1c-instructions">
+        <strong>Instructions:</strong> Complete Kath's homework using <strong>will</strong> or <strong>won't</strong> +
+        the correct verb from the word bank.
+        <div class="mc1c-instructions-fr">
+            <strong>Instructions :</strong> Complète le devoir de Kath en utilisant <strong>will</strong> ou
+            <strong>won't</strong> + le verbe correct de la liste.
+        </div>
+    </div>
+
+    <!-- ========== PRE-RENDERED WORD BANK ========== -->
+    <div class="mc1c-word-bank">
+        <div class="mc1c-word-bank-title">📦 Word Bank / Banque de mots</div>
+        <div class="mc1c-word-list" id="mc1c-word-list">
+            <span class="mc1c-word-chip" data-verb="be">be</span>
+            <span class="mc1c-word-chip" data-verb="change">change</span>
+            <span class="mc1c-word-chip" data-verb="die">die</span>
+            <span class="mc1c-word-chip" data-verb="disappear">disappear</span>
+            <span class="mc1c-word-chip" data-verb="have">have</span>
+            <span class="mc1c-word-chip" data-verb="not be">not be</span>
+            <span class="mc1c-word-chip" data-verb="not want">not want</span>
+            <span class="mc1c-word-chip" data-verb="rise">rise</span>
+        </div>
+    </div>
+
+    <div class="mc1c-progress-bar">
+        <div class="mc1c-progress-fill" id="mc1c-progress-fill"></div>
+    </div>
+
+    <!-- ========== PRE-RENDERED NOTEBOOK WITH GAPS ========== -->
+    <div class="mc1c-notebook">
+        <div class="mc1c-notebook-header">
+            <div class="mc1c-notebook-title">🌍 Climate Change Predictions</div>
+            <div class="mc1c-notebook-author">By Kath - Geography Homework</div>
+        </div>
+        <div class="mc1c-text-content" id="mc1c-text-content">
+            In the future, I'm sure global temperatures
+            <span class="mc1c-gap">
+                <sup class="mc1c-gap-number">1</sup>
+                <input type="text" class="mc1c-input" id="mc1c-input-1" data-id="1" data-answer="will rise"
+                    data-accept="'ll rise" data-verb="rise"
+                    data-feedback="Températures + monter = 'rise'. 'I'm sure' → WILL (certitude)"
+                    placeholder="will/won't + verb" autocomplete="off" spellcheck="false">
+            </span>. The snow on the mountains in Switzerland
+            <span class="mc1c-gap">
+                <sup class="mc1c-gap-number">2</sup>
+                <input type="text" class="mc1c-input" id="mc1c-input-2" data-id="2" data-answer="will disappear"
+                    data-accept="'ll disappear" data-verb="disappear"
+                    data-feedback="La neige sur les montagnes va fondre/disparaître = will disappear"
+                    placeholder="will/won't + verb" autocomplete="off" spellcheck="false">
+            </span> and many Arctic and Antarctic animals
+            <span class="mc1c-gap">
+                <sup class="mc1c-gap-number">3</sup>
+                <input type="text" class="mc1c-input" id="mc1c-input-3" data-id="3" data-answer="will die"
+                    data-accept="'ll die" data-verb="die"
+                    data-feedback="Les animaux vont mourir (die) car leur habitat change. 'Probably' = WILL"
+                    placeholder="will/won't + verb" autocomplete="off" spellcheck="false">
+            </span> probably because their homes
+            <span class="mc1c-gap">
+                <sup class="mc1c-gap-number">4</sup>
+                <input type="text" class="mc1c-input" id="mc1c-input-4" data-id="4" data-answer="won't be"
+                    data-accept="will not be" data-verb="not be"
+                    data-feedback="Leurs maisons NE SERONT PLUS froides = won't be (négation)"
+                    placeholder="will/won't + verb" autocomplete="off" spellcheck="false">
+            </span> cold any more. People
+            <span class="mc1c-gap">
+                <sup class="mc1c-gap-number">5</sup>
+                <input type="text" class="mc1c-input" id="mc1c-input-5" data-id="5" data-answer="won't want"
+                    data-accept="will not want" data-verb="not want"
+                    data-feedback="Les gens NE VOUDRONT PAS vivre près de la côte (danger) = won't want"
+                    placeholder="will/won't + verb" autocomplete="off" spellcheck="false">
+            </span> to live near the coast because sea levels
+            <span class="mc1c-gap">
+                <sup class="mc1c-gap-number">6</sup>
+                <input type="text" class="mc1c-input" id="mc1c-input-6" data-id="6" data-answer="will be"
+                    data-accept="'ll be" data-verb="be"
+                    data-feedback="Les niveaux de la mer vont ÊTRE plus hauts = will be" placeholder="will/won't + verb"
+                    autocomplete="off" spellcheck="false">
+            </span> higher. In 2040, I don't think we
+            <span class="mc1c-gap">
+                <sup class="mc1c-gap-number">7</sup>
+                <input type="text" class="mc1c-input" id="mc1c-input-7" data-id="7" data-answer="will have"
+                    data-accept="'ll have" data-verb="have"
+                    data-feedback="En 2040, nous AURONS (will have) du pétrole? Non, 'I don't think' = je pense que non"
+                    placeholder="will/won't + verb" autocomplete="off" spellcheck="false">
+            </span> any cheap oil on the planet, but I doubt that we
+            <span class="mc1c-gap">
+                <sup class="mc1c-gap-number">8</sup>
+                <input type="text" class="mc1c-input" id="mc1c-input-8" data-id="8" data-answer="will change"
+                    data-accept="'ll change" data-verb="change"
+                    data-feedback="'I doubt that we will change' - le doute est exprimé par 'I doubt', pas par won't"
+                    placeholder="will/won't + verb" autocomplete="off" spellcheck="false">
+            </span> our bad habits and think more of the environment.
+        </div>
+    </div>
+
+    <div class="mc1c-feedback-area" id="mc1c-feedback">
+        <div class="mc1c-feedback-title" id="mc1c-feedback-title"></div>
+        <div class="mc1c-feedback-text" id="mc1c-feedback-text"></div>
+    </div>
+
+    <div class="mc1c-controls">
+        <button class="mc1c-btn mc1c-btn-secondary" id="mc1c-reset-btn">🔄 Recommencer</button>
+        <button class="mc1c-btn mc1c-btn-primary" id="mc1c-check-btn">✅ Vérifier tout</button>
+        <button class="mc1c-btn mc1c-btn-success" id="mc1c-answers-btn">📋 Voir les réponses</button>
+    </div>
+
+    <div class="mc1c-score-area" id="mc1c-score">
+        <div class="mc1c-score-emoji" id="mc1c-score-emoji"></div>
+        <div class="mc1c-score-text" id="mc1c-score-text"></div>
+        <div class="mc1c-score-details" id="mc1c-score-details"></div>
+    </div>
+
+    <!-- ========== PRE-RENDERED ANSWER KEY ========== -->
+    <div class="mc1c-answer-key" id="mc1c-answer-key">
+        <div class="mc1c-answer-key-title">📖 Corrigé / Answer Key</div>
+        <div class="mc1c-answer-grid" id="mc1c-answer-grid">
+            <div class="mc1c-answer-item"><strong>1.</strong> will rise</div>
+            <div class="mc1c-answer-item"><strong>2.</strong> will disappear</div>
+            <div class="mc1c-answer-item"><strong>3.</strong> will die</div>
+            <div class="mc1c-answer-item"><strong>4.</strong> won't be</div>
+            <div class="mc1c-answer-item"><strong>5.</strong> won't want</div>
+            <div class="mc1c-answer-item"><strong>6.</strong> will be</div>
+            <div class="mc1c-answer-item"><strong>7.</strong> will have</div>
+            <div class="mc1c-answer-item"><strong>8.</strong> will change</div>
+        </div>
+    </div>
+
+    <div class="mc1c-grammar-note" id="mc1c-grammar-note">
+        <div class="mc1c-grammar-note-title">⚠️ Note importante / Important Note</div>
+        <div class="mc1c-grammar-note-content">
+            <strong>Gap 8 explanation:</strong><br>
+            "I doubt that we <strong>will change</strong> our bad habits"<br><br>
+            Even though "I doubt" is negative in meaning, the grammar still uses <strong>will</strong> (not won't).<br>
+            The doubt is already expressed by "I doubt that..."<br><br>
+            <strong>En français :</strong> "Je doute que nous changions..." - le doute est déjà exprimé par "je doute",
+            donc on utilise <strong>will</strong> (pas won't).
+        </div>
+    </div>
+</div>
+
+<script>
+    (function () {
+        'use strict';
+
+        // Game state
+        var answers = {};
+        var totalQuestions = 8;
+
+        // Cache DOM elements
+        var progressFill = document.getElementById('mc1c-progress-fill');
+        var feedbackArea = document.getElementById('mc1c-feedback');
+        var feedbackTitle = document.getElementById('mc1c-feedback-title');
+        var feedbackText = document.getElementById('mc1c-feedback-text');
+        var scoreArea = document.getElementById('mc1c-score');
+        var scoreEmoji = document.getElementById('mc1c-score-emoji');
+        var scoreText = document.getElementById('mc1c-score-text');
+        var scoreDetails = document.getElementById('mc1c-score-details');
+        var answerKey = document.getElementById('mc1c-answer-key');
+        var grammarNote = document.getElementById('mc1c-grammar-note');
+        var inputFields = document.querySelectorAll('.mc1c-input');
+        var wordChips = document.querySelectorAll('.mc1c-word-chip');
+
+        // ========== NORMALIZE ANSWER ==========
+        function normalizeAnswer(answer) {
+            return answer.toLowerCase()
+                .replace(/\s+/g, ' ')
+                .replace("'ll", "will")
+                .replace("wont", "won't")
+                .replace("will not", "won't")
+                .trim();
+        }
+
+        // ========== INPUT HANDLERS ==========
+        inputFields.forEach(function (input) {
+            input.addEventListener('input', function () {
+                var id = this.getAttribute('data-id');
+                var value = this.value.trim().toLowerCase();
+
+                if (value) {
+                    answers[id] = value;
+                } else {
+                    delete answers[id];
+                }
+
+                updateProgress();
+                updateWordBank();
+            });
+        });
+
+        // ========== UPDATE PROGRESS ==========
+        function updateProgress() {
+            var filled = Object.keys(answers).length;
+            var percentage = (filled / totalQuestions) * 100;
+            progressFill.style.width = percentage + '%';
+        }
+
+        // ========== UPDATE WORD BANK ==========
+        function updateWordBank() {
+            // Reset all chips
+            wordChips.forEach(function (chip) {
+                chip.classList.remove('mc1c-used');
+            });
+
+            // Mark used verbs based on input values
+            var usedVerbs = [];
+            Object.values(answers).forEach(function (answer) {
+                var lowerAnswer = answer.toLowerCase();
+                wordChips.forEach(function (chip) {
+                    var verb = chip.getAttribute('data-verb');
+                    var verbBase = verb.replace('not ', '');
+                    if (lowerAnswer.includes(verbBase)) {
+                        chip.classList.add('mc1c-used');
+                    }
+                });
+            });
+        }
+
+        // ========== CHECK ANSWER ==========
+        function checkAnswer(input) {
+            var userAnswer = normalizeAnswer(answers[input.getAttribute('data-id')] || '');
+            var correctAnswer = normalizeAnswer(input.getAttribute('data-answer'));
+
+            if (userAnswer === correctAnswer) {
+                return true;
+            }
+
+            // Check alternatives
+            var acceptAlso = input.getAttribute('data-accept');
+            if (acceptAlso) {
+                var alternatives = acceptAlso.split('|');
+                for (var i = 0; i < alternatives.length; i++) {
+                    if (normalizeAnswer(alternatives[i]) === userAnswer) {
+                        return true;
+                    }
+                }
+            }
+
+            // Also accept "will not" for "won't"
+            var answer = input.getAttribute('data-answer');
+            if (answer.includes("won't")) {
+                var willNotVersion = answer.replace("won't", "will not");
+                if (userAnswer === normalizeAnswer(willNotVersion)) {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        // ========== CHECK ALL ==========
+        document.getElementById('mc1c-check-btn').addEventListener('click', function () {
+            var totalCorrect = 0;
+            var wrongInputs = [];
+
+            inputFields.forEach(function (input) {
+                var id = input.getAttribute('data-id');
+
+                input.classList.remove('mc1c-correct', 'mc1c-incorrect');
+
+                if (!answers[id]) {
+                    input.classList.add('mc1c-incorrect');
+                    wrongInputs.push(input);
+                    return;
+                }
+
+                var isCorrect = checkAnswer(input);
+
+                if (isCorrect) {
+                    input.classList.add('mc1c-correct');
+                    totalCorrect++;
+                } else {
+                    input.classList.add('mc1c-incorrect');
+                    wrongInputs.push(input);
+                }
+            });
+
+            // Show feedback for wrong answers
+            if (wrongInputs.length > 0) {
+                showFeedback(wrongInputs);
+            } else {
+                hideFeedback();
+            }
+
+            // Show score
+            showScore(totalCorrect);
+
+            // Show grammar note
+            grammarNote.classList.add('mc1c-show');
+        });
+
+        // ========== SHOW FEEDBACK ==========
+        function showFeedback(wrongInputs) {
+            feedbackArea.classList.add('mc1c-show', 'mc1c-error');
+            feedbackTitle.textContent = '❌ ' + wrongInputs.length + ' erreur(s) à corriger:';
+
+            var feedbackHtml = '';
+            wrongInputs.forEach(function (input) {
+                var id = input.getAttribute('data-id');
+                var feedback = input.getAttribute('data-feedback');
+                feedbackHtml += '<strong>Gap ' + id + ':</strong> ' + feedback + '<br>';
+            });
+            feedbackText.innerHTML = feedbackHtml;
+        }
+
+        // ========== HIDE FEEDBACK ==========
+        function hideFeedback() {
+            feedbackArea.classList.remove('mc1c-show', 'mc1c-error');
+        }
+
+        // ========== SHOW SCORE ==========
+        function showScore(correct) {
+            scoreArea.classList.add('mc1c-show');
+            var percentage = Math.round((correct / totalQuestions) * 100);
+            var emoji, message;
+
+            if (percentage === 100) {
+                emoji = '🏆'; message = 'Perfect! Parfait!';
+            } else if (percentage >= 80) {
+                emoji = '⭐'; message = 'Excellent!';
+            } else if (percentage >= 60) {
+                emoji = '👍'; message = 'Good job! Bien joué!';
+            } else if (percentage >= 40) {
+                emoji = '📚'; message = 'Keep learning! Continue!';
+            } else {
+                emoji = '💪'; message = 'Check the answers and try again!';
+            }
+
+            scoreEmoji.textContent = emoji;
+            scoreText.textContent = message;
+            scoreDetails.textContent = correct + '/' + totalQuestions + ' correct (' + percentage + '%)';
+        }
+
+        // ========== SHOW ANSWERS ==========
+        document.getElementById('mc1c-answers-btn').addEventListener('click', function () {
+            inputFields.forEach(function (input) {
+                var id = input.getAttribute('data-id');
+                var correctAnswer = input.getAttribute('data-answer');
+
+                input.value = correctAnswer;
+                answers[id] = correctAnswer;
+                input.classList.remove('mc1c-incorrect');
+                input.classList.add('mc1c-correct');
+                input.disabled = true;
+            });
+
+            updateProgress();
+            updateWordBank();
+            hideFeedback();
+
+            // Show answer key
+            answerKey.classList.add('mc1c-show');
+
+            // Show grammar note
+            grammarNote.classList.add('mc1c-show');
+
+            // Show score as answer key mode
+            scoreArea.classList.add('mc1c-show');
+            scoreEmoji.textContent = '📋';
+            scoreText.textContent = 'Answer Key / Corrigé';
+            scoreDetails.textContent = 'All answers shown above';
+        });
+
+        // ========== RESET ==========
+        document.getElementById('mc1c-reset-btn').addEventListener('click', function () {
+            answers = {};
+
+            inputFields.forEach(function (input) {
+                input.value = '';
+                input.disabled = false;
+                input.classList.remove('mc1c-correct', 'mc1c-incorrect');
+            });
+
+            wordChips.forEach(function (chip) {
+                chip.classList.remove('mc1c-used');
+            });
+
+            progressFill.style.width = '0%';
+            scoreArea.classList.remove('mc1c-show');
+            answerKey.classList.remove('mc1c-show');
+            grammarNote.classList.remove('mc1c-show');
+            hideFeedback();
+        });
+
+    })();
+</script>
+</body>
+</html>

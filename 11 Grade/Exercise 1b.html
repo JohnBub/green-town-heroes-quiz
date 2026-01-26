@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MC1 - Exercise 1B: Will or Won't</title>
+    <style>
+        /* ============================================
+           ALL STYLES SCOPED TO #mc1b-game-container
+           ============================================ */
+
+        #mc1b-game-container {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #e8f5e9 0%, #e3f2fd 100%);
+            border-radius: 16px;
+            box-sizing: border-box;
+        }
+
+        #mc1b-game-container * {
+            box-sizing: border-box;
+        }
+
+        #mc1b-game-container .mc1b-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        #mc1b-game-container .mc1b-title {
+            font-size: 1.5em;
+            color: #1e3a5f;
+            margin: 0 0 8px 0;
+            font-weight: 700;
+        }
+
+        #mc1b-game-container .mc1b-subtitle {
+            font-size: 0.95em;
+            color: #666;
+            margin: 0;
+        }
+
+        #mc1b-game-container .mc1b-instructions {
+            background: #fff;
+            border-left: 4px solid #2e7d32;
+            padding: 12px 16px;
+            margin-bottom: 20px;
+            border-radius: 0 8px 8px 0;
+            font-size: 0.95em;
+            color: #333;
+        }
+
+        #mc1b-game-container .mc1b-instructions-fr {
+            color: #e65100;
+            font-style: italic;
+            margin-top: 8px;
+            font-size: 0.9em;
+        }
+
+        #mc1b-game-container .mc1b-progress-bar {
+            background: #ddd;
+            border-radius: 10px;
+            height: 8px;
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+
+        #mc1b-game-container .mc1b-progress-fill {
+            background: linear-gradient(90deg, #2e7d32, #4caf50);
+            height: 100%;
+            width: 0%;
+            transition: width 0.3s ease;
+            border-radius: 10px;
+        }
+
+        #mc1b-game-container .mc1b-questions {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        #mc1b-game-container .mc1b-question-card {
+            background: #fff;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            padding: 16px;
+            transition: all 0.3s ease;
+        }
+
+        #mc1b-game-container .mc1b-question-card.mc1b-correct {
+            border-color: #2e7d32;
+            background: #e8f5e9;
+        }
+
+        #mc1b-game-container .mc1b-question-card.mc1b-incorrect {
+            border-color: #c62828;
+            background: #ffebee;
+        }
+
+        #mc1b-game-container .mc1b-question-card.mc1b-answered {
+            opacity: 0.9;
+        }
+
+        #mc1b-game-container .mc1b-question-number {
+            display: inline-block;
+            background: #1e3a5f;
+            color: #fff;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 28px;
+            font-weight: 600;
+            font-size: 0.85em;
+            margin-right: 12px;
+        }
+
+        #mc1b-game-container .mc1b-sentence {
+            font-size: 1em;
+            color: #333;
+            line-height: 1.8;
+            display: inline;
+        }
+
+        #mc1b-game-container .mc1b-gap {
+            display: inline-block;
+            min-width: 80px;
+            margin: 0 4px;
+            vertical-align: middle;
+        }
+
+        #mc1b-game-container .mc1b-select {
+            padding: 6px 12px;
+            font-size: 1em;
+            border: 2px solid #1976d2;
+            border-radius: 6px;
+            background: #fff;
+            color: #333;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            min-width: 90px;
+        }
+
+        #mc1b-game-container .mc1b-select:hover {
+            border-color: #1565c0;
+            background: #e3f2fd;
+        }
+
+        #mc1b-game-container .mc1b-select:focus {
+            outline: none;
+            border-color: #1565c0;
+            box-shadow: 0 0 0 3px rgba(25, 118, 210, 0.2);
+        }
+
+        #mc1b-game-container .mc1b-select:disabled {
+            cursor: not-allowed;
+            opacity: 0.8;
+        }
+
+        #mc1b-game-container .mc1b-select.mc1b-correct-answer {
+            border-color: #2e7d32;
+            background: #c8e6c9;
+            color: #1b5e20;
+            font-weight: 600;
+        }
+
+        #mc1b-game-container .mc1b-select.mc1b-wrong-answer {
+            border-color: #c62828;
+            background: #ffcdd2;
+            color: #b71c1c;
+        }
+
+        #mc1b-game-container .mc1b-feedback-inline {
+            display: none;
+            margin-top: 10px;
+            padding: 10px 12px;
+            border-radius: 8px;
+            font-size: 0.9em;
+            line-height: 1.4;
+        }
+
+        #mc1b-game-container .mc1b-feedback-inline.mc1b-show {
+            display: block;
+        }
+
+        #mc1b-game-container .mc1b-feedback-inline.mc1b-success {
+            background: #e8f5e9;
+            border: 1px solid #a5d6a7;
+            color: #2e7d32;
+        }
+
+        #mc1b-game-container .mc1b-feedback-inline.mc1b-error {
+            background: #fff3e0;
+            border: 1px solid #ffcc80;
+            color: #e65100;
+        }
+
+        #mc1b-game-container .mc1b-controls {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            margin-top: 24px;
+            flex-wrap: wrap;
+        }
+
+        #mc1b-game-container .mc1b-btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        #mc1b-game-container .mc1b-btn-primary {
+            background: #1e3a5f;
+            color: #fff;
+        }
+
+        #mc1b-game-container .mc1b-btn-primary:hover {
+            background: #2c5282;
+        }
+
+        #mc1b-game-container .mc1b-btn-secondary {
+            background: #e0e0e0;
+            color: #333;
+        }
+
+        #mc1b-game-container .mc1b-btn-secondary:hover {
+            background: #bdbdbd;
+        }
+
+        #mc1b-game-container .mc1b-btn-success {
+            background: #2e7d32;
+            color: #fff;
+        }
+
+        #mc1b-game-container .mc1b-btn-success:hover {
+            background: #1b5e20;
+        }
+
+        #mc1b-game-container .mc1b-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        #mc1b-game-container .mc1b-score-area {
+            text-align: center;
+            margin-top: 24px;
+            padding: 20px;
+            background: #fff;
+            border-radius: 12px;
+            display: none;
+            border: 2px solid #2e7d32;
+        }
+
+        #mc1b-game-container .mc1b-score-area.mc1b-show {
+            display: block;
+        }
+
+        #mc1b-game-container .mc1b-score-emoji {
+            font-size: 3em;
+            margin-bottom: 10px;
+        }
+
+        #mc1b-game-container .mc1b-score-text {
+            font-size: 1.3em;
+            font-weight: 600;
+            color: #1e3a5f;
+        }
+
+        #mc1b-game-container .mc1b-score-details {
+            font-size: 0.95em;
+            color: #666;
+            margin-top: 8px;
+        }
+
+        #mc1b-game-container .mc1b-grammar-tip {
+            margin-top: 24px;
+            background: #fff;
+            border: 2px solid #1976d2;
+            border-radius: 12px;
+            padding: 16px;
+            display: none;
+        }
+
+        #mc1b-game-container .mc1b-grammar-tip.mc1b-show {
+            display: block;
+        }
+
+        #mc1b-game-container .mc1b-grammar-tip-title {
+            font-weight: 600;
+            color: #1976d2;
+            margin-bottom: 10px;
+            font-size: 1em;
+        }
+
+        #mc1b-game-container .mc1b-grammar-tip-content {
+            font-size: 0.95em;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        #mc1b-game-container .mc1b-grammar-tip-content strong {
+            color: #1e3a5f;
+        }
+
+        #mc1b-game-container .mc1b-grammar-example {
+            background: #e3f2fd;
+            padding: 8px 12px;
+            border-radius: 6px;
+            margin-top: 10px;
+            font-family: monospace;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="mc1b-game-container">
+        <div class="mc1b-header">
+            <h1 class="mc1b-title">📝 Exercise 1B: Will or Won't?</h1>
+            <p class="mc1b-subtitle">Unit 3 - Our Planet | Predictions</p>
+        </div>
+
+        <div class="mc1b-instructions">
+            <strong>Instructions:</strong> Complete each sentence with <strong>will</strong> or <strong>won't</strong>
+            based on the context.
+            <div class="mc1b-instructions-fr">
+                <strong>Instructions :</strong> Complète chaque phrase avec <strong>will</strong> ou
+                <strong>won't</strong> selon le contexte.
+            </div>
+        </div>
+
+        <div class="mc1b-progress-bar">
+            <div class="mc1b-progress-fill" id="mc1b-progress-fill"></div>
+        </div>
+
+        <div class="mc1b-questions" id="mc1b-questions">
+
+            <!-- Question 1 -->
+            <div class="mc1b-question-card" id="mc1b-card-1">
+                <span class="mc1b-question-number">1</span>
+                <span class="mc1b-sentence">
+                    This DVD about hurricanes is great. You
+                    <span class="mc1b-gap">
+                        <select class="mc1b-select" data-question="1">
+                            <option value="">-- ? --</option>
+                            <option value="will">will / 'll</option>
+                            <option value="won't">won't</option>
+                        </select>
+                    </span>
+                    find it really interesting.
+                </span>
+                <div class="mc1b-feedback-inline" id="mc1b-feedback-1"></div>
+            </div>
+
+            <!-- Question 2 -->
+            <div class="mc1b-question-card" id="mc1b-card-2">
+                <span class="mc1b-question-number">2</span>
+                <span class="mc1b-sentence">
+                    With higher temperatures, glaciers
+                    <span class="mc1b-gap">
+                        <select class="mc1b-select" data-question="2">
+                            <option value="">-- ? --</option>
+                            <option value="will">will / 'll</option>
+                            <option value="won't">won't</option>
+                        </select>
+                    </span>
+                    probably disappear.
+                </span>
+                <div class="mc1b-feedback-inline" id="mc1b-feedback-2"></div>
+            </div>
+
+            <!-- Question 3 -->
+            <div class="mc1b-question-card" id="mc1b-card-3">
+                <span class="mc1b-question-number">3</span>
+                <span class="mc1b-sentence">
+                    It's a fantastic film about polar animals. You
+                    <span class="mc1b-gap">
+                        <select class="mc1b-select" data-question="3">
+                            <option value="">-- ? --</option>
+                            <option value="will">will / 'll</option>
+                            <option value="won't">won't</option>
+                        </select>
+                    </span>
+                    find it boring.
+                </span>
+                <div class="mc1b-feedback-inline" id="mc1b-feedback-3"></div>
+            </div>
+
+            <!-- Question 4 -->
+            <div class="mc1b-question-card" id="mc1b-card-4">
+                <span class="mc1b-question-number">4</span>
+                <span class="mc1b-sentence">
+                    In the future, some very low islands
+                    <span class="mc1b-gap">
+                        <select class="mc1b-select" data-question="4">
+                            <option value="">-- ? --</option>
+                            <option value="will">will / 'll</option>
+                            <option value="won't">won't</option>
+                        </select>
+                    </span>
+                    disappear under higher seas.
+                </span>
+                <div class="mc1b-feedback-inline" id="mc1b-feedback-4"></div>
+            </div>
+
+            <!-- Question 5 -->
+            <div class="mc1b-question-card" id="mc1b-card-5">
+                <span class="mc1b-question-number">5</span>
+                <span class="mc1b-sentence">
+                    Many towns near rivers
+                    <span class="mc1b-gap">
+                        <select class="mc1b-select" data-question="5">
+                            <option value="">-- ? --</option>
+                            <option value="will">will / 'll</option>
+                            <option value="won't">won't</option>
+                        </select>
+                    </span>
+                    have floods in winter because of high water levels.
+                </span>
+                <div class="mc1b-feedback-inline" id="mc1b-feedback-5"></div>
+            </div>
+
+            <!-- Question 6 -->
+            <div class="mc1b-question-card" id="mc1b-card-6">
+                <span class="mc1b-question-number">6</span>
+                <span class="mc1b-sentence">
+                    We need to stop climate change or things
+                    <span class="mc1b-gap">
+                        <select class="mc1b-select" data-question="6">
+                            <option value="">-- ? --</option>
+                            <option value="will">will / 'll</option>
+                            <option value="won't">won't</option>
+                        </select>
+                    </span>
+                    get better.
+                </span>
+                <div class="mc1b-feedback-inline" id="mc1b-feedback-6"></div>
+            </div>
+
+            <!-- Question 7 -->
+            <div class="mc1b-question-card" id="mc1b-card-7">
+                <span class="mc1b-question-number">7</span>
+                <span class="mc1b-sentence">
+                    There
+                    <span class="mc1b-gap">
+                        <select class="mc1b-select" data-question="7">
+                            <option value="">-- ? --</option>
+                            <option value="will">will / 'll</option>
+                            <option value="won't">won't</option>
+                        </select>
+                    </span>
+                    be more tornadoes in the future.
+                </span>
+                <div class="mc1b-feedback-inline" id="mc1b-feedback-7"></div>
+            </div>
+
+            <!-- Question 8 -->
+            <div class="mc1b-question-card" id="mc1b-card-8">
+                <span class="mc1b-question-number">8</span>
+                <span class="mc1b-sentence">
+                    Many animals
+                    <span class="mc1b-gap">
+                        <select class="mc1b-select" data-question="8">
+                            <option value="">-- ? --</option>
+                            <option value="will">will / 'll</option>
+                            <option value="won't">won't</option>
+                        </select>
+                    </span>
+                    survive because of higher temperatures.
+                </span>
+                <div class="mc1b-feedback-inline" id="mc1b-feedback-8"></div>
+            </div>
+
+        </div>
+
+        <div class="mc1b-controls">
+            <button class="mc1b-btn mc1b-btn-secondary" id="mc1b-reset-btn">🔄 Recommencer</button>
+            <button class="mc1b-btn mc1b-btn-primary" id="mc1b-check-btn">✅ Vérifier tout</button>
+            <button class="mc1b-btn mc1b-btn-success" id="mc1b-show-btn">📋 Voir les réponses</button>
+        </div>
+
+        <div class="mc1b-score-area" id="mc1b-score">
+            <div class="mc1b-score-emoji" id="mc1b-score-emoji"></div>
+            <div class="mc1b-score-text" id="mc1b-score-text"></div>
+            <div class="mc1b-score-details" id="mc1b-score-details"></div>
+        </div>
+
+        <div class="mc1b-grammar-tip" id="mc1b-grammar-tip">
+            <div class="mc1b-grammar-tip-title">💡 Grammar Tip / Astuce grammaticale</div>
+            <div class="mc1b-grammar-tip-content">
+                <strong>WILL</strong> = prédiction positive (ça va arriver)<br>
+                <strong>WON'T</strong> = prédiction négative (ça ne va pas arriver)<br><br>
+                <strong>Regarde le contexte :</strong><br>
+                • Mots positifs (great, fantastic, interesting) → <strong>will</strong><br>
+                • Mots négatifs ou problèmes (boring, danger, bad) → souvent <strong>won't</strong>
+                <div class="mc1b-grammar-example">
+                    ✓ The film is great. You'<strong>ll</strong> love it. (positive)<br>
+                    ✓ It's dangerous. Things <strong>won't</strong> get better. (negative)
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ============================================
+        // JS FOR INTERACTIVITY ONLY - NO HTML GENERATION
+        // ============================================
+
+        const MC1BGame = (function () {
+            'use strict';
+
+            // Answer key and feedback data only
+            const answerKey = {
+                1: {
+                    answer: "will",
+                    acceptAlso: "'ll",
+                    feedbackCorrect: "Correct! The DVD is 'great' so you WILL find it interesting.",
+                    feedbackWrong: "Le DVD est 'great' (super) → tu VAS le trouver intéressant = WILL, pas WON'T!"
+                },
+                2: {
+                    answer: "will",
+                    feedbackCorrect: "Correct! Higher temperatures = glaciers will disappear (prediction).",
+                    feedbackWrong: "Températures plus élevées = les glaciers vont disparaître → prédiction positive = WILL"
+                },
+                3: {
+                    answer: "won't",
+                    feedbackCorrect: "Correct! A 'fantastic' film = you WON'T find it boring!",
+                    feedbackWrong: "Le film est 'fantastic' → tu ne vas PAS le trouver ennuyeux = WON'T (négatif)"
+                },
+                4: {
+                    answer: "will",
+                    feedbackCorrect: "Correct! This is a prediction about climate change - the islands WILL disappear.",
+                    feedbackWrong: "Mers plus hautes → les îles basses VONT disparaître = WILL (prédiction)"
+                },
+                5: {
+                    answer: "will",
+                    feedbackCorrect: "Correct! High water levels = floods WILL happen.",
+                    feedbackWrong: "Hauts niveaux d'eau = inondations → ça VA arriver = WILL"
+                },
+                6: {
+                    answer: "won't",
+                    feedbackCorrect: "Correct! If we don't stop climate change, things WON'T improve.",
+                    feedbackWrong: "Si on n'arrête pas le changement climatique → les choses NE VONT PAS s'améliorer = WON'T"
+                },
+                7: {
+                    answer: "will",
+                    feedbackCorrect: "Correct! A prediction about more tornadoes = WILL.",
+                    feedbackWrong: "Prédiction sur plus de tornades dans le futur = WILL (ça va arriver)"
+                },
+                8: {
+                    answer: "won't",
+                    feedbackCorrect: "Correct! Higher temperatures are dangerous - animals WON'T survive.",
+                    feedbackWrong: "Températures plus élevées = danger pour les animaux → ils NE VONT PAS survivre = WON'T"
+                }
+            };
+
+            const totalQuestions = 8;
+
+            // Game state
+            let state = {
+                answers: {},
+                checked: {},
+                totalCorrect: 0
+            };
+
+            // Initialize
+            function init() {
+                // Attach event listeners to all select elements
+                document.querySelectorAll('.mc1b-select').forEach(select => {
+                    select.addEventListener('change', handleSelectChange);
+                });
+
+                // Attach event listeners to control buttons
+                document.getElementById('mc1b-reset-btn').addEventListener('click', reset);
+                document.getElementById('mc1b-check-btn').addEventListener('click', checkAll);
+                document.getElementById('mc1b-show-btn').addEventListener('click', showAnswers);
+            }
+
+            function handleSelectChange(e) {
+                const select = e.target;
+                const questionId = parseInt(select.dataset.question);
+                const value = select.value;
+
+                if (value) {
+                    state.answers[questionId] = value;
+                } else {
+                    delete state.answers[questionId];
+                }
+
+                updateProgress();
+
+                // If already checked, re-check this one
+                if (state.checked[questionId]) {
+                    checkSingle(questionId);
+                }
+            }
+
+            function updateProgress() {
+                const answered = Object.keys(state.answers).length;
+                const percentage = (answered / totalQuestions) * 100;
+                document.getElementById('mc1b-progress-fill').style.width = percentage + '%';
+            }
+
+            function checkSingle(id) {
+                const data = answerKey[id];
+                const card = document.getElementById(`mc1b-card-${id}`);
+                const select = card.querySelector('.mc1b-select');
+                const feedback = document.getElementById(`mc1b-feedback-${id}`);
+                const userAnswer = state.answers[id];
+
+                // Reset classes
+                select.classList.remove('mc1b-correct-answer', 'mc1b-wrong-answer');
+                card.classList.remove('mc1b-correct', 'mc1b-incorrect', 'mc1b-answered');
+                feedback.classList.remove('mc1b-show', 'mc1b-success', 'mc1b-error');
+
+                if (!userAnswer) {
+                    feedback.textContent = "⚠️ Choisis une réponse ! / Select an answer!";
+                    feedback.classList.add('mc1b-show', 'mc1b-error');
+                    return false;
+                }
+
+                const isCorrect = userAnswer === data.answer || userAnswer === data.acceptAlso;
+                state.checked[id] = true;
+
+                if (isCorrect) {
+                    select.classList.add('mc1b-correct-answer');
+                    card.classList.add('mc1b-correct', 'mc1b-answered');
+                    feedback.innerHTML = `✅ ${data.feedbackCorrect}`;
+                    feedback.classList.add('mc1b-show', 'mc1b-success');
+                    return true;
+                } else {
+                    select.classList.add('mc1b-wrong-answer');
+                    card.classList.add('mc1b-incorrect');
+                    feedback.innerHTML = `❌ ${data.feedbackWrong}`;
+                    feedback.classList.add('mc1b-show', 'mc1b-error');
+                    return false;
+                }
+            }
+
+            function checkAll() {
+                state.totalCorrect = 0;
+
+                for (let id = 1; id <= totalQuestions; id++) {
+                    if (checkSingle(id)) {
+                        state.totalCorrect++;
+                    }
+                }
+
+                showScore();
+                document.getElementById('mc1b-grammar-tip').classList.add('mc1b-show');
+            }
+
+            function showScore() {
+                const scoreArea = document.getElementById('mc1b-score');
+                scoreArea.classList.add('mc1b-show');
+
+                const correct = state.totalCorrect;
+                const percentage = Math.round((correct / totalQuestions) * 100);
+
+                let emoji, message;
+
+                if (percentage === 100) {
+                    emoji = '🏆';
+                    message = 'Perfect! Parfait!';
+                } else if (percentage >= 80) {
+                    emoji = '⭐';
+                    message = 'Excellent!';
+                } else if (percentage >= 60) {
+                    emoji = '👍';
+                    message = 'Good job! Bien joué!';
+                } else if (percentage >= 40) {
+                    emoji = '📚';
+                    message = 'Keep learning! Continue!';
+                } else {
+                    emoji = '💪';
+                    message = 'Review the grammar tip below!';
+                }
+
+                document.getElementById('mc1b-score-emoji').textContent = emoji;
+                document.getElementById('mc1b-score-text').textContent = message;
+                document.getElementById('mc1b-score-details').textContent = `${correct}/${totalQuestions} correct (${percentage}%)`;
+            }
+
+            function showAnswers() {
+                for (let id = 1; id <= totalQuestions; id++) {
+                    const data = answerKey[id];
+                    const card = document.getElementById(`mc1b-card-${id}`);
+                    const select = card.querySelector('.mc1b-select');
+                    const feedback = document.getElementById(`mc1b-feedback-${id}`);
+
+                    // Set correct answer
+                    select.value = data.answer;
+                    state.answers[id] = data.answer;
+
+                    // Show as correct
+                    select.classList.remove('mc1b-wrong-answer');
+                    select.classList.add('mc1b-correct-answer');
+                    card.classList.remove('mc1b-incorrect');
+                    card.classList.add('mc1b-correct', 'mc1b-answered');
+
+                    // Show feedback
+                    feedback.innerHTML = `✅ ${data.feedbackCorrect}`;
+                    feedback.classList.remove('mc1b-error');
+                    feedback.classList.add('mc1b-show', 'mc1b-success');
+
+                    // Disable select
+                    select.disabled = true;
+                }
+
+                updateProgress();
+                document.getElementById('mc1b-grammar-tip').classList.add('mc1b-show');
+
+                // Show answer key score
+                state.totalCorrect = totalQuestions;
+                const scoreArea = document.getElementById('mc1b-score');
+                scoreArea.classList.add('mc1b-show');
+                document.getElementById('mc1b-score-emoji').textContent = '📋';
+                document.getElementById('mc1b-score-text').textContent = 'Answer Key / Corrigé';
+                document.getElementById('mc1b-score-details').textContent = 'All answers shown above';
+            }
+
+            function reset() {
+                state = {
+                    answers: {},
+                    checked: {},
+                    totalCorrect: 0
+                };
+
+                // Reset all cards
+                for (let id = 1; id <= totalQuestions; id++) {
+                    const card = document.getElementById(`mc1b-card-${id}`);
+                    const select = card.querySelector('.mc1b-select');
+                    const feedback = document.getElementById(`mc1b-feedback-${id}`);
+
+                    // Reset select
+                    select.value = '';
+                    select.disabled = false;
+                    select.classList.remove('mc1b-correct-answer', 'mc1b-wrong-answer');
+
+                    // Reset card
+                    card.classList.remove('mc1b-correct', 'mc1b-incorrect', 'mc1b-answered');
+
+                    // Reset feedback
+                    feedback.classList.remove('mc1b-show', 'mc1b-success', 'mc1b-error');
+                    feedback.innerHTML = '';
+                }
+
+                // Reset progress and hide score/tip
+                document.getElementById('mc1b-progress-fill').style.width = '0%';
+                document.getElementById('mc1b-score').classList.remove('mc1b-show');
+                document.getElementById('mc1b-grammar-tip').classList.remove('mc1b-show');
+            }
+
+            // Initialize on DOM ready
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', init);
+            } else {
+                init();
+            }
+
+            // Public API (kept for consistency, though not strictly needed with event listeners)
+            return {
+                reset: reset,
+                checkAll: checkAll,
+                showAnswers: showAnswers
+            };
+        })();
+    </script>
+</body>
+
+</html>

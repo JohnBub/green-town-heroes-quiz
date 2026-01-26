@@ -1,0 +1,806 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MC1 - Exercise 1A: Match Predictions</title>
+    <style>
+    /* ============================================
+           ALL STYLES SCOPED TO #mc1-game-container
+           ============================================ */
+
+    #mc1-game-container {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 20px;
+        background: linear-gradient(135deg, #e8f5e9 0%, #e3f2fd 100%);
+        border-radius: 16px;
+        box-sizing: border-box;
+    }
+
+    #mc1-game-container * {
+        box-sizing: border-box;
+    }
+
+    #mc1-game-container .mc1-header {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    #mc1-game-container .mc1-title {
+        font-size: 1.5em;
+        color: #1e3a5f;
+        margin: 0 0 8px 0;
+        font-weight: 700;
+    }
+
+    #mc1-game-container .mc1-subtitle {
+        font-size: 0.95em;
+        color: #666;
+        margin: 0;
+    }
+
+    #mc1-game-container .mc1-instructions {
+        background: #fff;
+        border-left: 4px solid #2e7d32;
+        padding: 12px 16px;
+        margin-bottom: 20px;
+        border-radius: 0 8px 8px 0;
+        font-size: 0.95em;
+        color: #333;
+    }
+
+    #mc1-game-container .mc1-instructions-fr {
+        color: #e65100;
+        font-style: italic;
+        margin-top: 8px;
+        font-size: 0.9em;
+    }
+
+    #mc1-game-container .mc1-game-area {
+        display: flex;
+        gap: 20px;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    #mc1-game-container .mc1-column {
+        flex: 1;
+        min-width: 280px;
+        max-width: 420px;
+    }
+
+    #mc1-game-container .mc1-column-title {
+        font-size: 1em;
+        font-weight: 600;
+        color: #1e3a5f;
+        margin-bottom: 12px;
+        padding: 8px 12px;
+        background: #fff;
+        border-radius: 8px;
+        text-align: center;
+    }
+
+    #mc1-game-container .mc1-sentence-item {
+        background: #fff;
+        border: 2px solid #ddd;
+        border-radius: 10px;
+        padding: 12px 16px;
+        margin-bottom: 10px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        min-height: 60px;
+    }
+
+    #mc1-game-container .mc1-sentence-item:hover {
+        border-color: #2e7d32;
+        box-shadow: 0 2px 8px rgba(46, 125, 50, 0.2);
+    }
+
+    #mc1-game-container .mc1-sentence-item.mc1-selected {
+        border-color: #1976d2;
+        background: #e3f2fd;
+        box-shadow: 0 2px 8px rgba(25, 118, 210, 0.3);
+    }
+
+    #mc1-game-container .mc1-sentence-item.mc1-matched {
+        border-color: #2e7d32;
+        background: #e8f5e9;
+        cursor: default;
+        opacity: 0.8;
+    }
+
+    #mc1-game-container .mc1-sentence-item.mc1-correct {
+        border-color: #2e7d32;
+        background: #c8e6c9;
+        animation: mc1-pulse-green 0.5s ease;
+    }
+
+    #mc1-game-container .mc1-sentence-item.mc1-incorrect {
+        border-color: #c62828;
+        background: #ffebee;
+        animation: mc1-shake 0.5s ease;
+    }
+
+    @keyframes mc1-pulse-green {
+
+        0%,
+        100% {
+            transform: scale(1);
+        }
+
+        50% {
+            transform: scale(1.02);
+        }
+    }
+
+    @keyframes mc1-shake {
+
+        0%,
+        100% {
+            transform: translateX(0);
+        }
+
+        20%,
+        60% {
+            transform: translateX(-5px);
+        }
+
+        40%,
+        80% {
+            transform: translateX(5px);
+        }
+    }
+
+    #mc1-game-container .mc1-number {
+        background: #1e3a5f;
+        color: #fff;
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 600;
+        font-size: 0.85em;
+        flex-shrink: 0;
+    }
+
+    #mc1-game-container .mc1-letter {
+        background: #e65100;
+        color: #fff;
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 600;
+        font-size: 0.85em;
+        flex-shrink: 0;
+    }
+
+    #mc1-game-container .mc1-text {
+        flex: 1;
+        font-size: 0.95em;
+        line-height: 1.4;
+        color: #333;
+    }
+
+    #mc1-game-container .mc1-match-indicator {
+        font-size: 0.8em;
+        padding: 2px 8px;
+        border-radius: 12px;
+        background: #2e7d32;
+        color: #fff;
+        font-weight: 600;
+        display: none;
+    }
+
+    #mc1-game-container .mc1-sentence-item.mc1-matched .mc1-match-indicator {
+        display: inline-block;
+    }
+
+    #mc1-game-container .mc1-feedback-area {
+        margin-top: 20px;
+        padding: 16px;
+        border-radius: 10px;
+        display: none;
+    }
+
+    #mc1-game-container .mc1-feedback-area.mc1-show {
+        display: block;
+    }
+
+    #mc1-game-container .mc1-feedback-area.mc1-success {
+        background: #e8f5e9;
+        border: 2px solid #2e7d32;
+    }
+
+    #mc1-game-container .mc1-feedback-area.mc1-error {
+        background: #fff3e0;
+        border: 2px solid #e65100;
+    }
+
+    #mc1-game-container .mc1-feedback-title {
+        font-weight: 600;
+        font-size: 1em;
+        margin-bottom: 8px;
+    }
+
+    #mc1-game-container .mc1-feedback-area.mc1-success .mc1-feedback-title {
+        color: #2e7d32;
+    }
+
+    #mc1-game-container .mc1-feedback-area.mc1-error .mc1-feedback-title {
+        color: #e65100;
+    }
+
+    #mc1-game-container .mc1-feedback-text {
+        font-size: 0.9em;
+        color: #333;
+        line-height: 1.5;
+    }
+
+    #mc1-game-container .mc1-controls {
+        display: flex;
+        gap: 12px;
+        justify-content: center;
+        margin-top: 20px;
+        flex-wrap: wrap;
+    }
+
+    #mc1-game-container .mc1-btn {
+        padding: 12px 24px;
+        border: none;
+        border-radius: 8px;
+        font-size: 1em;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s ease;
+    }
+
+    #mc1-game-container .mc1-btn-primary {
+        background: #1e3a5f;
+        color: #fff;
+    }
+
+    #mc1-game-container .mc1-btn-primary:hover {
+        background: #2c5282;
+    }
+
+    #mc1-game-container .mc1-btn-secondary {
+        background: #e0e0e0;
+        color: #333;
+    }
+
+    #mc1-game-container .mc1-btn-secondary:hover {
+        background: #bdbdbd;
+    }
+
+    #mc1-game-container .mc1-btn:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
+
+    #mc1-game-container .mc1-score-area {
+        text-align: center;
+        margin-top: 20px;
+        padding: 16px;
+        background: #fff;
+        border-radius: 10px;
+        display: none;
+    }
+
+    #mc1-game-container .mc1-score-area.mc1-show {
+        display: block;
+    }
+
+    #mc1-game-container .mc1-score-text {
+        font-size: 1.2em;
+        font-weight: 600;
+        color: #1e3a5f;
+    }
+
+    #mc1-game-container .mc1-score-details {
+        font-size: 0.9em;
+        color: #666;
+        margin-top: 8px;
+    }
+
+    #mc1-game-container .mc1-progress {
+        display: flex;
+        justify-content: center;
+        gap: 8px;
+        margin-bottom: 16px;
+    }
+
+    #mc1-game-container .mc1-progress-dot {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        background: #ddd;
+        transition: all 0.3s ease;
+    }
+
+    #mc1-game-container .mc1-progress-dot.mc1-completed {
+        background: #2e7d32;
+    }
+
+    #mc1-game-container .mc1-answer-key {
+        margin-top: 20px;
+        background: #fff;
+        border-radius: 10px;
+        padding: 16px;
+        display: none;
+    }
+
+    #mc1-game-container .mc1-answer-key.mc1-show {
+        display: block;
+    }
+
+    #mc1-game-container .mc1-answer-key-title {
+        font-weight: 600;
+        color: #1e3a5f;
+        margin-bottom: 12px;
+        font-size: 1em;
+    }
+
+    #mc1-game-container .mc1-answer-item {
+        padding: 8px 0;
+        border-bottom: 1px solid #eee;
+        font-size: 0.9em;
+        color: #333;
+    }
+
+    #mc1-game-container .mc1-answer-item:last-child {
+        border-bottom: none;
+        }
+    </style>
+</head>
+<body>
+    <div id="mc1-game-container">
+    <div class="mc1-header">
+        <h1 class="mc1-title">🌍 Exercise 1A: Match the Predictions</h1>
+        <p class="mc1-subtitle">Unit 3 - Our Planet | Will/Won't</p>
+    </div>
+
+    <div class="mc1-instructions">
+        <strong>Instructions:</strong> Click on a sentence beginning (1-8), then click on the correct ending (a-h) to
+        make predictions about the future.
+        <div class="mc1-instructions-fr">
+            <strong>Instructions :</strong> Clique sur le début d'une phrase (1-8), puis clique sur la fin correcte
+            (a-h) pour faire des prédictions sur le futur.
+        </div>
+    </div>
+
+    <!-- Progress dots pre-rendered -->
+    <div class="mc1-progress" id="mc1-progress">
+        <div class="mc1-progress-dot" id="mc1-dot-1"></div>
+        <div class="mc1-progress-dot" id="mc1-dot-2"></div>
+        <div class="mc1-progress-dot" id="mc1-dot-3"></div>
+        <div class="mc1-progress-dot" id="mc1-dot-4"></div>
+        <div class="mc1-progress-dot" id="mc1-dot-5"></div>
+        <div class="mc1-progress-dot" id="mc1-dot-6"></div>
+        <div class="mc1-progress-dot" id="mc1-dot-7"></div>
+        <div class="mc1-progress-dot" id="mc1-dot-8"></div>
+    </div>
+
+    <div class="mc1-game-area">
+        <div class="mc1-column">
+            <div class="mc1-column-title">📝 Sentence Beginnings</div>
+            <div id="mc1-beginnings">
+                <div class="mc1-sentence-item" id="mc1-begin-1" onclick="MC1Game.selectBeginning(1)">
+                    <span class="mc1-number">1</span>
+                    <span class="mc1-text">Many scientists say that the weather</span>
+                    <span class="mc1-match-indicator" id="mc1-indicator-1"></span>
+                </div>
+                <div class="mc1-sentence-item" id="mc1-begin-2" onclick="MC1Game.selectBeginning(2)">
+                    <span class="mc1-number">2</span>
+                    <span class="mc1-text">More people will drive</span>
+                    <span class="mc1-match-indicator" id="mc1-indicator-2"></span>
+                </div>
+                <div class="mc1-sentence-item" id="mc1-begin-3" onclick="MC1Game.selectBeginning(3)">
+                    <span class="mc1-number">3</span>
+                    <span class="mc1-text">The problems of climate change</span>
+                    <span class="mc1-match-indicator" id="mc1-indicator-3"></span>
+                </div>
+                <div class="mc1-sentence-item" id="mc1-begin-4" onclick="MC1Game.selectBeginning(4)">
+                    <span class="mc1-number">4</span>
+                    <span class="mc1-text">A lot of trees will probably</span>
+                    <span class="mc1-match-indicator" id="mc1-indicator-4"></span>
+                </div>
+                <div class="mc1-sentence-item" id="mc1-begin-5" onclick="MC1Game.selectBeginning(5)">
+                    <span class="mc1-number">5</span>
+                    <span class="mc1-text">There will probably be</span>
+                    <span class="mc1-match-indicator" id="mc1-indicator-5"></span>
+                </div>
+                <div class="mc1-sentence-item" id="mc1-begin-6" onclick="MC1Game.selectBeginning(6)">
+                    <span class="mc1-number">6</span>
+                    <span class="mc1-text">Scientists won't find it easy</span>
+                    <span class="mc1-match-indicator" id="mc1-indicator-6"></span>
+                </div>
+                <div class="mc1-sentence-item" id="mc1-begin-7" onclick="MC1Game.selectBeginning(7)">
+                    <span class="mc1-number">7</span>
+                    <span class="mc1-text">Polar bears will die</span>
+                    <span class="mc1-match-indicator" id="mc1-indicator-7"></span>
+                </div>
+                <div class="mc1-sentence-item" id="mc1-begin-8" onclick="MC1Game.selectBeginning(8)">
+                    <span class="mc1-number">8</span>
+                    <span class="mc1-text">Floods will probably be a problem</span>
+                    <span class="mc1-match-indicator" id="mc1-indicator-8"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="mc1-column">
+            <div class="mc1-column-title">🔗 Sentence Endings</div>
+            <div id="mc1-endings">
+                <!-- Endings in shuffled order (fixed shuffle for consistency) -->
+                <div class="mc1-sentence-item" id="mc1-end-e" onclick="MC1Game.selectEnding('e')">
+                    <span class="mc1-letter">e</span>
+                    <span class="mc1-text">cleaner cars in the future.</span>
+                </div>
+                <div class="mc1-sentence-item" id="mc1-end-c" onclick="MC1Game.selectEnding('c')">
+                    <span class="mc1-letter">c</span>
+                    <span class="mc1-text">in towns and villages near the sea.</span>
+                </div>
+                <div class="mc1-sentence-item" id="mc1-end-h" onclick="MC1Game.selectEnding('h')">
+                    <span class="mc1-letter">h</span>
+                    <span class="mc1-text">will be warmer in the future.</span>
+                </div>
+                <div class="mc1-sentence-item" id="mc1-end-a" onclick="MC1Game.selectEnding('a')">
+                    <span class="mc1-letter">a</span>
+                    <span class="mc1-text">many changes in our environment.</span>
+                </div>
+                <div class="mc1-sentence-item" id="mc1-end-g" onclick="MC1Game.selectEnding('g')">
+                    <span class="mc1-letter">g</span>
+                    <span class="mc1-text">to stop climate change.</span>
+                </div>
+                <div class="mc1-sentence-item" id="mc1-end-d" onclick="MC1Game.selectEnding('d')">
+                    <span class="mc1-letter">d</span>
+                    <span class="mc1-text">because there will be less ice at the poles.</span>
+                </div>
+                <div class="mc1-sentence-item" id="mc1-end-f" onclick="MC1Game.selectEnding('f')">
+                    <span class="mc1-letter">f</span>
+                    <span class="mc1-text">won't go away easily.</span>
+                </div>
+                <div class="mc1-sentence-item" id="mc1-end-b" onclick="MC1Game.selectEnding('b')">
+                    <span class="mc1-letter">b</span>
+                    <span class="mc1-text">fall down in the hurricane.</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="mc1-feedback-area" id="mc1-feedback">
+        <div class="mc1-feedback-title" id="mc1-feedback-title"></div>
+        <div class="mc1-feedback-text" id="mc1-feedback-text"></div>
+    </div>
+
+    <div class="mc1-controls">
+        <button class="mc1-btn mc1-btn-secondary" id="mc1-btn-reset" onclick="MC1Game.reset()">🔄 Recommencer</button>
+        <button class="mc1-btn mc1-btn-primary" id="mc1-btn-answers" onclick="MC1Game.showAnswers()">📋 Voir les
+            réponses</button>
+    </div>
+
+    <div class="mc1-score-area" id="mc1-score">
+        <div class="mc1-score-text" id="mc1-score-text"></div>
+        <div class="mc1-score-details" id="mc1-score-details"></div>
+    </div>
+
+    <!-- Answer key pre-rendered -->
+    <div class="mc1-answer-key" id="mc1-answer-key">
+        <div class="mc1-answer-key-title">📖 Corrigé / Answer Key</div>
+        <div id="mc1-answer-list">
+            <div class="mc1-answer-item"><strong>1-h:</strong> Many scientists say that the weather <strong>will be
+                    warmer in the future.</strong></div>
+            <div class="mc1-answer-item"><strong>2-e:</strong> More people will drive <strong>cleaner cars in the
+                    future.</strong></div>
+            <div class="mc1-answer-item"><strong>3-f:</strong> The problems of climate change <strong>won't go away
+                    easily.</strong></div>
+            <div class="mc1-answer-item"><strong>4-b:</strong> A lot of trees will probably <strong>fall down in the
+                    hurricane.</strong></div>
+            <div class="mc1-answer-item"><strong>5-a:</strong> There will probably be <strong>many changes in our
+                    environment.</strong></div>
+            <div class="mc1-answer-item"><strong>6-g:</strong> Scientists won't find it easy <strong>to stop climate
+                    change.</strong></div>
+            <div class="mc1-answer-item"><strong>7-d:</strong> Polar bears will die <strong>because there will be less
+                    ice at the poles.</strong></div>
+            <div class="mc1-answer-item"><strong>8-c:</strong> Floods will probably be a problem <strong>in towns and
+                    villages near the sea.</strong></div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // ============================================
+    // JS FOR INTERACTIVITY ONLY (no rendering)
+    // ============================================
+
+    const MC1Game = (function () {
+        'use strict';
+
+        // Game data (for validation and feedback only)
+        const beginnings = {
+            1: "Many scientists say that the weather",
+            2: "More people will drive",
+            3: "The problems of climate change",
+            4: "A lot of trees will probably",
+            5: "There will probably be",
+            6: "Scientists won't find it easy",
+            7: "Polar bears will die",
+            8: "Floods will probably be a problem"
+        };
+
+        const endings = {
+            'a': "many changes in our environment.",
+            'b': "fall down in the hurricane.",
+            'c': "in towns and villages near the sea.",
+            'd': "because there will be less ice at the poles.",
+            'e': "cleaner cars in the future.",
+            'f': "won't go away easily.",
+            'g': "to stop climate change.",
+            'h': "will be warmer in the future."
+        };
+
+        // Correct answers: beginning ID -> ending ID
+        const correctMatches = {
+            1: 'h', 2: 'e', 3: 'f', 4: 'b',
+            5: 'a', 6: 'g', 7: 'd', 8: 'c'
+        };
+
+        // French feedback for incorrect answers
+        const feedback = {
+            1: "Le verbe 'say' introduit une opinion → cherche une prédiction sur le temps (weather). La bonne réponse est 'will be warmer in the future.'",
+            2: "'Drive' = conduire → cherche quelque chose en rapport avec les voitures (cleaner cars).",
+            3: "'Problems' + prédiction négative → 'won't go away easily' (les problèmes ne disparaîtront pas facilement).",
+            4: "'Trees fall down' = les arbres tombent → cherche une catastrophe naturelle (hurricane).",
+            5: "'There will be' + nom → 'many changes in our environment' (il y aura des changements).",
+            6: "'Find it easy to' + verbe → 'to stop climate change' (trouver facile d'arrêter le changement climatique).",
+            7: "Les ours polaires vivent sur la glace → 'because there will be less ice at the poles' (ils mourront si la glace disparaît).",
+            8: "'Floods' = inondations → où y a-t-il de l'eau? 'in towns and villages near the sea' (près de la mer)."
+        };
+
+        // Game state
+        let state = {
+            selectedBeginning: null,
+            selectedEnding: null,
+            matches: {},
+            attempts: 0,
+            correctCount: 0
+        };
+
+        // DOM references (cached on init)
+        let dom = {};
+
+        // Initialize DOM references
+        function init() {
+            dom.feedback = document.getElementById('mc1-feedback');
+            dom.feedbackTitle = document.getElementById('mc1-feedback-title');
+            dom.feedbackText = document.getElementById('mc1-feedback-text');
+            dom.score = document.getElementById('mc1-score');
+            dom.scoreText = document.getElementById('mc1-score-text');
+            dom.scoreDetails = document.getElementById('mc1-score-details');
+            dom.answerKey = document.getElementById('mc1-answer-key');
+        }
+
+        function selectBeginning(id) {
+            // Check if already matched
+            if (state.matches[id]) return;
+
+            // Clear previous selection
+            clearSelections('beginning');
+
+            // Select this one
+            state.selectedBeginning = id;
+            const el = document.getElementById(`mc1-begin-${id}`);
+            if (el) el.classList.add('mc1-selected');
+
+            // Check if we can make a match
+            checkMatch();
+        }
+
+        function selectEnding(id) {
+            // Check if already matched
+            if (Object.values(state.matches).includes(id)) return;
+
+            // Clear previous selection
+            clearSelections('ending');
+
+            // Select this one
+            state.selectedEnding = id;
+            const el = document.getElementById(`mc1-end-${id}`);
+            if (el) el.classList.add('mc1-selected');
+
+            // Check if we can make a match
+            checkMatch();
+        }
+
+        function clearSelections(type) {
+            if (type === 'beginning' || type === 'all') {
+                state.selectedBeginning = null;
+                document.querySelectorAll('#mc1-beginnings .mc1-sentence-item').forEach(el => {
+                    el.classList.remove('mc1-selected');
+                });
+            }
+            if (type === 'ending' || type === 'all') {
+                state.selectedEnding = null;
+                document.querySelectorAll('#mc1-endings .mc1-sentence-item').forEach(el => {
+                    el.classList.remove('mc1-selected');
+                });
+            }
+        }
+
+        function checkMatch() {
+            if (state.selectedBeginning === null || state.selectedEnding === null) return;
+
+            state.attempts++;
+
+            const beginEl = document.getElementById(`mc1-begin-${state.selectedBeginning}`);
+            const endEl = document.getElementById(`mc1-end-${state.selectedEnding}`);
+
+            const isCorrect = correctMatches[state.selectedBeginning] === state.selectedEnding;
+
+            if (isCorrect) {
+                // Correct match
+                state.correctCount++;
+                state.matches[state.selectedBeginning] = state.selectedEnding;
+
+                // Update UI
+                beginEl.classList.remove('mc1-selected');
+                beginEl.classList.add('mc1-matched', 'mc1-correct');
+                endEl.classList.remove('mc1-selected');
+                endEl.classList.add('mc1-matched', 'mc1-correct');
+
+                // Update match indicator text
+                const indicator = document.getElementById(`mc1-indicator-${state.selectedBeginning}`);
+                if (indicator) indicator.textContent = state.selectedEnding;
+
+                // Update progress dot
+                const dot = document.getElementById(`mc1-dot-${state.selectedBeginning}`);
+                if (dot) dot.classList.add('mc1-completed');
+
+                // Show success feedback
+                showFeedback(true, state.selectedBeginning);
+
+                // Clear animation class after animation
+                setTimeout(() => {
+                    beginEl.classList.remove('mc1-correct');
+                    endEl.classList.remove('mc1-correct');
+                }, 500);
+
+                // Check for game completion
+                if (Object.keys(state.matches).length === 8) {
+                    setTimeout(showFinalScore, 800);
+                }
+            } else {
+                // Incorrect match
+                beginEl.classList.add('mc1-incorrect');
+                endEl.classList.add('mc1-incorrect');
+
+                // Show error feedback
+                showFeedback(false, state.selectedBeginning);
+
+                // Remove error state after animation
+                setTimeout(() => {
+                    beginEl.classList.remove('mc1-incorrect', 'mc1-selected');
+                    endEl.classList.remove('mc1-incorrect', 'mc1-selected');
+                }, 500);
+            }
+
+            // Clear selections
+            state.selectedBeginning = null;
+            state.selectedEnding = null;
+        }
+
+        function showFeedback(isCorrect, beginningId) {
+            dom.feedback.classList.remove('mc1-success', 'mc1-error');
+            dom.feedback.classList.add('mc1-show', isCorrect ? 'mc1-success' : 'mc1-error');
+
+            if (isCorrect) {
+                dom.feedbackTitle.textContent = '✅ Correct!';
+                const endingId = correctMatches[beginningId];
+                dom.feedbackText.textContent = `"${beginnings[beginningId]} ${endings[endingId]}"`;
+            } else {
+                dom.feedbackTitle.textContent = '❌ Pas tout à fait... / Not quite...';
+                dom.feedbackText.textContent = feedback[beginningId];
+            }
+
+            // Auto-hide after delay
+            setTimeout(() => {
+                if (!isCorrect) {
+                    dom.feedback.classList.remove('mc1-show');
+                }
+            }, 4000);
+        }
+
+        function showFinalScore() {
+            dom.score.classList.add('mc1-show');
+
+            const percentage = Math.round((8 / state.attempts) * 100);
+            let message, emoji;
+
+            if (state.attempts === 8) {
+                emoji = '🏆';
+                message = 'Perfect! Parfait!';
+            } else if (state.attempts <= 10) {
+                emoji = '⭐';
+                message = 'Excellent!';
+            } else if (state.attempts <= 12) {
+                emoji = '👍';
+                message = 'Good job! Bien joué!';
+            } else {
+                emoji = '💪';
+                message = 'Keep practicing! Continue à pratiquer!';
+            }
+
+            dom.scoreText.textContent = `${emoji} ${message}`;
+            dom.scoreDetails.textContent = `8/8 correct in ${state.attempts} attempts (${percentage}% efficiency)`;
+
+            // Hide feedback
+            dom.feedback.classList.remove('mc1-show');
+        }
+
+        function reset() {
+            // Reset state
+            state = {
+                selectedBeginning: null,
+                selectedEnding: null,
+                matches: {},
+                attempts: 0,
+                correctCount: 0
+            };
+
+            // Reset all beginning items
+            for (let i = 1; i <= 8; i++) {
+                const beginEl = document.getElementById(`mc1-begin-${i}`);
+                if (beginEl) {
+                    beginEl.classList.remove('mc1-selected', 'mc1-matched', 'mc1-correct', 'mc1-incorrect');
+                }
+                const indicator = document.getElementById(`mc1-indicator-${i}`);
+                if (indicator) indicator.textContent = '';
+                const dot = document.getElementById(`mc1-dot-${i}`);
+                if (dot) dot.classList.remove('mc1-completed');
+            }
+
+            // Reset all ending items
+            ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'].forEach(letter => {
+                const endEl = document.getElementById(`mc1-end-${letter}`);
+                if (endEl) {
+                    endEl.classList.remove('mc1-selected', 'mc1-matched', 'mc1-correct', 'mc1-incorrect');
+                }
+            });
+
+            // Hide feedback, score, and answer key
+            dom.feedback.classList.remove('mc1-show', 'mc1-success', 'mc1-error');
+            dom.score.classList.remove('mc1-show');
+            dom.answerKey.classList.remove('mc1-show');
+        }
+
+        function showAnswers() {
+            dom.answerKey.classList.toggle('mc1-show');
+        }
+
+        // Initialize on DOM ready
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', init);
+        } else {
+            init();
+        }
+
+        // Public API
+        return {
+            selectBeginning: selectBeginning,
+            selectEnding: selectEnding,
+            reset: reset,
+            showAnswers: showAnswers
+        };
+    })();
+</script>
+</body>
+</html>
